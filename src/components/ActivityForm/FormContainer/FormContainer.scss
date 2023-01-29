@@ -1,0 +1,35 @@
+.form-container {
+    display: flex;
+    height: 100%;
+}
+
+.progress-bar-container {
+    width: 100%;
+    margin-top: 24px;
+
+    .progress-bar {
+        background-color: #D9D9D9;
+        height: 12px;
+        width: 100%;
+        border-radius: 5px;
+    }
+
+    .progress-section {
+        background-color: #D41B2C;
+        height: 100%;
+        border-radius: 5px;
+
+        &-half {
+            width: 50%;
+        }
+
+        &-full {
+            width: 100%;
+        }
+    }
+
+    p {
+        text-align: end;
+        margin: 18px 0px 0px 0px;
+    }
+}

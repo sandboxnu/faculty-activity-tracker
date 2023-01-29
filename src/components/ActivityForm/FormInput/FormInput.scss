@@ -1,0 +1,92 @@
+@mixin input-box {
+    border: solid 1px black;
+    border-radius: 10px;
+    padding: 8px 12px;
+}
+.form-input-container {
+    display: flex;
+    flex-direction: column;
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        margin: 36px 0px;
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        margin: 8px 0;
+        >*:not(:last-child) {
+            margin-bottom: 12px;
+        }
+
+        > div {
+            display: flex;
+            align-items: center;
+        }
+
+        .date-input {
+            background-image: url('../../../media/calendarIcon.svg');
+            background-repeat: no-repeat;
+            background-position: 98%;
+        }
+
+    }
+
+    .input-status {
+        display: flex;
+        align-items: center;
+        margin-left: 12px;
+        padding: 14px 0px;
+
+        p {
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        *:not(:last-child) {
+            margin-right: 8px;
+        }
+    }
+
+    .year-semester-container {
+        display: flex;
+
+        > *:not(:last-child) {
+            margin-right: 24px;
+        }
+    }
+
+    .tooltip-container {
+        display: flex;
+        align-items: center;
+        *:not(:last-child) {
+            margin-right: 8px;
+        }
+    }
+
+    label {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    #weight-guidelines-label {
+        margin-top: 16px;
+    }
+
+    input, select {
+        width: 50%;
+        min-width: 200px;
+        box-sizing: border-box;
+
+    }
+
+
+    input, select, textarea {
+        @include input-box;
+        outline: none !important;
+    }
+}
