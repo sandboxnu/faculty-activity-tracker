@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AcademicYear {
+  id        Int         @id @default(autoincrement())
+  startDate DateTime
+  endDate   DateTime
+  Activity  Activity[]
+  Narrative Narrative[]
+}
+
+model Activity {
+  id             Int               @id @default(autoincrement())
+  userId         Int
+  academicYearId Int
+  date           DateTime
+  name           String
+  description    String
+  category       ActivityCategory
+  significance   SignificanceLevel
+  isFavorite     Boolean
+  AcademicYear   AcademicYear      @relation(fields: [academicYearId], references: [id])
+  User           User              @relation(fields: [userId], references: [id])
+}
+
+model Narrative {
+  id             Int               @id @default(autoincrement())
+  userId         Int
+  academicYearId Int
+  category       NarrativeCategory
+  text           String
+  AcademicYear   AcademicYear      @relation(fields: [academicYearId], references: [id])
+  User           User              @relation(fields: [userId], references: [id])
+}
+
+model ProfessorInfo {
+  id                         Int              @id @default(autoincrement())
+  userId                     Int              @unique
+  position                   String
+  teachingPercent            Float
+  researchPercent            Float
+  servicePercent             Float
+  sabbatical                 SabbaticalOption
+  teachingReleaseExplanation String?
+  User                       User             @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  role          Role           @default(FACULTY)
+  firstName     String
+  lastName      String
+  preferredName String?
+  Activity      Activity[]
+  Narrative     Narrative[]
+  ProfessorInfo ProfessorInfo?
+}
+
+enum ActivityCategory {
+  SERVICE
+  RESEARCH
+  TEACHING
+}
+
+enum NarrativeCategory {
+  SUMMARY
+  SERVICE
+  RESEARCH
+  TEACHING
+}
+
+enum Role {
+  FACULTY
+  MERIT_COMMITTEE_MEMBER
+  MERIT_COMMITTEE_HEAD
+  DEAN
+}
+
+enum SabbaticalOption {
+  NO
+  SEMESTER
+  YEAR
+}
+
+enum SignificanceLevel {
+  MAJOR
+  SIGNIFICANT
+  MINOR
+}
