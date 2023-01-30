@@ -3,11 +3,12 @@
     border-radius: 10px;
     padding: 8px 12px;
 }
-.form-input-container {
+
+.formInputContainer {
     display: flex;
     flex-direction: column;
 
-    .button-container {
+    .buttonContainer {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -15,7 +16,7 @@
         margin: 36px 0px;
     }
 
-    .input-container {
+    .inputContainer {
         display: flex;
         flex-direction: column;
         margin: 8px 0;
@@ -28,15 +29,15 @@
             align-items: center;
         }
 
-        .date-input {
-            background-image: url('../../../media/calendarIcon.svg');
+        .dateInput {
+            background-image: url('/media/calendarIcon.svg');
             background-repeat: no-repeat;
             background-position: 98%;
         }
 
     }
 
-    .input-status {
+    .inputStatus {
         display: flex;
         align-items: center;
         margin-left: 12px;
@@ -52,7 +53,7 @@
         }
     }
 
-    .year-semester-container {
+    .yearSemesterContainer {
         display: flex;
 
         > *:not(:last-child) {
@@ -60,7 +61,7 @@
         }
     }
 
-    .tooltip-container {
+    .tooltipContainer {
         display: flex;
         align-items: center;
         *:not(:last-child) {

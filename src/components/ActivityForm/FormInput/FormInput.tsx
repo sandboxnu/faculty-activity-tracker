@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCategory, selectDate, selectDescription, selectName, selectSemester, selectWeight, selectYear, setDate, setDescription, setName, setSemester, setStep, setWeight, setYear } from "../../../store/form.store";
 import { createDateFromString } from "../../../shared/utils/date.utils";
 import { ActivityCategory, ActivityWeight, CreateActivityDto, Semester } from "../../../models/activity.dto";
-import { createActivity, ResponseStatus } from "../../../api/activities.client";
 import Tooltip from "../../../shared/components/Tooltip/Tooltip";
-import infoIcon from '../../../media/infoIcon.svg';
-import successCheckmark from '../../../media/successCheckmark.svg';
-import failureWarning from '../../../media/failureWarning.svg';
-import './FormInput.scss';
+import { createActivity, ResponseStatus } from "@/client/activities.client";
+import styles from './FormInput.module.scss';
+import Image from "next/image";
 
 const categoryLabels: Record<ActivityCategory, string> = {
     TEACHING: "Teaching",
@@ -104,29 +102,29 @@ const FormInput: React.FC = () => {
 
     if (category === null) return (<div>Category must be selected</div>);
     return (
-        <div className="form-input-container">
+        <div className={styles.formInputContainer}>
             <h1>{categoryLabels[category]}</h1>
-            <div className="input-container">
+            <div className={styles.inputContainer}>
                 <label>Name:</label>
-                <div className="input-wrapper">
+                <div className={styles.inputWrapper}>
                     <input type={"text"} placeholder="Enter Activity Name" onChange={handleNameChange} value={name || ''}></input>
                     <div className="input-status">
-                        <img src={name ? successCheckmark : failureWarning} alt="Icon" width={16} height={16}/>
+                        <Image src={name ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
                         { !name && <p className="text-red inline">Enter an activity name.</p> }
                     </div>
                 </div>
             </div>
-            <div className="input-container">
+            <div className={styles.inputContainer}>
                 <label>Weight:</label>
-                <div className="tooltip-container">
-                    <img src={infoIcon} alt="Little information icon" width={22} height={22}/>
+                <div className={styles.tooltipContainer}>
+                    <Image src="/media/infoIcon.svg" alt="Little information icon" width={22} height={22}/>
                     <Tooltip tooltipTitle="Weight Examples" text={[
                         'Major: New courses, significantly redesigned courses, large courses (more than 25 students), running a dialogue',
                         'Significant: Workshops, fieldtrips, collaborations, client projects, etc.',
                         'Minor: Directed study, guest critic, guest lecture, letter of recommendation, mentoring'
                     ]}/>
                 </div>
-                <div className="input-wrapper">
+                <div className={styles.inputWrapper}>
                     <select value={weight || ""} onChange={handleWeightChange}>
                         <option value="">Select Weight</option>
                         <option value="MAJOR">Major</option>
@@ -134,13 +132,13 @@ const FormInput: React.FC = () => {
                         <option value="MINOR">Minor</option>
                     </select>
                     <div className="input-status">
-                        <img src={weight ? successCheckmark : failureWarning} alt="Icon" width={16} height={16}/>
+                        <Image src={weight ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
                         { !weight && <p className="text-red inline">Select a weight.</p> }
                     </div>
                 </div>
             </div>
-            <div className="year-semester-container">
-                <div className="input-container">
+            <div className={styles.yearSemesterContainer}>
+                <div className={styles.inputContainer}>
                     <label>Semester:</label>
                     <select value={semester || ""} onChange={handleSemesterChange}>
                         <option value="">Select Semester</option>
@@ -149,18 +147,18 @@ const FormInput: React.FC = () => {
                         ))}
                     </select>
                 </div>
-                <div className="input-container">
+                <div className={styles.inputContainer}>
                     <label>Year:</label>
                     <input type={"text"} placeholder="Enter Year" onChange={handleYearChange} value={year || ''}></input>
                 </div>
                 <div className="input-status mt-auto">
-                    <img src={(semester && year) ? successCheckmark : failureWarning} alt="Icon" width={16} height={16}/>
+                    <Image src={(semester && year) ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
                     { (!semester || !year) && <p className="text-red inline">Enter a semester and year.</p> }
                 </div>
             </div>
             {
                 specifyDate &&
-                <div className="input-container">
+                <div className={styles.inputContainer}>
                     <label>Date:</label>
                     <input className="date-input"
                         type='text'
@@ -173,11 +171,11 @@ const FormInput: React.FC = () => {
                 </div>
 
             }
-            <div className="input-container">
-                <div className="input-wrapper">
+            <div className={styles.inputContainer}>
+                <div className={styles.inputWrapper}>
                     <label>Description:</label>
                     <div className="input-status ml-auto">
-                        <img src={description ? successCheckmark : failureWarning} alt="Icon" width={16} height={16}/>
+                        <Image src={description ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
                         { !description && <p className="text-red inline">Enter a description.</p> }
                     </div>
                 </div>
@@ -188,7 +186,7 @@ const FormInput: React.FC = () => {
                     rows={3} />
             </div>
             
-            <div className="button-container">
+            <div className={styles.buttonContainer}>
                 <button onClick={() => dispatch(setStep('selection'))}>Back</button>
                 <button className="button-red" disabled={weight === null || date === null || description === ''} onClick={submitActivity}>Submit</button> 
             </div>

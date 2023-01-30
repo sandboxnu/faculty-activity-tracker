@@ -2,7 +2,7 @@ import React, { ChangeEventHandler } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActivityCategory } from '../../../models/activity.dto';
 import { selectCategory, setCategory, setStep } from '../../../store/form.store';
-import './CategorySelector.scss'
+import styles from './CategorySelector.module.scss'
 
 const CategorySelector: React.FC = () => {
     const category: ActivityCategory | null = useSelector(selectCategory);
@@ -22,7 +22,7 @@ const CategorySelector: React.FC = () => {
     }
 
     return (
-    <div className='category-container'>
+    <div className={styles.categoryContainer}>
         <h1>Category</h1>
         <ol>
             <li>Teaching: Educational activities that benefit NU students.</li>

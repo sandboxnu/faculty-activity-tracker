@@ -1,20 +1,23 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
 import { resetForm } from '../../../store/form.store';
-import neuLogo from '../../../media/neuLogo.svg';
-import profileIcon from '../../../media/profileIcon.svg';
-import './Navbar.scss';
+import styles from './Navbar.module.scss';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const Navbar: React.FC = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const router = useRouter();
+
     return (
-        <div className="navbar-container">
-            <img src={neuLogo} alt="CAMD Logo"/>
-            <NavLink className={({ isActive }) => isActive ? 'active': 'not-active'} to='/dashboard'>Dashboard</NavLink>
-            <NavLink className={({ isActive }) => isActive ? 'active': 'not-active'} to='/new-activity' onClick={() => dispatch(resetForm())}>Submit a New Activity</NavLink>
-            <NavLink className={({ isActive }) => isActive ? 'active': 'not-active'} to='/submissions'>Submissions</NavLink>
-            <NavLink className={({ isActive }) => (isActive ? 'active': 'not-active') + ' inline-icon'} to='/profile'> <img src={profileIcon} alt="Profile Icon"/> My Profile</NavLink>  
+        <div className={styles.navbarContainer}>
+            <Image src="/media/neuLogo.svg" alt="CAMD Logo" width={200} height={50} />
+            {/*<img src={neuLogo} alt="CAMD Logo"/>*/}
+            <Link className={`${styles.link} ${router.pathname == "/dashboard" ? styles.active: styles.notActive}`} href='/dashboard'>Dashboard</Link>
+            <Link className={`${styles.link} ${router.pathname == "/submissions/new" ? styles.active: styles.notActive}`} href='/submissions/new' onClick={() => dispatch(resetForm())}>Submit a New Activity</Link>
+            <Link className={`${styles.link} ${router.pathname == "/submissions" ? styles.active: styles.notActive}`} href='/submissions'>Submissions</Link>
+            <Link className={`${styles.link} ${router.pathname == "/profile" ? styles.active: styles.notActive}`} href='/profile'>My Profile</Link>  
         </div>
     )
 };

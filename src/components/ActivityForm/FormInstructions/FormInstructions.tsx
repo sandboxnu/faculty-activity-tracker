@@ -1,7 +1,7 @@
+import Image from "next/image";
 import React from "react";
-import "./FormInstructions.scss";
-import personIcon from '../../../media/personIcon.svg';
 import Tooltip from "../../../shared/components/Tooltip/Tooltip";
+import styles from "./FormInstructions.module.scss";
 
 interface FormInstructionsProps {
     showWeightGuidelines?: boolean; // whether to include weight guidelines
@@ -9,7 +9,7 @@ interface FormInstructionsProps {
 
 const FormInstructions: React.FC<FormInstructionsProps> = ({ showWeightGuidelines }) => {
     return (
-        <div className="instructions-container">
+        <div className={styles.instructionsContainer}>
             <div>
                 <h2>Instructions:</h2>
                 <ul>
@@ -25,14 +25,14 @@ const FormInstructions: React.FC<FormInstructionsProps> = ({ showWeightGuideline
                 showWeightGuidelines && 
                 <div>
                     <h2 id="weight-guidelines-label">Weight Guidelines:</h2>
-                    <div className="guidelines-list">
+                    <div className={styles.guidelinesList}>
                         <p>8-10 Major Activity: 2 and above + Significant and Minor Activities: 10 and above</p>
                         <p>7-8	Major Activity: 1-2 + Significant and Minor Activities: 6-10</p>
                         <p>6-7	Major Activity: 0-1 + Significant and Minor Activities: 2-6</p>
                         <p>6 Fulfilling required course load</p>
                     </div>
-                    <div className="tooltip-container">
-                        <img src={personIcon} alt="Little person icon" width={22} height={22}/>
+                    <div className={styles.tooltipContainer}>
+                        <Image src="/media/personIcon.svg" alt="Little person icon" width={22} height={22}/>
                         <Tooltip tooltipTitle={'Example persona for a score between 7-8'} text={[
                             'Major: Teaching a new course, teaching a large course', 
                             'Significant: Organize workshop with partner institution', 

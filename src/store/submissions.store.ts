@@ -1,5 +1,5 @@
 import { createSlice, Selector, PayloadAction } from "@reduxjs/toolkit"
-import {RootState} from "../app/app.store";
+import { RootState } from "./app.store";
 import { ActivityDto } from "../models/activity.dto";
 
 export interface SubmissionState { 

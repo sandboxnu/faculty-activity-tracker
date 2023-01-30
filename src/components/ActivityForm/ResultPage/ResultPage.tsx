@@ -1,22 +1,21 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setStep } from '../../../store/form.store';
-import successCheckmark from '../../../media/successCheckmark.svg';
-import failureWarning from '../../../media/failureWarning.svg';
-import './ResultPage.scss';
+import styles from './ResultPage.module.scss';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const ResultPage: React.FC<{success: boolean}> = ({success}) => {
     const dispatch = useDispatch();
     return (
-        <div className='result-page-container'>
-            <img src={success ? successCheckmark : failureWarning} alt="Icon" width={150} height={150}/>
+        <div className={styles.resultPageContainer}>
+            <Image src={success ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={150} height={150}/>
             {
                 success? 
                 <>
                     <h1>Your activity was submitted!</h1>
                     <span>
-                        If you'd like to view or edit previous submissions, navigate to <NavLink to='/submissions'>Submissions</NavLink>
+                        If you'd like to view or edit previous submissions, navigate to <Link href='/submissions'>Submissions</Link>
                     </span>
                 </> : 
                 <>

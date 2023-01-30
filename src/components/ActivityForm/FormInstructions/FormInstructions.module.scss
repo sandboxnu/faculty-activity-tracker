@@ -1,4 +1,4 @@
-.instructions-container {
+.instructionsContainer {
     ul {
         list-style-position: inside;
         padding: 0;
@@ -7,7 +7,7 @@
         }
     }
 
-    .tooltip-container {
+    .tooltipContainer {
         display: flex;
         align-items: center;
         *:not(:last-child) {
