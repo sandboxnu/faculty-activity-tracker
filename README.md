@@ -1,26 +1,72 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
+## Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+yarn install
 ```
+## Running the app
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+# start database with docker
+yarn dev:db:up
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# start development server
+yarn dev
+```
+### Starting the app for the first time
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+[ TODO ]
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Database
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+# start database with docker
+yarn dev:db:up
+
+# stop database with docker
+yarn dev:db:down
+```
+## Project structure
+
+```
+.
+├── prisma
+│   └── schema.prisma
+├── public
+│   └── media/
+├── src
+│   ├── client/
+│   ├── components/
+│   ├── middleware.ts
+│   ├── models/
+│   ├── pages/
+│   ├── services/
+│   ├── shared/
+│   ├── store/
+│   └── styles/
+```
+- `prisma/` - prisma-related files, including schemas and seed scripts
+- `public/`- static content, including any images used in app
+- `src/`
+    - `client/` - functions for making calls to API
+    - `components/` - React components used in the frontend pages
+    - `middleware.ts` - middleware for authentication (protecting routes)
+    - `models/` - type definitions for models, dtos, and any other necessary types
+    - `pages/` - contains all pages/routes for both frontend and backend (more details explained below)
+    - `services/` - functions for interacting with prisma/database
+    - `shared/` - various shared items, including components (e.g. Navbar) and utils
+    - `store/` - redux store logic
+    - `styles/` - any necessary stylesheets
+
+
+### Pages
+
+In NextJS apps, pages within the `pages/` directory are automatically connected to url routes. Each page is associated with a route based on its file name. Additionally, folders correspond to url paths. Some examples include:
+- `pages/index.tsx` is found at `/`
+- `pages/dashboard.tsx` is found at `/dashboard`
+- `pages/submissions/index.tsx` is found at `/submissions`
+- `pages/submissions/new.tsx` is found at `/submissions/new`
+
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as **API routes** instead of React pages. For more details, reference the NextJS documentation on [API routes](https://nextjs.org/docs/api-routes/introduction).
 
 ## Learn More
 
@@ -30,9 +76,3 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

@@ -1,0 +1,30 @@
+.navbarContainer {
+    background-color: black;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 24px 48px;
+    max-width: 100vw;
+
+}
+
+.link {
+    color: white;
+    font-weight: bolder;
+}
+
+.link:hover {
+    color: #d3d3d3;
+}
+
+.active, .notActive {
+    padding-bottom: 8px;
+    border-bottom: 3px solid transparent;
+    text-decoration: none;
+}
+
+.active {
+    border-color: red;
+}
