@@ -16,14 +16,12 @@ export const authOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
     updateAge: 24 * 60 * 60,
-
-
   },
 
   callbacks: {
     async jwt({ token, account }) {
-      console.log(token)
-      console.log(account)
+      //console.log(token)
+      //console.log(account)
       // Persist the OAuth access_token to the token right after signin
       if (account) {
         token.accessToken = account.access_token
@@ -37,4 +35,5 @@ export const authOptions = {
     }
   }
 }
+
 export default NextAuth(authOptions)

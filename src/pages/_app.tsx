@@ -5,7 +5,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { SessionProvider } from "next-auth/react"
 import { Session } from "next-auth";
-import "../styles/index.scss";
+import "../styles/index.css";
 
 interface CustomPageProps {
   session: Session;

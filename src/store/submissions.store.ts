@@ -1,6 +1,6 @@
 import { createSlice, Selector, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "./app.store";
-import { ActivityDto } from "../models/activity.dto";
+import { ActivityDto } from "../models/activity.model";
 
 export interface SubmissionState { 
     activities : ActivityDto[];

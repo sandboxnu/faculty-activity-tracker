@@ -2,7 +2,7 @@ import React, { ChangeEventHandler, FocusEventHandler, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCategory, selectDate, selectDescription, selectName, selectSemester, selectWeight, selectYear, setDate, setDescription, setName, setSemester, setStep, setWeight, setYear } from "../../../store/form.store";
 import { createDateFromString } from "../../../shared/utils/date.utils";
-import { ActivityCategory, ActivityWeight, CreateActivityDto, Semester } from "../../../models/activity.dto";
+import { ActivityCategory, ActivityWeight, CreateActivityDto, Semester } from "../../../models/activity.model";
 import Tooltip from "../../../shared/components/Tooltip/Tooltip";
 import { createActivity, ResponseStatus } from "@/client/activities.client";
 import styles from './FormInput.module.scss';
@@ -83,11 +83,11 @@ const FormInput: React.FC = () => {
         if (specifyDate && !dateObject) return;
 
         const newActivityDto: CreateActivityDto = {
-            userId : "1",
-            academicYearId : "1",
+            userId : 10,
             semester : semester,
             year : year,
-            date : dateObject || undefined,
+            //date : dateObject ? dateObject.getTime() : undefined,
+            dateModified: new Date().toJSON(),
             name : name,
             description : description,
             category : category,
@@ -110,7 +110,7 @@ const FormInput: React.FC = () => {
                     <input type={"text"} placeholder="Enter Activity Name" onChange={handleNameChange} value={name || ''}></input>
                     <div className="input-status">
                         <Image src={name ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
-                        { !name && <p className="text-red inline">Enter an activity name.</p> }
+                        { !name && <p className="text-ruby inline">Enter an activity name.</p> }
                     </div>
                 </div>
             </div>
@@ -133,7 +133,7 @@ const FormInput: React.FC = () => {
                     </select>
                     <div className="input-status">
                         <Image src={weight ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
-                        { !weight && <p className="text-red inline">Select a weight.</p> }
+                        { !weight && <p className="text-ruby inline">Select a weight.</p> }
                     </div>
                 </div>
             </div>
@@ -143,7 +143,7 @@ const FormInput: React.FC = () => {
                     <select value={semester || ""} onChange={handleSemesterChange}>
                         <option value="">Select Semester</option>
                         {["Fall", "Spring", "Summer 1", "Summer 2"].map(sem => (
-                            <option value={sem} key={sem}>{sem}</option>
+                            <option value={sem.toUpperCase()} key={sem}>{sem}</option>
                         ))}
                     </select>
                 </div>
@@ -153,7 +153,7 @@ const FormInput: React.FC = () => {
                 </div>
                 <div className="input-status mt-auto">
                     <Image src={(semester && year) ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
-                    { (!semester || !year) && <p className="text-red inline">Enter a semester and year.</p> }
+                    { (!semester || !year) && <p className="text-ruby inline">Enter a semester and year.</p> }
                 </div>
             </div>
             {
@@ -176,7 +176,7 @@ const FormInput: React.FC = () => {
                     <label>Description:</label>
                     <div className="input-status ml-auto">
                         <Image src={description ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
-                        { !description && <p className="text-red inline">Enter a description.</p> }
+                        { !description && <p className="text-ruby inline">Enter a description.</p> }
                     </div>
                 </div>
                 <textarea

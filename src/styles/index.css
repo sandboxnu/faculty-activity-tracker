@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
@@ -50,8 +54,4 @@ button {
 .button-red:disabled {
   border-color: #ae3e45;
   background-color: #ed949c;
-}
-
-.text-red {
-  color: #D41B2C;
 }

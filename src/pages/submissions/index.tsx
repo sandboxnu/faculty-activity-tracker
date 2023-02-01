@@ -1,47 +1,86 @@
-import { ActivityDto } from '@/models/activity.dto';
-import React, { useEffect } from 'react';
+import { ActivityDto } from '@/models/activity.model';
+import { getActivitiesForUser, getAllActivities } from '@/services/activity';
+import { getUserByEmail } from '@/services/user';
+import { GetServerSideProps } from 'next';
+import { getSession, useSession } from 'next-auth/react';
+import React from 'react';
 //import "./Submissions.scss";
 
-const activities: ActivityDto[] = [
+/*const activities: ActivityDto[] = [
     {
-        id: "1",
+        id: 1,
         name:"name",
-        academicYearId:"1",
         isFavorite:false,
-        userId:"1", 
+        userId:1, 
         year:2023, 
-        semester:"Fall", 
+        semester:"FALL", 
         description:"uddjnxdx", 
         category:"RESEARCH",
-        significance:"MAJOR"
+        significance:"MAJOR",
+        dateModified: new Date('2023-01-30')
     },
     {
-        id: "2",
+        id: 2,
         name:"name 2",
-        academicYearId:"1",
         isFavorite:false,
-        userId:"1", 
+        userId:1, 
         year:2023, 
-        semester:"Fall", 
+        semester:"FALL", 
         description:"uddjnxdx", 
         category:"TEACHING",
-        significance:"MAJOR"
+        significance:"MAJOR",
+        dateModified: new Date('2023-01-28')
     }
-];
+];*/
 
 //const seperateActivites = seperateActivitiesByCategory(activities);
 
-const SubmissionsPage: React.FC = () => {
-    useEffect(() => {
-        /*getActivitiesForUser('1').then((activities) => {
-            console.log(activities);
-        })*/
-    });
+interface SubmissionsPageProps {
+    activities: ActivityDto[];
+    error?: string;
+}
+
+const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ activities, error }) => {
+    const { data: session, status } = useSession();
+
     return (
         <div className="submission-page-container">
             <h1>Submitted Activities</h1>
+            { error && <p>{error}</p> }
+            { 
+                activities.length > 0 ? 
+                <div className=''>
+                    { activities.map(activity => (
+                        <div key={activity.id}>
+                            <p>{activity.name}</p>
+                            <p>{new Date(activity.dateModified).toLocaleString()}</p>
+                        </div>
+                    ))}
+                </div> :
+                <p>No activities found.</p>
+            }
         </div>
     );
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const session = await getSession(context);
+    const email = session?.user?.email;
+    if (email) {
+        const user = await getUserByEmail(email);
+        if (user === "not found") {
+            return { props: { activities: [], error: "User not found." } };    
+        } else {
+            const activities = await getActivitiesForUser(user.id);
+            if (activities === "not found") {
+                return { props: { activities: [] } };    
+            } else {
+                return { props: { activities } };
+            }
+        }
+    } else {
+        return { props: { activities: [], error: "User not logged in." } };
+    }  
+  }
 
 export default SubmissionsPage;

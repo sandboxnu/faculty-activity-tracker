@@ -1,4 +1,4 @@
-import { ActivityDto, CreateActivityDto } from "../models/activity.dto";
+import { ActivityDto, CreateActivityDto } from "../models/activity.model";
 export enum ResponseStatus {
     Success = 200,
     UnknownError = 500, 
@@ -6,7 +6,7 @@ export enum ResponseStatus {
     Unauthorized = 401
 }
 
-const apiRoot = 'http://localhost:3001/activities'
+const apiRoot = 'http://localhost:3000/api/activities'
 
 export const getActivitiesForUser = async (userId: string): Promise<ActivityDto[] | ResponseStatus.UnknownError> => {
     try { 
@@ -18,7 +18,6 @@ export const getActivitiesForUser = async (userId: string): Promise<ActivityDto[
         });
         if (response.ok || response.status === 200) {
             const activities: ActivityDto[] = await response.json() as ActivityDto[];
-            console.log(activities)
             return activities;
         } else { 
             return ResponseStatus.UnknownError;

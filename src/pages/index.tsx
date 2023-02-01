@@ -1,10 +1,14 @@
 import React from "react";
 import { useSession } from "next-auth/react"
 import Link from "next/link";
+import Unauthorized from "@/shared/components/Unauthorized/Unauthorized";
 
 
 const Home: React.FC = () => {
     const { data: session, status } = useSession();
+    const name = session?.user?.name;
+    const email = session?.user?.email;
+    console.log(email);
 
     if (status === "loading") {
         return <p>Loading...</p>
@@ -12,16 +16,14 @@ const Home: React.FC = () => {
 
     if (status === "unauthenticated") {
         return (
-            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                <p>You must be logged in to view this page!</p>
-                <Link href="/api/auth/signin">Login</Link>
-            </div>
+            <Unauthorized />
         )
     }
 
     return (
         <div>
             <h1>Home</h1>
+            <p className="text-2xl text-ruby">Welcome, {name || "User"}! </p>
         </div>
     );
 }

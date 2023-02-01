@@ -4,43 +4,24 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://sandbox:chongus@localhost:5432/fat?schema=public"
 }
 
-model AcademicYear {
-  id        Int         @id @default(autoincrement())
-  startDate DateTime
-  endDate   DateTime
-  Activity  Activity[]
-  Narrative Narrative[]
-}
-
-model Activity {
-  id             Int               @id @default(autoincrement())
-  userId         Int
-  academicYearId Int
-  date           DateTime
-  name           String
-  description    String
-  category       ActivityCategory
-  significance   SignificanceLevel
-  isFavorite     Boolean
-  AcademicYear   AcademicYear      @relation(fields: [academicYearId], references: [id])
-  User           User              @relation(fields: [userId], references: [id])
-}
-
-model Narrative {
-  id             Int               @id @default(autoincrement())
-  userId         Int
-  academicYearId Int
-  category       NarrativeCategory
-  text           String
-  AcademicYear   AcademicYear      @relation(fields: [academicYearId], references: [id])
-  User           User              @relation(fields: [userId], references: [id])
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  firstName     String
+  lastName      String
+  preferredName String?
+  role          Role           @default(FACULTY)
+  ProfessorInfo ProfessorInfo?
+  Activity      Activity[]
+  Narrative     Narrative[]
 }
 
 model ProfessorInfo {
   id                         Int              @id @default(autoincrement())
+  user                       User             @relation(fields: [userId], references: [id])
   userId                     Int              @unique
   position                   String
   teachingPercent            Float
@@ -48,32 +29,30 @@ model ProfessorInfo {
   servicePercent             Float
   sabbatical                 SabbaticalOption
   teachingReleaseExplanation String?
-  User                       User             @relation(fields: [userId], references: [id])
 }
 
-model User {
-  id            Int            @id @default(autoincrement())
-  email         String         @unique
-  role          Role           @default(FACULTY)
-  firstName     String
-  lastName      String
-  preferredName String?
-  Activity      Activity[]
-  Narrative     Narrative[]
-  ProfessorInfo ProfessorInfo?
+model Activity {
+  id           Int               @id @default(autoincrement())
+  user         User              @relation(fields: [userId], references: [id])
+  userId       Int
+  year         Int
+  semester     Semester
+  dateModified String
+  name         String
+  description  String
+  category     ActivityCategory
+  significance SignificanceLevel
+  isFavorite   Boolean
 }
 
-enum ActivityCategory {
-  SERVICE
-  RESEARCH
-  TEACHING
-}
-
-enum NarrativeCategory {
-  SUMMARY
-  SERVICE
-  RESEARCH
-  TEACHING
+model Narrative {
+  id           Int               @id @default(autoincrement())
+  user         User              @relation(fields: [userId], references: [id])
+  userId       Int
+  year         Int
+  dateModified String
+  category     NarrativeCategory
+  text         String
 }
 
 enum Role {
@@ -89,8 +68,28 @@ enum SabbaticalOption {
   YEAR
 }
 
+enum NarrativeCategory {
+  SUMMARY
+  SERVICE
+  RESEARCH
+  TEACHING
+}
+
+enum ActivityCategory {
+  SERVICE
+  RESEARCH
+  TEACHING
+}
+
 enum SignificanceLevel {
   MAJOR
   SIGNIFICANT
   MINOR
+}
+
+enum Semester {
+  FALL
+  SPRING
+  SUMMER1
+  SUMMER2
 }

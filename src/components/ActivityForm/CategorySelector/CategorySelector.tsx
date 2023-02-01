@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ActivityCategory } from '../../../models/activity.dto';
+import { ActivityCategory } from '../../../models/activity.model';
 import { selectCategory, setCategory, setStep } from '../../../store/form.store';
 import styles from './CategorySelector.module.scss'
 
