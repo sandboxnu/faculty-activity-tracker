@@ -1,8 +1,7 @@
 import React, { ChangeEventHandler } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ActivityCategory } from '../../../models/activity.model';
-import { selectCategory, setCategory, setStep } from '../../../store/form.store';
-import styles from './CategorySelector.module.scss'
+import { ActivityCategory } from '../../models/activity.model';
+import { selectCategory, setCategory, setStep } from '../../store/form.store';
 
 const CategorySelector: React.FC = () => {
     const category: ActivityCategory | null = useSelector(selectCategory);
@@ -21,17 +20,19 @@ const CategorySelector: React.FC = () => {
         }
     }
 
+    const inputBox = 'border border-black rounded-lg px-3 py-2 outline-none';
+
     return (
-    <div className={styles.categoryContainer}>
-        <h1>Category</h1>
-        <ol>
+    <div className="">
+        <p className="text-4xl mb-3">Category</p>
+        <ol className='list-inside my-6 space-y-4'>
             <li>Teaching: Educational activities that benefit NU students.</li>
             <li>Creative Activity, Scholarship and Research/Professional Development.</li>
             <li>Service: Activities outside of NU community.</li>
         </ol>
         <label>
             <div>
-                <select value={category || ""} onChange={handleChange}>
+                <select value={category || ""} onChange={handleChange} className={inputBox + " w-1/2"}>
                     <option value="">Select a Category</option>
                     <option value="TEACHING">Teaching</option>
                     <option value="RESEARCH">Creative Activity, Scholarship and Research/Professional Development</option>
@@ -39,7 +40,7 @@ const CategorySelector: React.FC = () => {
                 </select>
             </div>
         </label>
-        <button className="button button-red bottom-right" onClick={submit} disabled={category === null}>Next</button>
+        <button className="bg-ruby border-ruby-dark text-white disabled:bg-ruby-disabled float-right mt-4" onClick={submit} disabled={category === null}>Next</button>
     </div>
     );
 };

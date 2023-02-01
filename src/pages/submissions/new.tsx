@@ -1,7 +1,7 @@
-import CategorySelector from '@/components/ActivityForm/CategorySelector/CategorySelector';
-import FormContainer from '@/components/ActivityForm/FormContainer/FormContainer';
-import FormInput from '@/components/ActivityForm/FormInput/FormInput';
-import ResultPage from '@/components/ActivityForm/ResultPage/ResultPage';
+import CategorySelector from '@/components/ActivityForm/CategorySelector';
+import FormContainer from '@/components/ActivityForm/FormContainer';
+import FormInput from '@/components/ActivityForm/FormInput';
+import ResultPage from '@/components/ActivityForm/ResultPage';
 import { FormStep, selectStep } from '@/store/form.store';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';

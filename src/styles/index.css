@@ -20,6 +20,7 @@ body {
 
 a {
   color:  inherit;
+  transition: 0.5s;
 }
 
 h1 {
@@ -45,13 +46,3 @@ button {
   cursor: pointer;
 }
 
-.button-red {
-  border-color: #a41f2c;
-  background-color: #D41B2C;
-  color: white;
-}
-
-.button-red:disabled {
-  border-color: #ae3e45;
-  background-color: #ed949c;
-}

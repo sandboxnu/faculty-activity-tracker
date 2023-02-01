@@ -1,11 +1,10 @@
 import React, { ChangeEventHandler, FocusEventHandler, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCategory, selectDate, selectDescription, selectName, selectSemester, selectWeight, selectYear, setDate, setDescription, setName, setSemester, setStep, setWeight, setYear } from "../../../store/form.store";
-import { createDateFromString } from "../../../shared/utils/date.utils";
-import { ActivityCategory, ActivityWeight, CreateActivityDto, Semester } from "../../../models/activity.model";
-import Tooltip from "../../../shared/components/Tooltip/Tooltip";
+import { selectCategory, selectDate, selectDescription, selectName, selectSemester, selectWeight, selectYear, setDate, setDescription, setName, setSemester, setStep, setWeight, setYear } from "../../store/form.store";
+import { createDateFromString } from "../../shared/utils/date.utils";
+import { ActivityCategory, ActivityWeight, CreateActivityDto, Semester } from "../../models/activity.model";
+import Tooltip from "../../shared/components/Tooltip";
 import { createActivity, ResponseStatus } from "@/client/activities.client";
-import styles from './FormInput.module.scss';
 import Image from "next/image";
 
 const categoryLabels: Record<ActivityCategory, string> = {
@@ -101,65 +100,73 @@ const FormInput: React.FC = () => {
     };
 
     if (category === null) return (<div>Category must be selected</div>);
+
+    // TODO: reduce redundancy of multiple inputs
+    const label = 'text-2xl font-bold';
+    const inputBox = 'border border-black rounded-lg px-3 py-2 outline-none';
+    const inputContainer = 'flex flex-col my-2 space-y-3';
+    const inputWrapper = 'flex items-center';
+    const inputStatus = 'flex items-center py-3';
+
     return (
-        <div className={styles.formInputContainer}>
-            <h1>{categoryLabels[category]}</h1>
-            <div className={styles.inputContainer}>
-                <label>Name:</label>
-                <div className={styles.inputWrapper}>
-                    <input type={"text"} placeholder="Enter Activity Name" onChange={handleNameChange} value={name || ''}></input>
-                    <div className="input-status">
-                        <Image src={name ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
+        <div className="flex flex-col">
+            <p className="text-4xl mb-3">{categoryLabels[category]}</p>
+            <div className={inputContainer}>
+                <p className={label}>Name: </p>
+                <div className={inputWrapper}>
+                    <input type={"text"} placeholder="Enter Activity Name" onChange={handleNameChange} value={name || ''} className={inputBox}></input>
+                    <div className={inputStatus}>
+                        <Image src={name ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16} className="mx-2" />
                         { !name && <p className="text-ruby inline">Enter an activity name.</p> }
                     </div>
                 </div>
             </div>
-            <div className={styles.inputContainer}>
-                <label>Weight:</label>
-                <div className={styles.tooltipContainer}>
-                    <Image src="/media/infoIcon.svg" alt="Little information icon" width={22} height={22}/>
+            <div className={inputContainer}>
+                <p className={label}>Weight: </p>
+                <div className="flex items-center space-x-2">
+                    <Image src="/media/infoIcon.svg" alt="Little information icon" width={22} height={22} />
                     <Tooltip tooltipTitle="Weight Examples" text={[
                         'Major: New courses, significantly redesigned courses, large courses (more than 25 students), running a dialogue',
                         'Significant: Workshops, fieldtrips, collaborations, client projects, etc.',
                         'Minor: Directed study, guest critic, guest lecture, letter of recommendation, mentoring'
                     ]}/>
                 </div>
-                <div className={styles.inputWrapper}>
-                    <select value={weight || ""} onChange={handleWeightChange}>
+                <div className={inputWrapper}>
+                    <select value={weight || ""} onChange={handleWeightChange} className={inputBox}>
                         <option value="">Select Weight</option>
                         <option value="MAJOR">Major</option>
                         <option value="SIGNIFICANT">Significant</option>
                         <option value="MINOR">Minor</option>
                     </select>
-                    <div className="input-status">
-                        <Image src={weight ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
+                    <div className={inputStatus}>
+                        <Image src={weight ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16} className="mx-2" />
                         { !weight && <p className="text-ruby inline">Select a weight.</p> }
                     </div>
                 </div>
             </div>
-            <div className={styles.yearSemesterContainer}>
-                <div className={styles.inputContainer}>
-                    <label>Semester:</label>
-                    <select value={semester || ""} onChange={handleSemesterChange}>
+            <div className="flex space-x-6">
+                <div className={inputContainer}>
+                    <p className={label}>Semester: </p>
+                    <select value={semester || ""} onChange={handleSemesterChange} className={inputBox}>
                         <option value="">Select Semester</option>
                         {["Fall", "Spring", "Summer 1", "Summer 2"].map(sem => (
                             <option value={sem.toUpperCase()} key={sem}>{sem}</option>
                         ))}
                     </select>
                 </div>
-                <div className={styles.inputContainer}>
-                    <label>Year:</label>
-                    <input type={"text"} placeholder="Enter Year" onChange={handleYearChange} value={year || ''}></input>
+                <div className={inputContainer}>
+                    <p className={label}>Year: </p>
+                    <input type={"text"} placeholder="Enter Year" onChange={handleYearChange} value={year || ''} className={inputBox}></input>
                 </div>
-                <div className="input-status mt-auto">
-                    <Image src={(semester && year) ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
+                <div className={inputStatus + " mt-auto mb-2"}>
+                    <Image src={(semester && year) ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16} className="mx-2" />
                     { (!semester || !year) && <p className="text-ruby inline">Enter a semester and year.</p> }
                 </div>
             </div>
             {
                 specifyDate &&
-                <div className={styles.inputContainer}>
-                    <label>Date:</label>
+                <div className={inputContainer}>
+                    <p className={label}>Date: </p>
                     <input className="date-input"
                         type='text'
                         placeholder="Enter Date" 
@@ -171,11 +178,11 @@ const FormInput: React.FC = () => {
                 </div>
 
             }
-            <div className={styles.inputContainer}>
-                <div className={styles.inputWrapper}>
-                    <label>Description:</label>
-                    <div className="input-status ml-auto">
-                        <Image src={description ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16}/>
+            <div className={inputContainer}>
+                <div className={inputWrapper}>
+                    <p className={label}>Description: </p>
+                    <div className={inputStatus + " ml-auto"}>
+                        <Image src={description ? "/media/successCheckmark.svg" : "/media/failureWarning.svg"} alt="Icon" width={16} height={16} className="mx-2" />
                         { !description && <p className="text-ruby inline">Enter a description.</p> }
                     </div>
                 </div>
@@ -183,12 +190,12 @@ const FormInput: React.FC = () => {
                     placeholder="Enter Description" 
                     value={description || ''} 
                     onChange={handleDescriptionChange}
-                    rows={3} />
+                    rows={3} className={inputBox} />
             </div>
             
-            <div className={styles.buttonContainer}>
+            <div className="flex justify-between items-center cursor-pointer my-9">
                 <button onClick={() => dispatch(setStep('selection'))}>Back</button>
-                <button className="button-red" disabled={weight === null || date === null || description === ''} onClick={submitActivity}>Submit</button> 
+                <button className="bg-ruby border-ruby-dark text-white disabled:bg-ruby-disabled" disabled={weight === null || date === null || description === ''} onClick={submitActivity}>Submit</button> 
             </div>
         </div>
     );
