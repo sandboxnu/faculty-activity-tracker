@@ -1,5 +1,5 @@
-import { User } from "@prisma/client";
+import { User } from '@prisma/client';
 
 export type UserDto = User;
 
-export type CreateUserDto = Omit<User, "id">;
+export type CreateUserDto = Omit<User, 'id'>;

@@ -1,18 +1,21 @@
-import Navbar from "@/shared/components/Navbar";
-import { store } from "@/store/app.store";
-import { AppProps } from "next/app";
-import React from "react";
-import { Provider } from "react-redux";
-import { SessionProvider } from "next-auth/react"
-import { Session } from "next-auth";
-import "../styles/index.css";
-import "../styles/utilities.css";
+import Navbar from '@/shared/components/Navbar';
+import { store } from '@/store/app.store';
+import { AppProps } from 'next/app';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { SessionProvider } from 'next-auth/react';
+import { Session } from 'next-auth';
+import '../styles/index.css';
+import '../styles/utilities.css';
 
 interface CustomPageProps {
   session: Session;
 }
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps<CustomPageProps>) {
+function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps<CustomPageProps>) {
   return (
     <Provider store={store}>
       <SessionProvider session={session}>
