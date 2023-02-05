@@ -143,7 +143,7 @@ async function createActivityData() {
         },
       },
       year: 2020,
-      semester: 'FALL',
+      semester: ['FALL', 'SPRING'],
       dateModified: new Date('2020-11-20T21:23:57.736Z'),
       name: 'Client Project',
       description: 'completed the client design project for Autodesk',
@@ -163,7 +163,7 @@ async function createActivityData() {
         },
       },
       year: 2022,
-      semester: 'FALL',
+     semester: 'FALL',
       dateModified: new Date('2022-11-20T21:23:57.736Z'),
       name: 'Directed Study',
       description: 'Animation simulation using Houdini',
@@ -183,7 +183,7 @@ async function createActivityData() {
         },
       },
       year: 2023,
-      semester: 'SUMMER2',
+      semester: ['SPRING', 'SUMMER'],
       dateModified: new Date('2022-08-20T21:23:57.736Z'),
       name: 'New Course',
       description: 'ARTG 5240',
@@ -192,6 +192,7 @@ async function createActivityData() {
       isFavorite: true,
     },
   });
+
 
   const activity5 = await prisma.activity.upsert({
     where: { id: activity4.id + 1 },
@@ -243,7 +244,7 @@ async function createActivityData() {
         },
       },
       year: 2022,
-      semester: 'SUMMER1',
+      semester: ['FALL', 'SPRING', 'SUMMER'],
       dateModified: new Date('2022-10-20T21:23:57.736Z'),
       name: 'Cure cancer',
       description: 'where is my money?',
