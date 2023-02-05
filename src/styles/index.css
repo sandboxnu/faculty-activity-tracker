@@ -38,11 +38,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* NOTE: Not totally sure if this is the best fix or way to do this but its definitely something? */
-button { 
-  border: solid 1px black;
+button, .button { 
+  border: solid 1px;
   border-radius: 10px;
   padding: 8px 24px;
-  background-color: white;
   cursor: pointer;
 }
 

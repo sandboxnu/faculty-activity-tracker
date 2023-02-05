@@ -110,7 +110,7 @@ const FormInput: React.FC = () => {
 
     return (
         <div className="flex flex-col">
-            <p className="text-4xl mb-3">{categoryLabels[category]}</p>
+            <p className="text-3xl mb-3">{categoryLabels[category]}</p>
             <div className={inputContainer}>
                 <p className={label}>Name: </p>
                 <div className={inputWrapper}>
