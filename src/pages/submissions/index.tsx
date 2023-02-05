@@ -36,51 +36,54 @@ import React from 'react';
 //const seperateActivites = seperateActivitiesByCategory(activities);
 
 interface SubmissionsPageProps {
-    activities: ActivityDto[];
-    error?: string;
+  activities: ActivityDto[];
+  error?: string;
 }
 
-const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ activities, error }) => {
-    const { data: session, status } = useSession();
+const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
+  activities,
+  error,
+}) => {
+  const { data: session, status } = useSession();
 
-    return (
-        <div className="submission-page-container">
-            <h1>Submitted Activities</h1>
-            { error && <p>{error}</p> }
-            { 
-                activities.length > 0 ? 
-                <div className=''>
-                    { activities.map(activity => (
-                        <div key={activity.id}>
-                            <p>{activity.name}</p>
-                            <p>{new Date(activity.dateModified).toLocaleString()}</p>
-                        </div>
-                    ))}
-                </div> :
-                <p>No activities found.</p>
-            }
+  return (
+    <div className="submission-page-container">
+      <h1>Submitted Activities</h1>
+      {error && <p>{error}</p>}
+      {activities.length > 0 ? (
+        <div className="">
+          {activities.map((activity) => (
+            <div key={activity.id}>
+              <p>{activity.name}</p>
+              <p>{new Date(activity.dateModified).toLocaleString()}</p>
+            </div>
+          ))}
         </div>
-    );
+      ) : (
+        <p>No activities found.</p>
+      )}
+    </div>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const session = await getSession(context);
-    const email = session?.user?.email;
-    if (email) {
-        const user = await getUserByEmail(email);
-        if (user === "not found") {
-            return { props: { activities: [], error: "User not found." } };    
-        } else {
-            const activities = await getActivitiesForUser(user.id);
-            if (activities === "not found") {
-                return { props: { activities: [] } };    
-            } else {
-                return { props: { activities } };
-            }
-        }
+  const session = await getSession(context);
+  const email = session?.user?.email;
+  if (email) {
+    const user = await getUserByEmail(email);
+    if (user === 'not found') {
+      return { props: { activities: [], error: 'User not found.' } };
     } else {
-        return { props: { activities: [], error: "User not logged in." } };
-    }  
+      const activities = await getActivitiesForUser(user.id);
+      if (activities === 'not found') {
+        return { props: { activities: [] } };
+      } else {
+        return { props: { activities } };
+      }
+    }
+  } else {
+    return { props: { activities: [], error: 'User not logged in.' } };
   }
+};
 
 export default SubmissionsPage;

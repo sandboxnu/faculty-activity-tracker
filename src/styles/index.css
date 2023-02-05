@@ -19,7 +19,7 @@ body {
 }
 
 a {
-  color:  inherit;
+  color: inherit;
   transition: 0.5s;
 }
 
@@ -33,15 +33,15 @@ h2 {
   margin: 1rem 0px;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type='date']::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
 
 /* NOTE: Not totally sure if this is the best fix or way to do this but its definitely something? */
-button, .button { 
+button,
+.button {
   border: solid 1px;
   border-radius: 10px;
   padding: 8px 24px;
   cursor: pointer;
 }
-

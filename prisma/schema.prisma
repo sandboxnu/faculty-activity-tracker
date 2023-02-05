@@ -37,7 +37,7 @@ model Activity {
   userId       Int
   year         Int
   semester     Semester
-  dateModified String
+  dateModified DateTime
   name         String
   description  String
   category     ActivityCategory
@@ -50,7 +50,7 @@ model Narrative {
   user         User              @relation(fields: [userId], references: [id])
   userId       Int
   year         Int
-  dateModified String
+  dateModified DateTime
   category     NarrativeCategory
   text         String
 }
