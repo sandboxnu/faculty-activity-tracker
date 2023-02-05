@@ -1,7 +1,7 @@
 import React from "react";
 import { useSession } from "next-auth/react"
 import Link from "next/link";
-import Unauthorized from "@/shared/components/Unauthorized/Unauthorized";
+import Unauthorized from "@/shared/components/Unauthorized";
 
 
 const Home: React.FC = () => {

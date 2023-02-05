@@ -7,5 +7,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(400).json({ error: "Missing/invalid activity id." });
     } else {
         const activity = await getActivityById(parseInt(id.toString()));
+        return activity;
     }
 }

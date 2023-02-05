@@ -1,5 +1,4 @@
 import React from "react";
-import styles from './Tooltip.module.scss';
 
 interface TooltipProps {
     tooltipTitle: string;
@@ -9,7 +8,7 @@ interface TooltipProps {
 const Tooltip: React.FC<TooltipProps> = ({tooltipTitle, text}: TooltipProps) => {
     return (
         <div className="tooltip">{tooltipTitle}
-            <span className="tooltip-text">
+            <span className="tooltipText">
                 {text.map((item) => {return (<p key={item}>{item}</p>)})}
             </span>
         </div>

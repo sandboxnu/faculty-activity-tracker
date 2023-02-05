@@ -20,6 +20,7 @@ body {
 
 a {
   color:  inherit;
+  transition: 0.5s;
 }
 
 h1 {
@@ -37,21 +38,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* NOTE: Not totally sure if this is the best fix or way to do this but its definitely something? */
-button { 
-  border: solid 1px black;
+button, .button { 
+  border: solid 1px;
   border-radius: 10px;
   padding: 8px 24px;
-  background-color: white;
   cursor: pointer;
 }
 
-.button-red {
-  border-color: #a41f2c;
-  background-color: #D41B2C;
-  color: white;
-}
-
-.button-red:disabled {
-  border-color: #ae3e45;
-  background-color: #ed949c;
-}

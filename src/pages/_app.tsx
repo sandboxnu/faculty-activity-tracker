@@ -1,4 +1,4 @@
-import Navbar from "@/shared/components/Navbar/Navbar";
+import Navbar from "@/shared/components/Navbar";
 import { store } from "@/store/app.store";
 import { AppProps } from "next/app";
 import React from "react";
@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { SessionProvider } from "next-auth/react"
 import { Session } from "next-auth";
 import "../styles/index.css";
+import "../styles/utilities.css";
 
 interface CustomPageProps {
   session: Session;
