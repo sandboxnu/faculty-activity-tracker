@@ -5,14 +5,13 @@
   text-decoration-line: underline;
   text-decoration-color: #585858;
   text-decoration-thickness: 1px;
-  width: 100%;
+  width: max-content;
 }
 
 .tooltipText {
   font-style: normal;
   text-align: justify;
   padding: 10px;
-  width: 100%;
   margin: 5px;
   visibility: hidden;
   background-color: white;
@@ -23,6 +22,8 @@
   z-index: 1;
   top: 100%;
   left: 0;
+  width: max-content;
+  max-width: 600px;
 }
 
 .tooltipText p {
