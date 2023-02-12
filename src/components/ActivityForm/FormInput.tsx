@@ -117,10 +117,10 @@ const FormInput: React.FC = () => {
 
     const newActivityDto: CreateActivityDto = {
       userId: 10,
-      semester: semester,
+      semester: [semester],
       year: year,
       //date : dateObject ? dateObject.getTime() : undefined,
-      dateModified: new Date().toJSON(),
+      dateModified: BigInt(new Date().getTime()),
       name: name,
       description: description,
       category: category,

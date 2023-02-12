@@ -55,7 +55,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
           {activities.map((activity) => (
             <div key={activity.id}>
               <p>{activity.name}</p>
-              <p>{new Date(activity.dateModified).toLocaleString()}</p>
+              <p>{new Date(Number(activity.dateModified)).toLocaleString()}</p>
             </div>
           ))}
         </div>
