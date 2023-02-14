@@ -12,8 +12,8 @@ const SideNavbar: React.FC = () => {
 
   useEffect(() => {
     // don't think this is the best logic
-    setSubmissionsOpen(category !== undefined || (router.pathname.includes("/submissions") && !router.pathname.includes("new")));
-  }, [ pathname ]);
+    setSubmissionsOpen(category !== undefined || (pathname.includes("/submissions") && !pathname.includes("new")));
+  }, [ pathname, category ]);
 
   const [ submissionsOpen, setSubmissionsOpen ] = useState(router.pathname.includes("/submissions") && !router.pathname.includes("new"));
 
