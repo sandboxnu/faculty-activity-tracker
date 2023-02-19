@@ -9,7 +9,7 @@ export enum ResponseStatus {
 const apiRoot = 'http://localhost:3000/api/activities';
 
 export const getActivitiesForUser = async (
-  userId: string,
+  userId: number,
 ): Promise<ActivityDto[] | ResponseStatus.UnknownError> => {
   try {
     const response = await fetch(`${apiRoot}/all?userId=${userId}`, {
@@ -39,6 +39,7 @@ export const createActivity = async (
   | ResponseStatus.UnknownError
 > => {
   try {
+    console.log(body);
     const response = await fetch(apiRoot, {
       method: 'POST',
       headers: {
@@ -51,11 +52,12 @@ export const createActivity = async (
         (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
       ),
     });
+    console.log(response);
     if (response.ok || response.status === 201) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;
     else return ResponseStatus.UnknownError;
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
     return ResponseStatus.UnknownError;
   }
 };

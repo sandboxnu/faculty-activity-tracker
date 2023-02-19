@@ -130,6 +130,7 @@ const FormInput: React.FC = () => {
       significance: weight,
       isFavorite: true,
     };
+    console.log(newActivityDto);
     dispatch(setStep('loading'));
     createActivity(newActivityDto).then((res) => {
       dispatch(setStep(res === ResponseStatus.Success ? 'success' : 'error'));
@@ -230,7 +231,7 @@ const FormInput: React.FC = () => {
             className={inputBox}
           >
             <option value="">Select Semester</option>
-            {['Fall', 'Spring', 'Summer 1', 'Summer 2'].map((sem) => (
+            {['Fall', 'Spring', 'Summer', 'Other'].map((sem) => (
               <option value={sem.toUpperCase()} key={sem}>
                 {sem}
               </option>
