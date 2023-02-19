@@ -109,6 +109,17 @@ async function createUserData() {
       role: 'FACULTY',
     },
   });
+
+  const user10 = await prisma.user.upsert({
+    where: { email: 'anshmarwa54345@gmail.com' },
+    update: {},
+    create: {
+      email: 'anshmarwa54345@gmail.com',
+      firstName: 'Ansh',
+      lastName: 'Marwa',
+      role: 'FACULTY',
+    },
+  });
 }
 
 async function createActivityData() {

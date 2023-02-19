@@ -1,5 +1,5 @@
 import { PrismaClient, Activity } from '.prisma/client';
-import { CreateActivityDto } from '@/models/activity.model';
+import { ActivityCategory, CreateActivityDto } from '@/models/activity.model';
 
 const prisma = new PrismaClient();
 
@@ -17,18 +17,18 @@ export const getActivityById = async (
   return activity || 'not found';
 };
 
-export const getActivitiesForUser = async (
-  userId: number,
-): Promise<Activity[] | 'not found'> => {
-  const acitivities = await prisma.activity.findMany({
-    where: { userId: userId },
-  });
-  return acitivities || 'not found';
-};
+export const getActivitiesForUser = async (userId: number): Promise<Activity[] | "not found"> => {
+    const activities = await prisma.activity.findMany({ where: { userId: userId } });
+    return activities || "not found";
+}
 
-export const createActivity = async (
-  activity: CreateActivityDto,
-): Promise<Activity> => {
-  const newActivity = await prisma.activity.create({ data: { ...activity } });
-  return newActivity;
-};
+export const getActivitiesForUserForCategory = async (userId: number, category: ActivityCategory): Promise<Activity[] | "not found"> => {
+    const activities = await prisma.activity.findMany({ where: { userId: userId, category: category } });
+    return activities || "not found";
+}
+
+export const createActivity = async (activity: CreateActivityDto): Promise<Activity> => {
+    console.log({ data: { ...activity } });
+    const newActivity = await prisma.activity.create({ data: { ...activity } });
+    return newActivity;
+}

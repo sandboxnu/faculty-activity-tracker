@@ -1,3 +1,4 @@
+import { SignificanceLevel } from '@prisma/client';
 import { ActivityCategory, ActivityDto } from '../../models/activity.model';
 
 export const seperateActivitiesByCategory = (
@@ -13,3 +14,18 @@ export const seperateActivitiesByCategory = (
   }
   return activitiesByCategory;
 };
+
+export const seperateActivitiesBySignifanceLevel = (
+  activities: ActivityDto[],
+): Record<SignificanceLevel, ActivityDto[]> => {
+  let activitiesBySignificanceLevel: Record<SignificanceLevel, ActivityDto[]> = {
+    MAJOR: [],
+    SIGNIFICANT: [],
+    MINOR: [],
+  };
+  for (let activity of activities) {
+    activitiesBySignificanceLevel[activity.significance].push(activity);
+  }
+  return activitiesBySignificanceLevel;
+};
+
