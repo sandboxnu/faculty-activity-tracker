@@ -16,6 +16,9 @@ body {
 * {
   font-size: 14px;
   font-family: 'Lato', sans-serif !important;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
 }
 
 a {
@@ -25,12 +28,17 @@ a {
 
 h1 {
   font-size: 36px !important;
-  margin: 1rem 0px;
+  font-weight: 700;
 }
 
 h2 {
   font-size: 24px !important;
-  margin: 1rem 0px;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 18px !important;
+  font-weight: 700;
 }
 
 input[type='date']::-webkit-calendar-picker-indicator {

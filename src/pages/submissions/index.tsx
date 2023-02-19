@@ -1,6 +1,7 @@
 import { ActivityDto } from '@/models/activity.model';
 import { getActivitiesForUser, getAllActivities } from '@/services/activity';
 import { getUserByEmail } from '@/services/user';
+import { seperateActivitiesBySignifanceLevel } from '@/shared/utils/activity.util';
 import { GetServerSideProps } from 'next';
 import { getSession, useSession } from 'next-auth/react';
 import React from 'react';
@@ -40,22 +41,21 @@ interface SubmissionsPageProps {
   error?: string;
 }
 
-const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
-  activities,
-  error,
-}) => {
+const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ activities, error }) => {
   const { data: session, status } = useSession();
 
   return (
-    <div className="submission-page-container">
+    <div className="p-50 flex flex-col">
       <h1>Submitted Activities</h1>
       {error && <p>{error}</p>}
       {activities.length > 0 ? (
-        <div className="">
+        <div className="flex flex-row">
           {activities.map((activity) => (
             <div key={activity.id}>
-              <p>{activity.name}</p>
-              <p>{new Date(Number(activity.dateModified)).toLocaleString()}</p>
+              <div className='mr-10 p-32 rounder-lg border border-black border-solid'>
+                <p>{activity.name}</p>
+                <p>{new Date(Number(activity.dateModified)).toLocaleString()}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -65,6 +65,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
     </div>
   );
 };
+
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
