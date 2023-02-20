@@ -1,11 +1,11 @@
 import ActivityRow from "@/components/Submissions/ActivityRow";
+import CategoryInfoSidebar from "@/components/Submissions/CategoryInfoSidebar";
 import { ActivityDto } from "@/models/activity.model";
 import { getActivitiesForUserForCategory } from "@/services/activity";
 import { getUserByEmail } from "@/services/user";
 import { seperateActivitiesBySignifanceLevel } from "@/shared/utils/activity.util";
 import { toTitleCase } from "@/shared/utils/misc.util";
 import { ActivityCategory, SignificanceLevel } from "@prisma/client";
-import { objectEnumValues } from "@prisma/client/runtime";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -52,7 +52,10 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ activitiesBySigLevel,
     const router = useRouter();
     const { category } = router.query;
 
+    if (!activitiesBySigLevel) return <p> No activities found. </p>;
+
     return (
+      <div className="flex w-full">
         <div className='px-16 py-10 flex flex-col border-box w-full'>
             <h1>{ toTitleCase(category?.toString() || "") }</h1>
             { 
@@ -66,6 +69,10 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ activitiesBySigLevel,
               : <p> No activities found. </p>
             }
         </div>
+        <div className="w-1/4">
+          <CategoryInfoSidebar activitiesBySigLevel={activitiesBySigLevel} />
+        </div>
+      </div>
     );
 }
 

@@ -1,5 +1,5 @@
 import { SignificanceLevel } from '@prisma/client';
-import { ActivityCategory, ActivityDto } from '../../models/activity.model';
+import { ActivityCategory, ActivityDto, Semester } from '../../models/activity.model';
 
 export const seperateActivitiesByCategory = (
   activities: ActivityDto[],
@@ -29,3 +29,17 @@ export const seperateActivitiesBySignifanceLevel = (
   return activitiesBySignificanceLevel;
 };
 
+export const seperateActivitiesBySemester = (
+  activities: ActivityDto[],
+): Record<Semester, ActivityDto[]> => {
+  let activitiesBySignificanceLevel: Record<Semester, ActivityDto[]> = {
+    FALL: [],
+    SPRING: [],
+    SUMMER: [],
+    OTHER: [],
+  };
+  for (let activity of activities) {
+    activitiesBySignificanceLevel[activity.semester[0]].push(activity);
+  }
+  return activitiesBySignificanceLevel;
+};
