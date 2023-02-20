@@ -8,11 +8,21 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     // POST /activities => create new activity
-    const newActivityDto = JSON.parse(
-      JSON.stringify(req.body),
-    ) as CreateActivityDto;
+    let newActivityDto = JSON.parse(JSON.stringify(req.body, (key, value) =>
+      typeof value === 'bigint'
+          ? BigInt(value.toString())
+          : value // return everything else unchanged
+    )) as CreateActivityDto;
+    newActivityDto.dateModified = BigInt(newActivityDto.dateModified);
+    console.log(newActivityDto);
     const newActivity = await createActivity(newActivityDto);
-    res.status(200).json({ data: newActivity });
+    console.log(newActivity);
+    const activity = JSON.stringify(newActivity, (key, value) =>
+      typeof value === 'bigint'
+        ? value.toString()
+        : value // return everything else unchanged
+    )
+    res.status(200).json({ data: activity });
   } else {
     // GET /activities => fetch activities
     const activities = await getAllActivities();

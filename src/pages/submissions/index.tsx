@@ -68,18 +68,18 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  const email = session?.user?.email;
-  if (email) {
-    const user = await getUserByEmail(email);
-    if (user === 'not found') {
-      return { props: { activities: [], error: 'User not found.' } };
+  const userId = session?.user?.id;
+  if (userId) {
+    const activities = await getActivitiesForUser(userId);
+    if (activities === 'not found') {
+      return { props: { activities: [] } };
     } else {
-      const activities = await getActivitiesForUser(user.id);
-      if (activities === 'not found') {
-        return { props: { activities: [] } };
-      } else {
-        return { props: { activities } };
-      }
+      const parsedActivities = JSON.parse(JSON.stringify(activities, (key, value) =>
+          typeof value === 'bigint'
+              ? value.toString()
+              : value // return everything else unchanged
+      ));
+      return { props: { activities: parsedActivities } };
     }
   } else {
     return { props: { activities: [], error: 'User not logged in.' } };

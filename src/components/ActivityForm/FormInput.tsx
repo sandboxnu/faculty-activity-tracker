@@ -26,6 +26,7 @@ import {
 import Tooltip from '../../shared/components/Tooltip';
 import { createActivity, ResponseStatus } from '@/client/activities.client';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 const categoryLabels: Record<ActivityCategory, string> = {
   TEACHING: 'Teaching',
@@ -35,6 +36,8 @@ const categoryLabels: Record<ActivityCategory, string> = {
 };
 
 const FormInput: React.FC = () => {
+  const { data: session } = useSession();
+  const userId = session?.user.id;
   const category: ActivityCategory | null = useSelector(selectCategory);
   const name: string | null = useSelector(selectName);
   const weight: ActivityWeight | null = useSelector(selectWeight);
@@ -116,7 +119,7 @@ const FormInput: React.FC = () => {
     if (specifyDate && !dateObject) return;
 
     const newActivityDto: CreateActivityDto = {
-      userId: 10,
+      userId: userId || 1,
       semester: [semester],
       year: year,
       //date : dateObject ? dateObject.getTime() : undefined,
