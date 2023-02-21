@@ -8,7 +8,15 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     const newNarrativeDto = req.body as CreateNarrativeDto;
-    const newNarrative = await createNarrative(newNarrativeDto);
-    res.status(200).json({ data: newNarrative });
+    try {
+      const newNarrative = await createNarrative(newNarrativeDto);
+      res.status(200).json({ data: newNarrative });
+    } catch (e) {
+      res.status(500).json({ error: e });
+    }
+    // this should be diff if error
+    // -> await error
+  } else if (req.method : String === 'PUT') {
+  } else if (req.method === 'DELETE') {
   }
 }
