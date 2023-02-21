@@ -16,7 +16,7 @@ export default async function handler(
     }
     // this should be diff if error
     // -> await error
-  } else if (req.method : String === 'PUT') {
+  } else if (req.method === 'PUT') {
   } else if (req.method === 'DELETE') {
   }
 }
