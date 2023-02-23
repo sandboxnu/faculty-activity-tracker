@@ -32,3 +32,19 @@ export const createActivity = async (
   const newActivity = await prisma.activity.create({ data: { ...activity } });
   return newActivity;
 };
+
+export const updateActivity = async (
+  activityId: number,
+  activity: CreateActivityDto,
+): Promise<Activity | 'not found'> => {
+  const newActivity = await prisma.activity.update({
+    where: { id: activityId },
+    data: { ...activity, dateModified: Date.now() },
+  });
+  return newActivity || 'not found';
+};
+
+// this allows json to parse BigInts
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};

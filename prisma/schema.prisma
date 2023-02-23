@@ -37,7 +37,7 @@ model Activity {
   userId       Int
   year         Int
   semester     Semester[]
-  dateModified BigInt
+  dateModified BigInt            @default(dbgenerated("extract(epoch from now())::bigint"))
   name         String
   description  String
   category     ActivityCategory
