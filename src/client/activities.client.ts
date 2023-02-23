@@ -45,12 +45,18 @@ export const createActivity = async (
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify(body),
+      //body: JSON.stringify(body),
+      body: JSON.stringify(body, (key, value) =>
+        typeof value === 'bigint'
+          ? value.toString()
+          : value // return everything else unchanged
+      )
     });
     if (response.ok || response.status === 201) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;
     else return ResponseStatus.UnknownError;
-  } catch {
+  } catch (e) {
+    console.log(e);
     return ResponseStatus.UnknownError;
   }
 };

@@ -7,6 +7,8 @@ import { SessionProvider } from 'next-auth/react';
 import { Session } from 'next-auth';
 import '../styles/index.css';
 import '../styles/utilities.css';
+import SideNavbar from '@/shared/components/SideNavbar';
+import Header from '@/shared/components/Header';
 
 interface CustomPageProps {
   session: Session;
@@ -19,8 +21,12 @@ function MyApp({
   return (
     <Provider store={store}>
       <SessionProvider session={session}>
-        <Navbar />
-        <Component {...pageProps} />
+        {/*<Navbar />*/}
+        <Header />
+        <div className='flex'>
+          <SideNavbar />
+          <Component {...pageProps} />
+        </div>
       </SessionProvider>
     </Provider>
   );

@@ -1,3 +1,4 @@
+import { getUserByEmail } from '@/services/user';
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
@@ -30,6 +31,10 @@ export const authOptions = {
     async session({ session, token, user }) {
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
+      if (session.user && session.user.email) {
+        const user = await getUserByEmail(session.user.email);
+        session.user.id = user.id || 1;
+      }
       return session;
     },
   },

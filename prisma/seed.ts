@@ -1,10 +1,6 @@
 // prisma/seed.ts
 
-import {
-  PrismaClient,
-  SabbaticalOption,
-  Semester as PrismaSemester,
-} from '@prisma/client';
+import { PrismaClient, SabbaticalOption, Semester } from '@prisma/client';
 
 // initialize Prisma Client
 const prisma = new PrismaClient();
@@ -126,8 +122,8 @@ async function createActivityData() {
         },
       },
       year: 2023,
-      semester: PrismaSemester.FALL,
-      dateModified: Date.now(),
+      semester: 'FALL',
+      dateModified: new Date('2023-10-20T21:23:57.736Z').getTime(),
       name: 'Taught Course',
       description:
         'Led the the course intro to design, for over for 200 students',
@@ -148,7 +144,7 @@ async function createActivityData() {
       },
       year: 2020,
       semester: ['FALL', 'SPRING'],
-      dateModified: 1519211810362,
+      dateModified: new Date('2020-11-20T21:23:57.736Z').getTime(),
       name: 'Client Project',
       description: 'completed the client design project for Autodesk',
       category: 'SERVICE',
@@ -167,8 +163,8 @@ async function createActivityData() {
         },
       },
       year: 2022,
-      semester: 'FALL',
-      dateModified: 151921181,
+     semester: 'FALL',
+      dateModified: new Date('2022-11-20T21:23:57.736Z').getTime(),
       name: 'Directed Study',
       description: 'Animation simulation using Houdini',
       category: 'RESEARCH',
@@ -188,7 +184,7 @@ async function createActivityData() {
       },
       year: 2023,
       semester: ['SPRING', 'SUMMER'],
-      dateModified: 12,
+      dateModified: new Date('2022-08-20T21:23:57.736Z').getTime(),
       name: 'New Course',
       description: 'ARTG 5240',
       category: 'TEACHING',
@@ -208,7 +204,7 @@ async function createActivityData() {
       },
       year: 2022,
       semester: 'FALL',
-      dateModified: 50725007469,
+      dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
       name: 'Field Trip',
       description: 'led a field trip to the MFA',
       category: 'TEACHING',
@@ -228,7 +224,7 @@ async function createActivityData() {
       },
       year: 2021,
       semester: 'SPRING',
-      dateModified: 69,
+      dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
       name: 'Led a minor teaching activity',
       description: 'something that I will edit later',
       category: 'TEACHING',
@@ -248,7 +244,7 @@ async function createActivityData() {
       },
       year: 2022,
       semester: ['FALL', 'SPRING', 'SUMMER'],
-      dateModified: 2000542,
+      dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
       name: 'Cure cancer',
       description: 'where is my money?',
       category: 'RESEARCH',
