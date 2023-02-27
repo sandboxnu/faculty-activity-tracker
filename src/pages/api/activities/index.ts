@@ -6,26 +6,31 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method === 'POST') {
-    // POST /activities => create new activity
-    let newActivityDto = JSON.parse(JSON.stringify(req.body, (key, value) =>
-      typeof value === 'bigint'
-          ? BigInt(value.toString())
-          : value // return everything else unchanged
-    )) as CreateActivityDto;
-    newActivityDto.dateModified = BigInt(newActivityDto.dateModified);
-    console.log(newActivityDto);
-    const newActivity = await createActivity(newActivityDto);
-    console.log(newActivity);
-    const activity = JSON.stringify(newActivity, (key, value) =>
-      typeof value === 'bigint'
-        ? value.toString()
-        : value // return everything else unchanged
-    )
-    res.status(200).json({ data: activity });
-  } else {
-    // GET /activities => fetch activities
-    const activities = await getAllActivities();
-    res.status(200).json({ data: activities });
+  switch (req.method) {
+    case 'POST':
+      // POST /activities => create new activity
+      await handlePost(req, res);
+      break;
+    case 'GET':
+      // GET /activities => fetch activities
+      await handleGet(res);
+      break;
+    // not a GET or POST request so shouldn't be using this route
+    default:
+      res.setHeader('Allow', ['GET', 'POST']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
   }
+}
+
+async function handlePost(req: NextApiRequest, res: NextApiResponse) {
+  const newActivityDto = JSON.parse(
+    JSON.stringify(req.body),
+  ) as CreateActivityDto;
+  const newActivity = await createActivity(newActivityDto);
+  res.status(200).json({ data: newActivity });
+}
+
+async function handleGet(res: NextApiResponse) {
+  const activities = await getAllActivities();
+  res.status(200).json({ data: activities });
 }
