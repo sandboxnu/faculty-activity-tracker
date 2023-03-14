@@ -2,6 +2,7 @@ import { PrismaClient, Narrative } from '.prisma/client';
 import {
   CreateNarrativeDto,
   UpdateNarrativeDto,
+  NarrativeDto,
 } from '@/models/narrative.model';
 
 const prisma = new PrismaClient();
@@ -18,20 +19,20 @@ export const createNarrative = async (
 };
 
 export const updateNarrative = async (
-  narrative: UpdateNarrativeDto,
+  narrative: Partial<NarrativeDto>,
 ): Promise<Narrative> => {
   const updatedNarrative = await prisma.narrative.update({
-    where: { id: narrative.userId },
+    where: { id: narrative.id },
     data: { ...narrative },
   });
   return updatedNarrative;
 };
 
 export const deleteNarrative = async (
-  narrative: UpdateNarrativeDto,
+  narrative: Partial<NarrativeDto>,
 ): Promise<Narrative> => {
   const deletedNarrative = await prisma.narrative.delete({
-    where: { id: narrative.userId },
+    where: { id: narrative.id },
   });
   return deletedNarrative;
 };
