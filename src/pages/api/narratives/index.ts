@@ -35,6 +35,7 @@ export default async function handler(
       res.status(500).json({ error: e });
     }
   } else if (req.method === 'PUT') {
+    // Deleting and Updating Narratives is based of the id of the Narrative
     const updatedNarrativeDto = req.body as UpdateNarrativeDto;
     try {
       const updatedNarrative = await updateNarrative(updatedNarrativeDto);
@@ -43,7 +44,6 @@ export default async function handler(
       res.status(500).json({ error: e });
     }
   } else if (req.method === 'DELETE') {
-    // all fields (except userId) should be optional which is the same as UpdateNarrativeDto
     const deletedNarrativeDto = req.body as DeleteNarrativeDto;
     try {
       const deletedNarrative = await deleteNarrative(deletedNarrativeDto);
