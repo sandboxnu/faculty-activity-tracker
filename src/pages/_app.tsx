@@ -23,9 +23,9 @@ function MyApp({
       <SessionProvider session={session}>
         {/*<Navbar />*/}
         <Header />
-        <div className='flex w-screen'>
+        <div className='flex w-screen h-max-content'>
           <SideNavbar />
-          <div className='flex-1 overflow-x-hidden'>
+          <div className='flex-1 overflow-x-hidden h-full'>
             <Component {...pageProps} />
           </div>
         </div>

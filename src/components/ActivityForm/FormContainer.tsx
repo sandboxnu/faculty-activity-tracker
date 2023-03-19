@@ -8,17 +8,21 @@ const FormContainer: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const stepOne = step === 'selection';
   return (
     <div className="flex h-full">
-      <div className="w-3/5 px-8 pb-20">
-        <div className="w-full mt-6">
-          <div className="bg-neutral-300 w-full h-3 rounded">
-            <div
-              className={`bg-ruby h-full rounded ${
-                stepOne ? 'w-1/2' : 'w-full'
-              }`}
-            />
+      <div className="w-3/5 px-8 pb-20 border-x border-light-grey my-5">
+        {
+          /*
+          <div className="w-full mt-2">
+            <div className="bg-neutral-300 w-full h-3 rounded">
+              <div
+                className={`bg-ruby h-full rounded ${
+                  stepOne ? 'w-1/2' : 'w-full'
+                }`}
+              />
+            </div>
+            <p className="mt-3 text-right">Page {stepOne ? '1' : '2'}/2</p>
           </div>
-          <p className="mt-3 text-right">Page {stepOne ? '1' : '2'}/2</p>
-        </div>
+          */
+        }
         {children}
       </div>
       <div className="w-2/5 p-16 pt-0">
