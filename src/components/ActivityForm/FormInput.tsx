@@ -222,6 +222,28 @@ const FormInput: React.FC = () => {
           </div>
         </div>
       </div>
+      <div className={inputContainer}>
+        <p className={label}>Year: </p>
+        <input
+          type={'text'}
+          placeholder="Enter Year"
+          onChange={handleYearChange}
+          value={year || ''}
+          className={inputBox}
+        ></input>
+        <div className={inputStatus}>
+          <Image
+            src={
+              year ? '/media/successCheckmark.svg' : '/media/failureWarning.svg'
+            }
+            alt="Icon"
+            width={16}
+            height={16}
+            className="mx-2"
+          />
+          {!year && <p className="text-ruby inline">Enter an year.</p>}
+        </div>
+      </div>
       <div className="flex space-x-6">
         <div className={inputContainer}>
           <p className={label}>Semester: </p>
@@ -237,16 +259,6 @@ const FormInput: React.FC = () => {
               </option>
             ))}
           </select>
-        </div>
-        <div className={inputContainer}>
-          <p className={label}>Year: </p>
-          <input
-            type={'text'}
-            placeholder="Enter Year"
-            onChange={handleYearChange}
-            value={year || ''}
-            className={inputBox}
-          ></input>
         </div>
         <div className={inputStatus + ' mt-auto mb-2'}>
           <Image
