@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  transition: 0.6s;
+}
+
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
@@ -14,7 +18,7 @@ body {
 }
 
 * {
-  font-size: 14px;
+  font-size: 16px;
   font-family: 'Lato', sans-serif !important;
   box-sizing: border-box;
   margin: 0px;
@@ -52,4 +56,19 @@ button,
   border-radius: 10px;
   padding: 8px 24px;
   cursor: pointer;
+}
+
+.hover-bar { 
+  position: absolute;
+  left: 8px;
+  top: 42%;
+  bottom: 40%;
+  width: 6px;
+  border-radius: 16px;
+  transition: 0.6s;
+}
+
+.card:hover .hover-bar {
+  top: 8%;
+  bottom: 8%;
 }
