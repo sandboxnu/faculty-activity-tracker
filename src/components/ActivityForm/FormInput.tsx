@@ -260,7 +260,7 @@ const FormInput: React.FC = () => {
               height={16}
               className="mx-2"
             />
-            {!year && <p className="text-ruby inline">Enter year.</p>}
+            {!year && <p className="text-ruby inline">Enter an year.</p>}
           </div>
         </div>
       </div>
