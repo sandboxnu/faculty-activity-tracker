@@ -33,3 +33,7 @@
 .tooltip:hover .tooltipText {
   visibility: visible;
 }
+
+.h-max-content {
+  height: max-content;
+}

@@ -20,7 +20,7 @@ const SideNavbar: React.FC = () => {
   const navClass = 'text-black font-bold pb-2 border-b-2 border-transparent';
 
   return (
-    <div className="flex flex-col items-start h-screen min-w-max bg-white font-bold px-6 py-6 space-y-6 border-r border-black">
+    <div className="flex flex-col items-start h-full min-w-max bg-white font-bold px-6 py-6 space-y-6">
         <Link href="/dashboard" className={`${navClass} ${router.pathname == "/dashboard" ? 'border-ruby' : 'hover:border-ruby'}`}>
           Dashboard
         </Link>
