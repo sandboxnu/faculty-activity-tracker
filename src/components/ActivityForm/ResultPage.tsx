@@ -23,7 +23,7 @@ const ResultPage: React.FC<{ success: boolean }> = ({ success }) => {
         <>
           <h1>Your activity was submitted!</h1>
           <span>
-            If you'd like to view or edit previous submissions, navigate to{' '}
+            If you&apos;d like to view or edit previous submissions, navigate to{' '}
             <Link href={`/submissions/${category?.toLowerCase()}`} className="text-ruby">
               Submissions
             </Link>
