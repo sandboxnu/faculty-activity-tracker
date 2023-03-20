@@ -5,10 +5,10 @@ import FormInstructions from './FormInstructions';
 
 const FormContainer: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const step: FormStep = useSelector(selectStep);
-  const stepOne = step === 'selection';
+  //const stepOne = step === 'selection';
   return (
     <div className="flex h-full">
-      <div className="w-3/5 px-8 pb-20 border-x border-light-grey my-5">
+      <div className="px-8 pb-20">
         {
           /*
           <div className="w-full mt-2">
@@ -24,9 +24,6 @@ const FormContainer: React.FC<{ children: JSX.Element }> = ({ children }) => {
           */
         }
         {children}
-      </div>
-      <div className="w-2/5 p-16 pt-0">
-        <FormInstructions showWeightGuidelines={step === 'form'} />
       </div>
     </div>
   );
