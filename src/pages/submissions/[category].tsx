@@ -81,6 +81,7 @@ export const getServerSideProps: GetServerSideProps<SubmissionsPageProps> = asyn
                 ? value.toString()
                 : value // return everything else unchanged
             ));
+            
             const activitiesBySigLevel = seperateActivitiesBySignifanceLevel(parsedActivities);
             const activitiesBySemester = seperateActivitiesBySemester(parsedActivities);
           return { props: { activitiesBySigLevel, activitiesBySemester } };
@@ -96,7 +97,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ activitiesBySigLevel,
     const { category } = router.query;
     return (
       <div className='flex w-full'>
-        <div className='px-16 py-5 flex flex-col border-box w-3/4 border-x border-light-grey my-5'>
+        <div className='px-16 py-5 w-full flex flex-col border-box'>
             <h1>{ toTitleCase(category?.toString() || "") }</h1>
             { 
               activitiesBySigLevel ?
@@ -112,7 +113,6 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ activitiesBySigLevel,
               : <p> No activities found. </p>
             }
         </div>
-        <SubmissionsInfo activitiesBySigLevel={activitiesBySigLevel} activitiesBySemester={activitiesBySemester} />
       </div>
     );
 }

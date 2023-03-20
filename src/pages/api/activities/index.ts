@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createActivity, getAllActivities } from '@/services/activity';
-import { CreateActivityDto } from '@/models/activity.model';
+import { createActivity, getActivitiesForUser, getActivitiesForUserForCategory, getAllActivities } from '@/services/activity';
+import { ActivityCategory, CreateActivityDto } from '@/models/activity.model';
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,7 +13,7 @@ export default async function handler(
       break;
     case 'GET':
       // GET /activities => fetch activities
-      await handleGet(res);
+      await handleGet(req, res);
       break;
     // not a GET or POST request so shouldn't be using this route
     default:
@@ -34,7 +34,16 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ data: newActivity });
 }
 
-async function handleGet(res: NextApiResponse) {
-  const activities = await getAllActivities();
-  res.status(200).json({ data: activities });
+async function handleGet(req: NextApiRequest, res: NextApiResponse) {
+  const { userId, category } = req.query;
+  if (userId && category) {
+    const activities = await getActivitiesForUserForCategory(parseInt(userId.toString()), category.toString().toUpperCase() as ActivityCategory);
+    res.status(200).json({ data: activities });
+  } else if (userId) {
+    const activities = await getActivitiesForUser(parseInt(userId.toString()));
+    res.status(200).json({ data: activities });
+  } else {
+    const activities = await getAllActivities();
+    res.status(200).json({ data: activities }); 
+  }
 }
