@@ -29,6 +29,15 @@ export const getUserForQuery = async (
   return users || 'not found';
 };
 
+export const deleteUser = async (
+  userId: number,
+): Promise<User | 'not found'> => {
+  const deleteUser = await prisma.user.delete({
+    where: { id: userId },
+  });
+  return deleteUser || 'not found';
+};
+
 export const updateUser = async (
   userId: number,
   user: UpdateUserDto,

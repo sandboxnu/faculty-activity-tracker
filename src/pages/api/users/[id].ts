@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getUserById, updateUser } from '@/services/user';
+import { getUserById, updateUser, deleteUser } from '@/services/user';
 import { CreateUserDto, UpdateUserDto } from '@/models/user.model';
 
 export default async function handler(
@@ -18,6 +18,11 @@ export default async function handler(
       case 'PUT':
         // PUT /users[id] => update user of specified id
         await handlePut(parseInt(id.toString()), req, res);
+        break;
+
+      case 'DELETE':
+          // DELETE /activity[id] => delete activity with specified id
+        await handleDelete(parseInt(id.toString()), res);
         break;
       // not a GET or PUT request so shouldn't be using this route
       default:
@@ -47,5 +52,17 @@ async function handlePut(
     res.status(200).json({ data: user });
   } catch (e) {
     res.status(500).json({ error: 'bad request' });
+  }
+}
+
+async function handleDelete(id: number, res: NextApiResponse) {
+  try {
+    const user = await deleteUser(id);
+    res.status(200).json({ data: user });
+  } catch (error) {
+    res.status(500).json({
+      error:
+        "User delete endpoint needs at least 1 valid argument. Valid args are {'id'}",
+    });
   }
 }
