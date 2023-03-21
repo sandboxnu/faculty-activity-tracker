@@ -74,11 +74,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (activities === 'not found') {
       return { props: { activities: [] } };
     } else {
-      const parsedActivities = JSON.parse(JSON.stringify(activities, (key, value) =>
-          typeof value === 'bigint'
-              ? value.toString()
-              : value // return everything else unchanged
-      ));
+      const parsedActivities = JSON.parse(
+        JSON.stringify(
+          activities,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      );
       return { props: { activities: parsedActivities } };
     }
   } else {

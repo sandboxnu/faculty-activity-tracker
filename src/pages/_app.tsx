@@ -23,7 +23,7 @@ function MyApp({
       <SessionProvider session={session}>
         {/*<Navbar />*/}
         <Header />
-        <div className='flex'>
+        <div className="flex">
           <SideNavbar />
           <Component {...pageProps} />
         </div>

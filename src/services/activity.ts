@@ -1,5 +1,5 @@
 import { PrismaClient, Activity } from '.prisma/client';
-import { CreateActivityDto } from '@/models/activity.model';
+import { CreateActivityDto, UpdateActivityDto } from '@/models/activity.model';
 
 const prisma = new PrismaClient();
 
@@ -17,13 +17,26 @@ export const getActivityById = async (
   return activity || 'not found';
 };
 
-export const getActivitiesForUser = async (
-  userId: number,
+export const getActivitiesForQuery = async (
+  query: UpdateActivityDto,
 ): Promise<Activity[] | 'not found'> => {
-  const acitivities = await prisma.activity.findMany({
-    where: { userId: userId },
+  if (query.year) {
+    query.year = parseInt(query.year as any);
+  }
+  if (query.userId) {
+    query.userId = parseInt(query.userId as any);
+  }
+  if (query.dateModified) {
+    query.dateModified = BigInt(query.dateModified as any);
+  }
+  if (query.isFavorite) {
+    const temp = query.isFavorite?.toString() === 'true';
+    query.isFavorite = temp;
+  }
+  const activities = await prisma.activity.findMany({
+    where: { ...query },
   });
-  return acitivities || 'not found';
+  return activities || 'not found';
 };
 
 export const createActivity = async (
@@ -33,13 +46,22 @@ export const createActivity = async (
   return newActivity;
 };
 
+export const deleteActivity = async (
+  activityId: number,
+): Promise<Activity | 'not found'> => {
+  const deleteActivity = await prisma.activity.delete({
+    where: { id: activityId },
+  });
+  return deleteActivity || 'not found';
+};
+
 export const updateActivity = async (
   activityId: number,
-  activity: CreateActivityDto,
+  activity: UpdateActivityDto,
 ): Promise<Activity | 'not found'> => {
   const newActivity = await prisma.activity.update({
     where: { id: activityId },
-    data: { ...activity, dateModified: Date.now() },
+    data: { ...activity },
   });
   return newActivity || 'not found';
 };

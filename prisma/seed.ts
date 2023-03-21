@@ -163,7 +163,7 @@ async function createActivityData() {
         },
       },
       year: 2022,
-     semester: 'FALL',
+      semester: 'FALL',
       dateModified: new Date('2022-11-20T21:23:57.736Z').getTime(),
       name: 'Directed Study',
       description: 'Animation simulation using Houdini',

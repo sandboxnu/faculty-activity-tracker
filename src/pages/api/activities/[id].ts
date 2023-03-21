@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getActivityById, updateActivity } from '@/services/activity';
-import { CreateActivityDto } from '@/models/activity.model';
+import {
+  getActivityById,
+  updateActivity,
+  deleteActivity,
+} from '@/services/activity';
+import { CreateActivityDto, UpdateActivityDto } from '@/models/activity.model';
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,6 +23,10 @@ export default async function handler(
         // PUT /activities[id] => update activity of specified id
         await handlePut(parseInt(id.toString()), req, res);
         break;
+      case 'DELETE':
+        // DELETE /activity[id] => delete activity with specified id
+        await handleDelete(parseInt(id.toString()), res);
+        break;
       // not a GET or PUT request so shouldn't be using this route
       default:
         res.setHeader('Allow', ['GET', 'PUT']);
@@ -30,7 +38,7 @@ export default async function handler(
 async function handleGet(id: number, res: NextApiResponse) {
   const activity = await getActivityById(id);
   if (activity == 'not found') {
-    res.status(405).end(`activity with id: ${id.toString()} Not Allowed`);
+    res.status(404).end(`activity with id: ${id.toString()} Not Found`);
   } else {
     res.status(200).json({ data: activity });
   }
@@ -41,12 +49,26 @@ async function handlePut(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const newActivityDto = JSON.parse(
+  const updateActivityDto = JSON.parse(
     JSON.stringify(req.body),
-  ) as CreateActivityDto;
-  const activity = await updateActivity(
-    parseInt(id.toString()),
-    newActivityDto,
-  );
-  res.status(200).json({ data: activity });
+  ) as UpdateActivityDto;
+
+  try {
+    const activity = await updateActivity(id, updateActivityDto);
+    res.status(200).json({ data: activity });
+  } catch (e) {
+    res.status(500).json({ error: 'bad request' });
+  }
+}
+
+async function handleDelete(id: number, res: NextApiResponse) {
+  try {
+    const activity = await deleteActivity(id);
+    res.status(200).json({ data: activity });
+  } catch (error) {
+    res.status(500).json({
+      error:
+        "Activity delete endpoint needs at least 1 valid argument. Valid args are {'id'}",
+    });
+  }
 }
