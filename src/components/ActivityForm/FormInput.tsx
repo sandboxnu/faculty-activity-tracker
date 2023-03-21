@@ -27,6 +27,7 @@ import Tooltip from '../../shared/components/Tooltip';
 import { createActivity, ResponseStatus } from '@/client/activities.client';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import { Checkbox } from '../Checkbox';
 
 const categoryLabels: Record<ActivityCategory, string> = {
   TEACHING: 'Teaching',
@@ -41,11 +42,16 @@ const FormInput: React.FC = () => {
   const category: ActivityCategory | null = useSelector(selectCategory);
   const name: string | null = useSelector(selectName);
   const weight: ActivityWeight | null = useSelector(selectWeight);
-  const semester: Semester | null = useSelector(selectSemester);
+  const semester: Semester[] | null = useSelector(selectSemester);
   const year: number | null = useSelector(selectYear);
   const date: string = useSelector(selectDate);
   const description: string = useSelector(selectDescription);
   const [specifyDate, setSpecifyDate] = useState(false);
+  const [checkFall, setCheckFall] = useState(false);
+  const [checkSpring, setCheckSpring] = useState(false);
+  const [checkSummer, setCheckSummer] = useState(false);
+  const [checkOther, setCheckOther] = useState(false);
+
 
   const dispatch = useDispatch();
 
@@ -73,14 +79,21 @@ const FormInput: React.FC = () => {
     dispatch(setName(newName));
   };
 
-  const handleSemesterChange: ChangeEventHandler<HTMLSelectElement> = (
+  const handleAddSemester: ChangeEventHandler<HTMLSelectElement> = (
     event,
   ) => {
     const newSemester: Semester = event.target.value as Semester;
     if (newSemester) {
-      dispatch(setSemester(newSemester));
+      //if ()
+      dispatch(setSemester([newSemester]));
     }
   };
+
+  const handleRemoveSemester: ChangeEventHandler<HTMLSelectElement> = (
+    event,
+  ) => {
+    const newSemester: Semester = event.target.value as Semester;
+  }
 
   const handleYearChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     // delete entire input => reset year
@@ -120,7 +133,7 @@ const FormInput: React.FC = () => {
 
     const newActivityDto: CreateActivityDto = {
       userId: userId || 1,
-      semester: [semester],
+      semester: semester,
       year: year,
       //date : dateObject ? dateObject.getTime() : undefined,
       dateModified: BigInt(new Date().getTime()),
@@ -244,25 +257,19 @@ const FormInput: React.FC = () => {
               height={16}
               className="mx-2"
             />
-            {!year && <p className="text-ruby inline">Enter an year.</p>}
+            {!year && <p className="text-ruby inline">Enter year.</p>}
           </div>
         </div>
       </div>
       <div className="flex space-x-6">
         <div className={inputContainer}>
           <p className={label}>Semester: </p>
-          <select
-            value={semester || ''}
-            onChange={handleSemesterChange}
-            className={inputBox}
-          >
-            <option value="">Select Semester</option>
-            {['Fall', 'Spring', 'Summer', 'Other'].map((sem) => (
-              <option value={sem.toUpperCase()} key={sem}>
-                {sem}
-              </option>
-            ))}
-          </select>
+          
+          <Checkbox label="Fall" value={checkFall} onChange={checkFall ? handleAddSemester : handleRemoveSemester} />
+          <Checkbox label="Spring" value={checkSpring} onChange={checkSpring ? handleAddSemester : handleRemoveSemester} />
+          <Checkbox label="Summer" value={checkSummer} onChange={checkSummer ? handleAddSemester : handleRemoveSemester} />
+          <Checkbox label="Other" value={checkOther} onChange={checkOther ? handleAddSemester : handleRemoveSemester} />
+
         </div>
         <div className={inputStatus + ' mt-auto mb-2'}>
           <Image
@@ -277,7 +284,7 @@ const FormInput: React.FC = () => {
             className="mx-2"
           />
           {(!semester || !year) && (
-            <p className="text-ruby inline">Enter a semester and year.</p>
+            <p className="text-ruby inline">Select semesters.</p>
           )}
         </div>
       </div>
