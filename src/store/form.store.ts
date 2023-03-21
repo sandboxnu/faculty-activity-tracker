@@ -16,7 +16,7 @@ export interface FormState {
   activityName: string | null;
   category: ActivityCategory | null;
   weight: ActivityWeight | null;
-  semester: Semester | null;
+  semester: Semester[] | null;
   year: number | null;
   date: string;
   description: string;
@@ -49,7 +49,7 @@ export const formSlice = createSlice({
     setWeight: (state, action: PayloadAction<ActivityWeight>) => {
       state.weight = action.payload;
     },
-    setSemester: (state, action: PayloadAction<Semester>) => {
+    setSemester: (state, action: PayloadAction<Semester[]>) => {
       state.semester = action.payload;
     },
     setYear: (state, action: PayloadAction<number | null>) => {
@@ -100,7 +100,7 @@ export const selectWeight: Selector<RootState, ActivityWeight | null> = (
   state,
 ) => state.form.weight;
 
-export const selectSemester: Selector<RootState, Semester | null> = (state) =>
+export const selectSemester: Selector<RootState, Semester[] | null> = (state) =>
   state.form.semester;
 
 export const selectYear: Selector<RootState, number | null> = (state) =>
