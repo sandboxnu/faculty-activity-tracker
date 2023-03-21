@@ -18,7 +18,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className='flex flex-col w-full px-8'>
       <h1>Home</h1>
       <p className="text-2xl text-ruby">Welcome, {name || 'User'}! </p>
     </div>
