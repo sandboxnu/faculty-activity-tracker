@@ -32,7 +32,9 @@ export const authOptions = {
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
       if (session.user && session.user.email) {
+        console.log(session.user.email);
         const user = await getUserByEmail(session.user.email);
+        console.log(user);
         session.user.id = user.id || 1;
       }
       return session;

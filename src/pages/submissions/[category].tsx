@@ -62,30 +62,25 @@ const SubmissionsInfo: React.FC<SubmissionsPageProps> = ({ activitiesBySigLevel,
 
 export const getServerSideProps: GetServerSideProps<SubmissionsPageProps> = async (context) => {
     const session = await getSession(context);
-    const email = session?.user?.email;
+    const userId = session?.user?.id;
     const category = context.params?.category;
     if (!category) { 
         return { props: { activitiesBySigLevel: null, activitiesBySemester: null, error: 'Category Not Found' } };
     }
-    if (email) {
-      const user = await getUserByEmail(email);
-      if (user === 'not found') {
-        return { props: { activitiesBySigLevel: null, activitiesBySemester: null, error: 'User not found.' } };
+    if (userId) {
+      const activities = await getActivitiesForUserForCategory(userId, category.toString().toUpperCase() as ActivityCategory);
+      if (activities === 'not found') {
+        return { props: { activitiesBySigLevel: null, activitiesBySemester: null } };
       } else {
-        const activities = await getActivitiesForUserForCategory(user.id, category.toString().toUpperCase() as ActivityCategory);
-        if (activities === 'not found') {
-          return { props: { activitiesBySigLevel: null, activitiesBySemester: null } };
-        } else {
-            const parsedActivities = JSON.parse(JSON.stringify(activities, (key, value) =>
-              typeof value === 'bigint'
-                ? value.toString()
-                : value // return everything else unchanged
-            ));
-            
-            const activitiesBySigLevel = seperateActivitiesBySignifanceLevel(parsedActivities);
-            const activitiesBySemester = seperateActivitiesBySemester(parsedActivities);
-          return { props: { activitiesBySigLevel, activitiesBySemester } };
-        }
+          const parsedActivities = JSON.parse(JSON.stringify(activities, (key, value) =>
+            typeof value === 'bigint'
+              ? value.toString()
+              : value // return everything else unchanged
+          ));
+          
+          const activitiesBySigLevel = seperateActivitiesBySignifanceLevel(parsedActivities);
+          const activitiesBySemester = seperateActivitiesBySemester(parsedActivities);
+        return { props: { activitiesBySigLevel, activitiesBySemester } };
       }
     } else {
       return { props: { activitiesBySigLevel: null, activitiesBySemester: null, error: 'User not logged in.' } };
