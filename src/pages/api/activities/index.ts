@@ -38,6 +38,10 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   const newActivityDto = JSON.parse(
     JSON.stringify(req.body),
   ) as CreateActivityDto;
+
+  // Overwriting whatever date value with server time casted to a BigInt.
+  newActivityDto.dateModified = BigInt(Date.now());
+
   const newActivity = await createActivity(newActivityDto);
   newActivityDto.dateModified = BigInt(Date.now());
   res.status(200).json({ data: newActivity });
