@@ -1,6 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createActivity, getAllActivities } from '@/services/activity';
-import { CreateActivityDto } from '@/models/activity.model';
+import {
+  createActivity,
+  getAllActivities,
+  getActivitiesForQuery,
+  updateActivity,
+} from '@/services/activity';
+import { CreateActivityDto, UpdateActivityDto } from '@/models/activity.model';
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,9 +17,16 @@ export default async function handler(
       await handlePost(req, res);
       break;
     case 'GET':
-      // GET /activities => fetch activities
-      await handleGet(res);
-      break;
+      const param = JSON.parse(JSON.stringify(req.query)) as UpdateActivityDto;
+      if (Object.keys(param).length == 0) {
+        // GET /activities => fetch activities
+        await handleGet(res);
+        break;
+      } else {
+        //  GET /activities?[Query]=[param]
+        await handleGetActivityQuery(param, res);
+        break;
+      }
     // not a GET or POST request so shouldn't be using this route
     default:
       res.setHeader('Allow', ['GET', 'POST']);
@@ -31,10 +43,23 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   newActivityDto.dateModified = BigInt(Date.now());
 
   const newActivity = await createActivity(newActivityDto);
+  newActivityDto.dateModified = BigInt(Date.now());
   res.status(200).json({ data: newActivity });
 }
 
 async function handleGet(res: NextApiResponse) {
   const activities = await getAllActivities();
   res.status(200).json({ data: activities });
+}
+
+async function handleGetActivityQuery(
+  query: UpdateActivityDto,
+  res: NextApiResponse,
+) {
+  try {
+    const activities = await getActivitiesForQuery(query);
+    res.status(200).json({ data: activities });
+  } catch (error) {
+    res.status(404).end('invalid query parameters');
+  }
 }

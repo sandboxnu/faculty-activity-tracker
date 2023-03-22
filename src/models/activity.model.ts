@@ -33,3 +33,15 @@ export type CreateActivityDto = Omit<Activity, 'id'>; /*{
     significance: ActivityWeight;
     isFavorite: boolean;
 };*/
+
+export type UpdateActivityDto = Omit<Partial<ActivityDto>, 'semester'>; /*{
+  userId: number;
+  year: number;
+  semester: Semester[];
+  dateModified BigInt;
+  name: string;
+  description: string;
+  category: ActivityCategory;
+  significance: ActivityWeight;
+  isFavorite: boolean;
+};*/

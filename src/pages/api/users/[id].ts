@@ -1,10 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import {
-  getActivityById,
-  updateActivity,
-  deleteActivity,
-} from '@/services/activity';
-import { CreateActivityDto, UpdateActivityDto } from '@/models/activity.model';
+import { getUserById, updateUser, deleteUser } from '@/services/user';
+import { CreateUserDto, UpdateUserDto } from '@/models/user.model';
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,19 +8,20 @@ export default async function handler(
 ) {
   const { id } = req.query;
   if (!id || isNaN(parseInt(id.toString()))) {
-    res.status(400).json({ error: 'Missing/invalid activity id.' });
+    res.status(400).json({ error: 'Missing/invalid user id.' });
   } else {
     switch (req.method) {
       case 'GET':
-        // GET /activities[id] => fetch activity with specified id
+        // GET /users[id] => fetch user with specified id
         await handleGet(parseInt(id.toString()), res);
         break;
       case 'PUT':
-        // PUT /activities[id] => update activity of specified id
+        // PUT /users[id] => update user of specified id
         await handlePut(parseInt(id.toString()), req, res);
         break;
+
       case 'DELETE':
-        // DELETE /activity[id] => delete activity with specified id
+          // DELETE /activity[id] => delete activity with specified id
         await handleDelete(parseInt(id.toString()), res);
         break;
       // not a GET or PUT request so shouldn't be using this route
@@ -36,11 +33,11 @@ export default async function handler(
 }
 
 async function handleGet(id: number, res: NextApiResponse) {
-  const activity = await getActivityById(id);
-  if (activity == 'not found') {
-    res.status(404).end(`activity with id: ${id.toString()} Not Found`);
+  const user = await getUserById(id);
+  if (user == 'not found') {
+    res.status(404).end(`user with id: ${id.toString()} Not Found`);
   } else {
-    res.status(200).json({ data: activity });
+    res.status(200).json({ data: user });
   }
 }
 
@@ -49,13 +46,10 @@ async function handlePut(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const updateActivityDto = JSON.parse(
-    JSON.stringify(req.body),
-  ) as UpdateActivityDto;
-
+  const newUserDto = JSON.parse(JSON.stringify(req.body)) as UpdateUserDto;
   try {
-    const activity = await updateActivity(id, updateActivityDto);
-    res.status(200).json({ data: activity });
+    const user = await updateUser(parseInt(id.toString()), newUserDto);
+    res.status(200).json({ data: user });
   } catch (e) {
     res.status(500).json({ error: 'bad request' });
   }
@@ -63,12 +57,12 @@ async function handlePut(
 
 async function handleDelete(id: number, res: NextApiResponse) {
   try {
-    const activity = await deleteActivity(id);
-    res.status(200).json({ data: activity });
+    const user = await deleteUser(id);
+    res.status(200).json({ data: user });
   } catch (error) {
     res.status(500).json({
       error:
-        "Activity delete endpoint needs at least 1 valid argument. Valid args are {'id'}",
+        "User delete endpoint needs at least 1 valid argument. Valid args are {'id'}",
     });
   }
 }

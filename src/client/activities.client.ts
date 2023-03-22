@@ -46,11 +46,10 @@ export const createActivity = async (
         'Access-Control-Allow-Origin': '*',
       },
       //body: JSON.stringify(body),
-      body: JSON.stringify(body, (key, value) =>
-        typeof value === 'bigint'
-          ? value.toString()
-          : value // return everything else unchanged
-      )
+      body: JSON.stringify(
+        body,
+        (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
+      ),
     });
     if (response.ok || response.status === 201) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;
