@@ -37,3 +37,7 @@
 .h-max-content {
   height: max-content;
 }
+
+.h-39 {
+  height: 156px !important;
+}
