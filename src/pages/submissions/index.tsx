@@ -1,6 +1,5 @@
 import { ActivityDto } from '@/models/activity.model';
 import { getActivitiesForUser, getAllActivities } from '@/services/activity';
-import { getUserByEmail } from '@/services/user';
 import { GetServerSideProps } from 'next';
 import { getSession, useSession } from 'next-auth/react';
 import React from 'react';
@@ -70,6 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
   const userId = session?.user?.id;
   if (userId) {
+    
     const activities = await getActivitiesForUser(userId);
     if (activities === 'not found') {
       return { props: { activities: [] } };

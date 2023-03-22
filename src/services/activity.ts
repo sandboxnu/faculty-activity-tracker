@@ -39,6 +39,11 @@ export const getActivitiesForQuery = async (
   return activities || 'not found';
 };
 
+export const getActivitiesForUser = async (userId: number): Promise<Activity[] | "not found"> => {
+  const activities = await prisma.activity.findMany({ where: { userId: userId } });
+  return activities || "not found";
+}
+
 export const createActivity = async (
   activity: CreateActivityDto,
 ): Promise<Activity> => {
