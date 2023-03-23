@@ -20,6 +20,13 @@ export const getUserById = async (
   return user || 'not found';
 };
 
+export const getUserByEmail = async (
+  email: string,
+): Promise<User | 'not found'> => {
+  const user = await prisma.user.findUnique({ where: { email: email } });
+  return user || 'not found';
+};
+
 export const getUserForQuery = async (
   query: UpdateUserDto,
 ): Promise<User[] | 'not found'> => {
