@@ -100,12 +100,12 @@ async function createUserData() {
   });
 
   const user9 = await prisma.user.upsert({
-    where: { email: 'a9@b.com' },
+    where: { email: 'maxpinheiro181@gmail.com' },
     update: {},
     create: {
-      email: 'a9@b.com',
-      firstName: 'John',
-      lastName: 'Appleseed',
+      email: 'maxpinheiro181@gmail.com',
+      firstName: 'Max',
+      lastName: 'Pinheiro',
       role: 'FACULTY',
     },
   });

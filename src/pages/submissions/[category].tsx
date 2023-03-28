@@ -3,11 +3,13 @@ import { getActivitiesForQuery } from "@/services/activity";
 import { ActivityDto, Semester } from "@/models/activity.model";
 import { seperateActivitiesBySemester, seperateActivitiesBySignifanceLevel } from "@/shared/utils/activity.util";
 import { toTitleCase } from "@/shared/utils/misc.util";
+import { resetForm, setWeight, setStep, setCategory } from "@/store/form.store";
 import { ActivityCategory, SignificanceLevel } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
+import { useDispatch } from "react-redux";
 
 interface SubmissionsPageProps {
     activitiesBySigLevel: Record<SignificanceLevel, ActivityDto[]> | null;
@@ -90,6 +92,16 @@ export const getServerSideProps: GetServerSideProps<SubmissionsPageProps> = asyn
 const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ activitiesBySigLevel, activitiesBySemester, error }) => {
     const router = useRouter();
     const { category } = router.query;
+    const dispatch = useDispatch();
+
+    const startNewActivity = (sigLevel: SignificanceLevel) => {
+      dispatch(resetForm());
+      dispatch(setCategory(category?.toString().toUpperCase() as ActivityCategory));
+      dispatch(setWeight(sigLevel));
+      dispatch(setStep("form"));
+      router.push("/submissions/new");
+    };
+
     return (
       <div className='flex w-full'>
         <div className='px-16 py-5 w-full flex flex-col border-box'>
@@ -102,7 +114,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ activitiesBySigLevel,
                       <p className='mr-2 text-lg'>{toTitleCase(sigLevel)} Activities</p>
                       <div className='flex-grow h-[1.5px] bg-light-grey'/>
                     </div>
-                    <ActivityRow activities={activities} leftPadding />
+                    <ActivityRow activities={activities} newActivity={() => startNewActivity(sigLevel as SignificanceLevel)} leftPadding />
                   </div>
               ))
               : <p> No activities found. </p>

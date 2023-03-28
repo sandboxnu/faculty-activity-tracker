@@ -7,14 +7,15 @@ import Image from "next/image";
 
 interface ActivityRowProps {
     activities: ActivityDto[];
-    leftPadding?:boolean;
+    newActivity: () => void;
+    leftPadding?: boolean;
 }
 
 const cardsPerPage = 3;
 const numShift = 3;
 
-const ActivityRow: React.FC<ActivityRowProps> = ({ activities, leftPadding }) => {
-    const numPages = Math.max(Math.ceil(activities.length/cardsPerPage), 1);
+const ActivityRow: React.FC<ActivityRowProps> = ({ activities, newActivity, leftPadding }) => {
+    const numPages = Math.max(Math.ceil((activities.length+1)/cardsPerPage), 1);
     const [ startCardIdx, setCardIdx ] = useState(0);
     const currPage = Math.floor(startCardIdx/3); 
     return (
@@ -34,34 +35,27 @@ const ActivityRow: React.FC<ActivityRowProps> = ({ activities, leftPadding }) =>
                                     <div className='hover-bar bg-red'/> 
                                 </div>
                             </div>
-                
                         </div>
                     ))
                 }
+                <div className='w-1/3 flex-shrink-0 pr-12' style={{transform:`translate(-${startCardIdx*100}%)`}}>
+                    <div className='rounded-lg bg-medium-grey shadow-sm hover:shadow-lg px-6 py-4 card h-39 cursor-pointer' onClick={newActivity}>
+                        <div className='flex flex-col items-center justify-center h-full'>
+                            <Image src={'/media/plusIcon.svg'} alt="new activity" width={46} height={36} className="fill-red" />
+                            <p className="font-bold mt-2">Add Activity</p>
+                        </div>
+                    </div>
+                </div>
                 {
-                    startCardIdx+cardsPerPage < activities.length &&
+                    startCardIdx+cardsPerPage < activities.length+1 &&
                     <div className='cursor-pointer absolute right-0 top-1/2 -translate-y-1/2' onClick={() => setCardIdx(prev => prev+numShift) }> 
-                        <Image
-                        src={'/media/rightArrow.svg'}
-                        
-                        alt="Icon"
-                        width={16}
-                        height={16}
-                        className=""
-                        />
+                        <Image src={'/media/rightArrow.svg'} alt="right arrow" width={16} height={16} />
                     </div>
                 }
                 {
                     startCardIdx > 0 &&
                     <div className='cursor-pointer absolute left-0 top-1/2 -translate-y-1/2' onClick={() => setCardIdx(prev => prev-numShift) }> 
-                        <Image
-                        src={'/media/rightArrow.svg'}
-                        
-                        alt="Icon"
-                        width={16}
-                        height={16}
-                        className="rotate-180"
-                        />
+                        <Image src={'/media/rightArrow.svg'} alt="left arrow" width={16} height={16} className="rotate-180" />
                     </div>
 
                 }
