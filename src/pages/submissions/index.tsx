@@ -10,7 +10,7 @@ const SubmissionsPage: React.FC = () => {
         {
           ['teaching', 'service', 'research'].map(category => (
             <div key={`link-${category}`} className="border-b-2 border-transparent hover:border-red">
-              <Link href={`/activities/${category}`}>{toTitleCase(category)}</Link>
+              <Link href={`/submissions/${category}`}>{toTitleCase(category)}</Link>
             </div>  
           ))
         }
