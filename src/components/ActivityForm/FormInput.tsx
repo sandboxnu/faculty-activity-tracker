@@ -78,24 +78,29 @@ const FormInput: React.FC = () => {
     dispatch(setName(newName));
   };
 
-  const handleAddSemester: ChangeEventHandler<HTMLSelectElement> = (event) => {
-    const newSemester: Semester = event.target.value as Semester;
-    console.log(event.target.value);
+  const handleAddSemester: ChangeEventHandler<Element> = (event) => {
+    const newSemester: Semester = event.target.parentElement?.textContent
+      ?.trim()
+      .toLocaleUpperCase() as Semester;
     if (semester) {
       const added_semester = [...semester, newSemester];
       dispatch(setSemester(added_semester));
+    } else {
+      dispatch(setSemester([newSemester]));
     }
+    console.log('added' + semester);
   };
 
-  const handleRemoveSemester: ChangeEventHandler<HTMLSelectElement> = (
-    event,
-  ) => {
-    const newSemester: Semester = event.target.value as Semester;
-    console.log(newSemester);
+  const handleRemoveSemester: ChangeEventHandler<Element> = (event) => {
+    const newSemester: Semester = event.target.parentElement?.textContent
+      ?.trim()
+      .toLocaleUpperCase() as Semester;
+
     if (semester) {
       const removed_semester = semester.filter((item) => item !== newSemester);
       dispatch(setSemester(removed_semester));
     }
+    console.log('removed' + semester);
   };
 
 
@@ -273,40 +278,50 @@ const FormInput: React.FC = () => {
           <Checkbox
             label="Fall"
             value={checkFall}
-            onChange={() => {
+            onChange={(event) => {
               setCheckFall(!checkFall);
-              return checkFall ? handleAddSemester : handleRemoveSemester;
+              // console.log(e.target.parentElement?.textContent?.trim());
+
+              checkFall
+                ? handleRemoveSemester(event)
+                : handleAddSemester(event);
             }}
           />
           <Checkbox
             label="Spring"
             value={checkSpring}
-            onChange={() => {
+            onChange={(event) => {
               setCheckSpring(!checkSpring);
-              return checkSpring ? handleAddSemester : handleRemoveSemester;
+              checkSpring
+                ? handleRemoveSemester(event)
+                : handleAddSemester(event);
             }}
           />
           <Checkbox
             label="Summer"
             value={checkSummer}
-            onChange={() => {
-              setCheckSpring(!checkSummer);
-              return checkSummer ? handleAddSemester : handleRemoveSemester;
+            onChange={(event) => {
+              setCheckSummer(!checkSummer);
+              checkSummer
+                ? handleRemoveSemester(event)
+                : handleAddSemester(event);
             }}
           />
           <Checkbox
             label="Other"
             value={checkOther}
-            onChange={() => {
-              setCheckSpring(!checkOther);
-              return checkOther ? handleAddSemester : handleRemoveSemester;
+            onChange={(event) => {
+              setCheckOther(!checkOther);
+              checkOther
+                ? handleRemoveSemester(event)
+                : handleAddSemester(event);
             }}
           />
         </div>
         <div className={inputStatus + ' mt-auto mb-2'}>
           <Image
             src={
-              semester && year
+              checkFall || checkSpring || checkOther || checkSummer
                 ? '/media/successCheckmark.svg'
                 : '/media/failureWarning.svg'
             }
