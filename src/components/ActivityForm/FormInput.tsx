@@ -81,8 +81,10 @@ const FormInput: React.FC = () => {
   const handleAddSemester: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newSemester: Semester = event.target.value as Semester;
     console.log(event.target.value);
-
-    dispatch(setSemester([newSemester]));
+    if (semester) {
+      const added_semester = [...semester, newSemester];
+      dispatch(setSemester(added_semester));
+    }
   };
 
   const handleRemoveSemester: ChangeEventHandler<HTMLSelectElement> = (
