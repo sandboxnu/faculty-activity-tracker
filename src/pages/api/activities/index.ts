@@ -5,7 +5,7 @@ import {
   getActivitiesForQuery,
   updateActivity,
 } from '@/services/activity';
-import { CreateActivityDto, UpdateActivityDto } from '@/models/activity.model';
+import { ActivityCategory, CreateActivityDto, UpdateActivityDto } from '@/models/activity.model';
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,7 +20,7 @@ export default async function handler(
       const param = JSON.parse(JSON.stringify(req.query)) as UpdateActivityDto;
       if (Object.keys(param).length == 0) {
         // GET /activities => fetch activities
-        await handleGet(res);
+        await handleGet(req, res);
         break;
       } else {
         //  GET /activities?[Query]=[param]
@@ -47,9 +47,21 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ data: newActivity });
 }
 
-async function handleGet(res: NextApiResponse) {
-  const activities = await getAllActivities();
-  res.status(200).json({ data: activities });
+async function handleGet(req: NextApiRequest, res: NextApiResponse) {
+  const { userId, category } = req.query;
+  if (userId && category) {
+    const activities = await getActivitiesForQuery({
+      userId: parseInt(userId.toString()), 
+      category: category.toString().toUpperCase() as ActivityCategory
+    });
+    res.status(200).json({ data: activities });
+  } else if (userId) {
+    const activities = await getActivitiesForQuery({ userId: parseInt(userId.toString()) });
+    res.status(200).json({ data: activities });
+  } else {
+    const activities = await getAllActivities();
+    res.status(200).json({ data: activities }); 
+  }
 }
 
 async function handleGetActivityQuery(

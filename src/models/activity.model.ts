@@ -1,9 +1,4 @@
-import {
-  Activity,
-  ActivityCategory as PrismaActivityCategory,
-  SignificanceLevel,
-  Semester as PrismaSemester,
-} from '@prisma/client';
+import { Activity, ActivityCategory as PrismaActivityCategory, SignificanceLevel, Semester as PrismaSemester } from ".prisma/client";
 
 export type ActivityCategory = PrismaActivityCategory; //'TEACHING' | 'RESEARCH' | 'SERVICE';
 export type ActivityWeight = SignificanceLevel; //'MAJOR' | 'SIGNIFICANT' | 'MINOR';
@@ -45,3 +40,13 @@ export type UpdateActivityDto = Omit<Partial<ActivityDto>, 'semester'>; /*{
   significance: ActivityWeight;
   isFavorite: boolean;
 };*/
+export const isActivityCategory = (category: String): category is ActivityCategory => { 
+    return ["TEACHING", "RESEARCH", "SERVICE"].includes(category as ActivityCategory);
+}
+
+export const categoryLabels: Record<ActivityCategory, string> = {
+    TEACHING: 'Teaching',
+    RESEARCH:
+      'Creative Activity, Scholarship and Research/Professional Development',
+    SERVICE: 'Service',
+  };

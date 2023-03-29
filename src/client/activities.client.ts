@@ -1,4 +1,4 @@
-import { ActivityDto, CreateActivityDto } from '../models/activity.model';
+import { ActivityCategory, ActivityDto, CreateActivityDto } from '../models/activity.model';
 export enum ResponseStatus {
   Success = 200,
   UnknownError = 500,
@@ -9,19 +9,48 @@ export enum ResponseStatus {
 const apiRoot = 'http://localhost:3000/api/activities';
 
 export const getActivitiesForUser = async (
-  userId: string,
+  userId: number,
 ): Promise<ActivityDto[] | ResponseStatus.UnknownError> => {
   try {
-    const response = await fetch(`${apiRoot}/all?userId=${userId}`, {
+    const response = await fetch(`${apiRoot}?userId=${userId}`, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': 'http://localhost:3000',
       },
     });
     if (response.ok || response.status === 200) {
-      const activities: ActivityDto[] =
-        (await response.json()) as ActivityDto[];
-      return activities;
+      const data = await response.json();
+      if (data.hasOwnProperty('data')) {
+        return data.data as ActivityDto[];
+      } else {
+        return ResponseStatus.UnknownError;
+      }
+    } else {
+      return ResponseStatus.UnknownError;
+    }
+  } catch {
+    return ResponseStatus.UnknownError;
+  }
+};
+
+export const getActivitiesForUserForCategory = async (
+  userId: number,
+  category: ActivityCategory
+): Promise<ActivityDto[] | ResponseStatus.UnknownError> => {
+  try {
+    const response = await fetch(`${apiRoot}?userId=${userId}&category=${category}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+      },
+    });
+    if (response.ok || response.status === 200) {
+      const data = await response.json();
+      if (data.hasOwnProperty('data')) {
+        return data.data as ActivityDto[];
+      } else {
+        return ResponseStatus.UnknownError;
+      }
     } else {
       return ResponseStatus.UnknownError;
     }
@@ -54,8 +83,8 @@ export const createActivity = async (
     if (response.ok || response.status === 201) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;
     else return ResponseStatus.UnknownError;
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
     return ResponseStatus.UnknownError;
   }
 };

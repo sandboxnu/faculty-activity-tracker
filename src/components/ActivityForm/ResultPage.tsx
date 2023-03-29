@@ -1,13 +1,16 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { setStep } from '../../store/form.store';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCategory, setStep } from '../../store/form.store';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ActivityCategory } from '@/models/activity.model';
 
 const ResultPage: React.FC<{ success: boolean }> = ({ success }) => {
+  const category: ActivityCategory | null = useSelector(selectCategory);
   const dispatch = useDispatch();
+
   return (
-    <div className="flex flex-col items-center mt-[20vh]">
+    <div className="flex flex-col w-full items-center mt-[20vh]">
       <Image
         src={
           success ? '/media/successCheckmark.svg' : '/media/failureWarning.svg'
@@ -20,8 +23,8 @@ const ResultPage: React.FC<{ success: boolean }> = ({ success }) => {
         <>
           <h1>Your activity was submitted!</h1>
           <span>
-            If youd like to view or edit previous submissions, navigate to{' '}
-            <Link href="/submissions" className="text-ruby">
+            If you&apos;d like to view or edit previous submissions, navigate to{' '}
+            <Link href={`/submissions/${category?.toLowerCase()}`} className="text-ruby">
               Submissions
             </Link>
           </span>
