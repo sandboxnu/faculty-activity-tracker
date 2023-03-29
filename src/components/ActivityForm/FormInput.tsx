@@ -80,16 +80,20 @@ const FormInput: React.FC = () => {
 
   const handleAddSemester: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newSemester: Semester = event.target.value as Semester;
-    if (newSemester) {
-      //if ()
-      dispatch(setSemester([newSemester]));
-    }
+    console.log(event.target.value);
+
+    dispatch(setSemester([newSemester]));
   };
 
   const handleRemoveSemester: ChangeEventHandler<HTMLSelectElement> = (
     event,
   ) => {
     const newSemester: Semester = event.target.value as Semester;
+    console.log(newSemester);
+    if (semester) {
+      const removed_semester = semester.filter((item) => item !== newSemester);
+      dispatch(setSemester(removed_semester));
+    }
   };
 
   const handleYearChange: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -261,26 +265,38 @@ const FormInput: React.FC = () => {
       <div className="flex space-x-6">
         <div className={inputContainer}>
           <p className={label}>Semester: </p>
-
+          {/* This could be a map but woo wee lazy, rip me at PR if you want it */}
           <Checkbox
             label="Fall"
             value={checkFall}
-            onChange={checkFall ? handleAddSemester : handleRemoveSemester}
+            onChange={() => {
+              setCheckFall(!checkFall);
+              return checkFall ? handleAddSemester : handleRemoveSemester;
+            }}
           />
           <Checkbox
             label="Spring"
             value={checkSpring}
-            onChange={checkSpring ? handleAddSemester : handleRemoveSemester}
+            onChange={() => {
+              setCheckSpring(!checkSpring);
+              return checkSpring ? handleAddSemester : handleRemoveSemester;
+            }}
           />
           <Checkbox
             label="Summer"
             value={checkSummer}
-            onChange={checkSummer ? handleAddSemester : handleRemoveSemester}
+            onChange={() => {
+              setCheckSpring(!checkSummer);
+              return checkSummer ? handleAddSemester : handleRemoveSemester;
+            }}
           />
           <Checkbox
             label="Other"
             value={checkOther}
-            onChange={checkOther ? handleAddSemester : handleRemoveSemester}
+            onChange={() => {
+              setCheckSpring(!checkOther);
+              return checkOther ? handleAddSemester : handleRemoveSemester;
+            }}
           />
         </div>
         <div className={inputStatus + ' mt-auto mb-2'}>
