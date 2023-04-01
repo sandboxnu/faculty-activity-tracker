@@ -11,16 +11,16 @@ interface PercentageInfoProps {
 }
 
 const PercentageInfo: React.FC<PercentageInfoProps> = ({ editing, teaching, research, service }) => {
-    const teachingInput = editing ? useSelector(selectTeachingPercent) : teaching;
-    const researchInput = editing ? useSelector(selectResearchPercent) : research;
-    const serviceInput = editing ? useSelector(selectServicePercent) : service;
+    const teachingInput = useSelector(selectTeachingPercent);
+    const researchInput = useSelector(selectResearchPercent);
+    const serviceInput = useSelector(selectServicePercent);
     const isBalanced = (teachingInput + researchInput + serviceInput) === 1;
     const dispatch = useDispatch();
 
     const labels: Record<string, number> = {
-        "Teaching": teachingInput,
-        "Creative": researchInput,
-        "Service": serviceInput
+        "Teaching": editing ? teachingInput : teaching,
+        "Creative": editing ? researchInput : research,
+        "Service": editing ? serviceInput : service
     };
 
     return (
