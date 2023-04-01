@@ -20,6 +20,7 @@ export interface FormState {
   year: number | null;
   date: string;
   description: string;
+  otherDescription: string;
 }
 
 const initialState: FormState = {
@@ -31,6 +32,7 @@ const initialState: FormState = {
   year: null,
   date: '',
   description: '',
+  otherDescription: '',
 };
 
 export const formSlice = createSlice({
@@ -61,6 +63,9 @@ export const formSlice = createSlice({
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
+    setOtherDescription: (state, action: PayloadAction<string>) => {
+      state.otherDescription = action.payload;
+    },
     resetForm: (state) => {
       state.step = 'selection';
       state.activityName = null;
@@ -70,6 +75,7 @@ export const formSlice = createSlice({
       state.year = null;
       state.date = '';
       state.description = '';
+      state.otherDescription = '';
     },
   },
 });
@@ -83,6 +89,7 @@ export const {
   setYear,
   setDate,
   setDescription,
+  setOtherDescription,
   resetForm,
 } = formSlice.actions;
 
@@ -111,5 +118,8 @@ export const selectDate: Selector<RootState, string> = (state) =>
 
 export const selectDescription: Selector<RootState, string> = (state) =>
   state.form.description;
+
+export const selectOtherDescription: Selector<RootState, string> = (state) =>
+  state.form.otherDescription;
 
 export default formSlice.reducer;

@@ -5,12 +5,14 @@ import {
   selectDate,
   selectDescription,
   selectName,
+  selectOtherDescription,
   selectSemester,
   selectWeight,
   selectYear,
   setDate,
   setDescription,
   setName,
+  setOtherDescription,
   setSemester,
   setStep,
   setWeight,
@@ -46,6 +48,8 @@ const FormInput: React.FC = () => {
   const year: number | null = useSelector(selectYear);
   const date: string = useSelector(selectDate);
   const description: string = useSelector(selectDescription);
+  const otherDescription: string | null = useSelector(selectOtherDescription);
+
   const [specifyDate, setSpecifyDate] = useState(false);
   const [checkFall, setCheckFall] = useState(false);
   const [checkSpring, setCheckSpring] = useState(false);
@@ -115,6 +119,32 @@ const FormInput: React.FC = () => {
     }
   };
 
+  const handleOtherDescriptionChange: ChangeEventHandler<
+    HTMLTextAreaElement
+  > = (event) => {
+    const newOtherDescription: string = event.target.value;
+    dispatch(setOtherDescription(newOtherDescription));
+  };
+
+  const displayOtherDescription = () => {
+    return (
+      <div className={inputContainer}>
+        <div className={inputWrapper}>
+          <p className={'text-slate-600'}>
+            If you checked Other, please explain in the below.
+          </p>
+          <div className={inputStatus + ' ml-auto'}></div>
+        </div>
+        <textarea
+          value={otherDescription || ''}
+          onChange={handleOtherDescriptionChange}
+          rows={3}
+          className={inputBox}
+        />
+      </div>
+    );
+  };
+
   const changeToDate: FocusEventHandler<HTMLInputElement> = (event) => {
     event.target.type = 'date';
   };
@@ -133,6 +163,8 @@ const FormInput: React.FC = () => {
       !name ||
       !semester ||
       !year ||
+      (!checkFall && !checkOther && !checkSpring && !checkSummer) ||
+      (checkOther && !otherDescription) ||
       (specifyDate && !date)
     )
       return;
@@ -150,6 +182,7 @@ const FormInput: React.FC = () => {
       category: category,
       significance: weight,
       isFavorite: true,
+      semesterOtherDescription: otherDescription,
     };
     console.log(newActivityDto);
     dispatch(setStep('loading'));
@@ -278,8 +311,6 @@ const FormInput: React.FC = () => {
             value={checkFall}
             onChange={(event) => {
               setCheckFall(!checkFall);
-              // console.log(e.target.parentElement?.textContent?.trim());
-
               checkFall
                 ? handleRemoveSemester(event)
                 : handleAddSemester(event);
@@ -316,7 +347,7 @@ const FormInput: React.FC = () => {
             }}
           />
         </div>
-        <div className={inputStatus + ' mt-auto mb-2'}>
+        <div className={inputStatus}>
           <Image
             src={
               checkFall || checkSpring || checkOther || checkSummer
@@ -328,11 +359,12 @@ const FormInput: React.FC = () => {
             height={16}
             className="mx-2"
           />
-          {(!semester || !year) && (
+          {!checkFall && !checkSpring && !checkOther && !checkSummer && (
             <p className="text-ruby inline">Select semesters.</p>
           )}
         </div>
       </div>
+      {checkOther ? displayOtherDescription() : ''}
       {specifyDate && (
         <div className={inputContainer}>
           <p className={label}>Date: </p>
@@ -380,7 +412,14 @@ const FormInput: React.FC = () => {
         <button onClick={() => dispatch(setStep('selection'))}>Back</button>
         <button
           className="bg-ruby border-ruby-dark text-white disabled:bg-ruby-disabled"
-          disabled={weight === null || date === null || description === ''}
+          disabled={
+            weight === null ||
+            date === null ||
+            description === '' ||
+            !semester ||
+            !name ||
+            (checkOther && !otherDescription)
+          }
           onClick={submitActivity}
         >
           Submit

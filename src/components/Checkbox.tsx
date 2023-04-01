@@ -12,8 +12,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   onChange,
 }: CheckboxProps) => {
   return (
-    <label>
-      <input type="checkbox" checked={value} onChange={onChange} />
+    <label className={'flex justify-start'}>
+      <input
+        className={'flex mr-4'}
+        type="checkbox"
+        checked={value}
+        onChange={onChange}
+      />
       {label}
     </label>
   );

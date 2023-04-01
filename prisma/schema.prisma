@@ -32,17 +32,18 @@ model ProfessorInfo {
 }
 
 model Activity {
-  id           Int               @id @default(autoincrement())
-  user         User              @relation(fields: [userId], references: [id])
-  userId       Int
-  year         Int
-  semester     Semester[]
-  dateModified BigInt            @default(dbgenerated("extract(epoch from now())::bigint"))
-  name         String
-  description  String
-  category     ActivityCategory
-  significance SignificanceLevel
-  isFavorite   Boolean
+  id                       Int               @id @default(autoincrement())
+  user                     User              @relation(fields: [userId], references: [id])
+  userId                   Int
+  year                     Int
+  semester                 Semester[]
+  dateModified             BigInt            @default(dbgenerated("extract(epoch from now())::bigint"))
+  name                     String
+  description              String
+  semesterOtherDescription String?
+  category                 ActivityCategory
+  significance             SignificanceLevel
+  isFavorite               Boolean
 }
 
 model Narrative {
