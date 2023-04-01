@@ -1,14 +1,14 @@
 import { getUserForQuery } from '@/services/user';
-import NextAuth from 'next-auth';
+import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   // Configure one or more authentication providers
 
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     }),
   ],
 
@@ -33,7 +33,9 @@ export const authOptions = {
       session.accessToken = token.accessToken;
       if (session.user && session.user.email) {
         const user = await getUserForQuery({ email: session.user.email });
-        session.user.id = user.id || 1;
+        if (user !== 'not found' && user.length > 0) {
+          session.user.id = user[0].id;
+        }
       }
       return session;
     },
