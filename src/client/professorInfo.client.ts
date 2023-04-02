@@ -1,10 +1,10 @@
-import { UpdateProfessorInfoDto } from "@/models/professorInfo.model";
-import { ResponseStatus } from "./activities.client";
+import { UpdateProfessorInfoDto } from '@/models/professorInfo.model';
+import { ResponseStatus } from './activities.client';
 
 const apiRoot = 'http://localhost:3000/api/professor-info';
 
 export const updateProfessorInfoForUser = async (
-	body: UpdateProfessorInfoDto,
+  body: UpdateProfessorInfoDto,
 ): Promise<
   | ResponseStatus.Success
   | ResponseStatus.Unauthorized
@@ -18,7 +18,7 @@ export const updateProfessorInfoForUser = async (
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
     if (response.ok || response.status === 201) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;

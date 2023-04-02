@@ -1,5 +1,8 @@
 import { PrismaClient, ProfessorInfo } from '.prisma/client';
-import { CreateProfessorInfoDto, UpdateProfessorInfoDto } from '@/models/professorInfo.model';
+import {
+  CreateProfessorInfoDto,
+  UpdateProfessorInfoDto,
+} from '@/models/professorInfo.model';
 
 const prisma = new PrismaClient();
 
@@ -10,7 +13,9 @@ export const getProfessInfoForUser = async (
   return info || 'not found';
 };
 
-export const createProfessorInfo = async (info: CreateProfessorInfoDto): Promise<ProfessorInfo | 'already exists'> => {
+export const createProfessorInfo = async (
+  info: CreateProfessorInfoDto,
+): Promise<ProfessorInfo | 'already exists'> => {
   const newInfo = await prisma.professorInfo.create({ data: { ...info } });
   return newInfo;
 };
@@ -23,7 +28,7 @@ export const deleteProfessorInfoForUser = async (
   });
   return deleteInfo || 'not found';
 };
-  
+
 export const updateProfessorInfoForUser = async (
   userId: number,
   user: UpdateProfessorInfoDto,
