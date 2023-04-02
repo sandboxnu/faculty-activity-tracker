@@ -194,15 +194,15 @@ const FormInput: React.FC = () => {
   if (category === null) return <div>Category must be selected</div>;
 
   // TODO: reduce redundancy of multiple inputs
-  const label = 'text-2xl font-bold';
+  const label = 'text-base font-bold';
   const inputBox = 'border border-black rounded-lg px-3 py-2 outline-none';
-  const inputContainer = 'flex flex-col my-2 space-y-3';
+  const inputContainer = 'flex flex-col my-2 space-y-1';
   const inputWrapper = 'flex items-center';
   const inputStatus = 'flex items-center py-3';
 
   return (
     <div className="flex flex-col">
-      <p className="text-3xl mb-3">{categoryLabels[category]}</p>
+      <h2>New Activity - {categoryLabels[category]}</h2>
       <div className={inputContainer}>
         <p className={label}>Name: </p>
         <div className={inputWrapper}>
