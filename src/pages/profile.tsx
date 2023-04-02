@@ -3,6 +3,7 @@ import ProfileInfo, {
 } from '@/components/Profile/ProfileInfo';
 import { getProfessInfoForUser } from '@/services/professorInfo';
 import { getUserById } from '@/services/user';
+import { toTitleCase } from '@/shared/utils/misc.util';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
@@ -25,9 +26,22 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
   if (user === 'not found') return { props: { error: 'User not found.' } };
 
   const info = await getProfessInfoForUser(userId);
-  if (info === 'not found')
-    return { props: { error: 'Could not find professor information.' } };
-
+  if (info === 'not found') {
+    //return { props: { error: 'Could not find professor information.' } };
+    return {
+      props: {
+        info: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          position: toTitleCase(user.role || ""),
+          teachingPercent: 0,
+          researchPercent: 0,
+          servicePercent: 0,
+        },
+      },
+    };
+  } 
   return {
     props: {
       info: {

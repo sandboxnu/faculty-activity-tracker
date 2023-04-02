@@ -15,6 +15,7 @@ import { UpdateProfessorInfoDto } from '@/models/professorInfo.model';
 import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
 import { ResponseStatus } from '@/client/activities.client';
 import { useRouter } from 'next/router';
+import Avatar from './Avatar';
 
 export interface ProfileInformation {
   firstName: string;
@@ -26,17 +27,7 @@ export interface ProfileInformation {
   servicePercent: number;
 }
 
-type ProfileInfoProps = ProfileInformation & {};
-
-const Avatar: React.FC<{ initials: string }> = ({ initials }) => (
-  <div className="w-1/4">
-    <div className="bg-light-grey bg-opacity-50 w-full h-0 pb-[100%] rounded-full relative border border-gray-700">
-      <div className="text-red text-6xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        {initials}
-      </div>
-    </div>
-  </div>
-);
+type ProfileInfoProps = ProfileInformation;
 
 const ProfileInfo: React.FC<ProfileInfoProps> = ({
   firstName,
@@ -77,9 +68,8 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
       servicePercent: serviceInput,
     };
     updateProfessorInfoForUser(updateInfo).then((res) => {
-      if (res === ResponseStatus.NotFound)
-        setError('Professor info could not be found.');
-      else if (res === ResponseStatus.Unauthorized) setError('Unauthorized.');
+      if (res === ResponseStatus.Unauthorized) setError('Unauthorized.');
+      else if (res === ResponseStatus.BadRequest) setError('Bad request.');
       else if (res === ResponseStatus.UnknownError) setError('Unknown error.');
       else {
         setEditing(false);
@@ -112,7 +102,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
         )}
         <div className="ml-9">
           <h2>
-            {firstName}&nbsp;{lastName}
+            {`${firstName} ${lastName}`}
           </h2>
           <p>{position}</p>
         </div>
@@ -153,7 +143,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
           </button>
         )}
         <button
-          className="px-3 py-2 bg-red text-white rounded-xl"
+          className="px-3 py-2 bg-red text-white rounded-xl disabled:bg-ruby-disabled"
           onClick={editing ? submit : startEditing}
           disabled={
             editing && teachingInput + researchInput + serviceInput !== 1

@@ -1,4 +1,4 @@
-import { PrismaClient, ProfessorInfo } from '.prisma/client';
+import { PrismaClient, ProfessorInfo, SabbaticalOption } from '.prisma/client';
 import {
   CreateProfessorInfoDto,
   UpdateProfessorInfoDto,
@@ -29,13 +29,21 @@ export const deleteProfessorInfoForUser = async (
   return deleteInfo || 'not found';
 };
 
-export const updateProfessorInfoForUser = async (
+export const upsertProfessorInfoForUser = async (
   userId: number,
-  user: UpdateProfessorInfoDto,
+  info: UpdateProfessorInfoDto,
 ): Promise<ProfessorInfo | 'not found'> => {
-  const newInfo = await prisma.professorInfo.update({
+  const newInfo = await prisma.professorInfo.upsert({
     where: { userId },
-    data: { ...user },
+    update: { ...info },
+    create: {
+      userId,
+      position: info.position || "",
+      teachingPercent: info.teachingPercent || 0.4,
+      researchPercent: info.researchPercent || 0.3,
+      servicePercent: info.servicePercent || 0.3,
+      sabbatical: SabbaticalOption.NO
+    },
   });
   return newInfo || 'not found';
 };

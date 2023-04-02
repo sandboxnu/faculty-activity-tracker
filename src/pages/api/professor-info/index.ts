@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import {
   deleteProfessorInfoForUser,
   getProfessInfoForUser,
-  updateProfessorInfoForUser,
+  upsertProfessorInfoForUser,
 } from '@/services/professorInfo';
 import { UpdateProfessorInfoDto } from '@/models/professorInfo.model';
 import { getServerSession } from 'next-auth';
@@ -19,16 +19,16 @@ export default async function handler(
     if (userId) {
       switch (req.method) {
         case 'GET':
-          // GET /users[id] => fetch user with specified id
+          // GET /users[id] => fetch professor info for user with given id
           await handleGet(userId, res);
           break;
         case 'PUT':
-          // PUT /users[id] => update user of specified id
+          // PUT /users[id] => update professor info for user with given id
           await handlePut(userId, req, res);
           break;
 
         case 'DELETE':
-          // DELETE /activity[id] => delete activity with specified id
+          // DELETE /activity[id] => delete professor info for user with given id
           await handleDelete(userId, res);
           break;
         // not a GET or PUT request so shouldn't be using this route
@@ -40,7 +40,7 @@ export default async function handler(
       res.status(400).json({ error: 'Missing/invalid user id.' });
     }
   } else {
-    res.status(400).json({ error: 'Not logged in.' });
+    res.status(401).json({ error: 'Not logged in.' });
   }
 }
 
@@ -62,10 +62,10 @@ async function handlePut(
     JSON.stringify(req.body),
   ) as UpdateProfessorInfoDto;
   try {
-    const info = await updateProfessorInfoForUser(userId, newInfoDto);
+    const info = await upsertProfessorInfoForUser(userId, newInfoDto);
     res.status(200).json({ data: info });
   } catch (e) {
-    res.status(500).json({ error: 'bad request' });
+    res.status(500).json({ error: (e as Error)?.message || 'unknown error' });
   }
 }
 

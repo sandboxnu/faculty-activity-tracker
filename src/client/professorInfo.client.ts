@@ -8,7 +8,7 @@ export const updateProfessorInfoForUser = async (
 ): Promise<
   | ResponseStatus.Success
   | ResponseStatus.Unauthorized
-  | ResponseStatus.NotFound
+  | ResponseStatus.BadRequest
   | ResponseStatus.UnknownError
 > => {
   try {
@@ -20,7 +20,8 @@ export const updateProfessorInfoForUser = async (
       },
       body: JSON.stringify(body),
     });
-    if (response.ok || response.status === 201) return ResponseStatus.Success;
+    if (response.ok || response.status === 200) return ResponseStatus.Success;
+    else if (response.status === 400) return ResponseStatus.BadRequest;
     else if (response.status === 401) return ResponseStatus.Unauthorized;
     else return ResponseStatus.UnknownError;
   } catch (error) {
