@@ -23,14 +23,14 @@ const SideNavbar: React.FC = () => {
       !router.pathname.includes('new'),
   );
 
-  const navClass = 'text-black font-bold pb-2 border-b-2 border-transparent';
+  const navClass = 'text-base text-black font-bold pb-2 nav-underline relative';
 
   return (
     <div className="flex flex-col items-start min-w-max bg-white font-bold px-6 py-6 space-y-4">
-        <Link href="/dashboard" className={`${navClass} ${router.pathname == "/dashboard" ? 'border-ruby' : 'hover:border-ruby'}`}>
+        <Link href="/dashboard" className={`${navClass} ${router.pathname == "/dashboard" ? 'nav-underline-red' : 'hover:nav-underline-red'}`}>
           Dashboard
         </Link>
-        <Link href="/submissions/new" className={`${navClass} ${router.pathname == "/submissions/new" ? 'border-ruby' : 'hover:border-ruby'}`}
+        <Link href="/submissions/new" className={`${navClass} ${router.pathname == "/submissions/new" ? 'nav-underline-red' : 'hover:nav-underline-red'}`}
             onClick={() => dispatch(resetForm())}>
           Submit a New Activity
         </Link>
@@ -41,18 +41,18 @@ const SideNavbar: React.FC = () => {
         { 
             submissionsOpen &&
             <div className='flex flex-col items-start space-y-5 pl-4'>
-                <Link href="/submissions/teaching" className={`${navClass} ${category == "teaching" ? 'border-ruby' : 'hover:border-ruby'}`}>
+                <Link href="/submissions/teaching" className={`${navClass} ${category == "teaching" ? 'nav-underline-red' : 'hover:nav-underline-red'}`}>
                     Teaching
                 </Link>
-                <Link href="/submissions/research" className={`${navClass} ${category == "research" ? 'border-ruby' : 'hover:border-ruby'}`}>
+                <Link href="/submissions/research" className={`${navClass} ${category == "research" ? 'nav-underline-red' : 'hover:nav-underline-red'}`}>
                     Research
                 </Link>
-                <Link href="/submissions/service" className={`${navClass} ${category == "service" ? 'border-ruby' : 'hover:border-ruby'}`}>
+                <Link href="/submissions/service" className={`${navClass} ${category == "service" ? 'nav-underline-red' : 'hover:nav-underline-red'}`}>
                     Service
                 </Link>
             </div>
         }
-      <Link href="/profile" className={`${navClass} ${ router.pathname == '/profile' ? 'border-ruby' : 'hover:border-ruby' }`}>
+      <Link href="/profile" className={`${navClass} ${ router.pathname == '/profile' ? 'nav-underline-red' : 'hover:nav-underline-red' }`}>
         My Profile
       </Link>
     </div>

@@ -41,3 +41,25 @@
 .h-39 {
   height: 156px !important;
 }
+
+.nav-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  right: 50%;
+  background-color: #CC0000;
+  height: 3px;
+  border-radius: 10px;
+  transition: 0.6s;
+}
+
+.nav-underline-red::after {
+  left: 0;
+  right: 0;
+}
+
+.hover\:nav-underline-red:hover::after {
+  left: 0;
+  right: 0;
+}
