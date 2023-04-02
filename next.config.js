@@ -2,6 +2,17 @@ const path = require('node:path');
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/dashboard',
+        permanent: true,
+      },
+    ];
+
+  },
+
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
