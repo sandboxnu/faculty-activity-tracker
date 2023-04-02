@@ -16,10 +16,11 @@ export interface FormState {
   activityName: string | null;
   category: ActivityCategory | null;
   weight: ActivityWeight | null;
-  semester: Semester | null;
+  semester: Semester[] | null;
   year: number | null;
   date: string;
   description: string;
+  otherDescription: string;
 }
 
 const initialState: FormState = {
@@ -31,6 +32,7 @@ const initialState: FormState = {
   year: null,
   date: '',
   description: '',
+  otherDescription: '',
 };
 
 export const formSlice = createSlice({
@@ -49,7 +51,7 @@ export const formSlice = createSlice({
     setWeight: (state, action: PayloadAction<ActivityWeight>) => {
       state.weight = action.payload;
     },
-    setSemester: (state, action: PayloadAction<Semester>) => {
+    setSemester: (state, action: PayloadAction<Semester[]>) => {
       state.semester = action.payload;
     },
     setYear: (state, action: PayloadAction<number | null>) => {
@@ -61,6 +63,9 @@ export const formSlice = createSlice({
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
+    setOtherDescription: (state, action: PayloadAction<string>) => {
+      state.otherDescription = action.payload;
+    },
     resetForm: (state) => {
       state.step = 'selection';
       state.activityName = null;
@@ -70,6 +75,7 @@ export const formSlice = createSlice({
       state.year = null;
       state.date = '';
       state.description = '';
+      state.otherDescription = '';
     },
   },
 });
@@ -83,6 +89,7 @@ export const {
   setYear,
   setDate,
   setDescription,
+  setOtherDescription,
   resetForm,
 } = formSlice.actions;
 
@@ -100,7 +107,7 @@ export const selectWeight: Selector<RootState, ActivityWeight | null> = (
   state,
 ) => state.form.weight;
 
-export const selectSemester: Selector<RootState, Semester | null> = (state) =>
+export const selectSemester: Selector<RootState, Semester[] | null> = (state) =>
   state.form.semester;
 
 export const selectYear: Selector<RootState, number | null> = (state) =>
@@ -111,5 +118,8 @@ export const selectDate: Selector<RootState, string> = (state) =>
 
 export const selectDescription: Selector<RootState, string> = (state) =>
   state.form.description;
+
+export const selectOtherDescription: Selector<RootState, string> = (state) =>
+  state.form.otherDescription;
 
 export default formSlice.reducer;
