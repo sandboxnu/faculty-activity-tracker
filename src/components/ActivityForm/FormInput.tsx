@@ -1,4 +1,9 @@
-import React, { ChangeEventHandler, FocusEventHandler, useState } from 'react';
+import React, {
+  ChangeEventHandler,
+  FocusEventHandler,
+  useEffect,
+  useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCategory,
@@ -57,6 +62,28 @@ const FormInput: React.FC = () => {
   const [checkOther, setCheckOther] = useState(false);
 
   const dispatch = useDispatch();
+
+  const populateInitialSemesters = () => {
+    if (!semester) return;
+    semester.forEach((sem: Semester) => {
+      switch (sem) {
+        case 'FALL':
+          setCheckFall(true);
+          break;
+        case 'SPRING':
+          setCheckSpring(true);
+          break;
+        case 'SUMMER':
+          setCheckSummer(true);
+          break;
+        case 'OTHER':
+          setCheckOther(true);
+          break;
+        default:
+          break;
+      }
+    });
+  };
 
   const handleWeightChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newWeight: ActivityWeight = event.target.value as ActivityWeight;
@@ -199,6 +226,10 @@ const FormInput: React.FC = () => {
   const inputContainer = 'flex flex-col my-2 space-y-1';
   const inputWrapper = 'flex items-center';
   const inputStatus = 'flex items-center py-3';
+
+  useEffect(() => {
+    populateInitialSemesters();
+  }, []);
 
   return (
     <div className="flex flex-col">

@@ -13,6 +13,7 @@ export type FormStep = 'selection' | 'form' | 'success' | 'loading' | 'error';
 // that it fits the intended format before sending to the backend? Either way we have to check for correct format before sending to backend
 export interface FormState {
   step: FormStep;
+  activityId: number | null;
   activityName: string | null;
   category: ActivityCategory | null;
   weight: ActivityWeight | null;
@@ -20,11 +21,12 @@ export interface FormState {
   year: number | null;
   date: string;
   description: string;
-  otherDescription: string;
+  otherDescription: string | null;
 }
 
 const initialState: FormState = {
   step: 'selection',
+  activityId: null,
   activityName: null,
   category: null,
   weight: null,
@@ -63,8 +65,11 @@ export const formSlice = createSlice({
     setDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
-    setOtherDescription: (state, action: PayloadAction<string>) => {
+    setOtherDescription: (state, action: PayloadAction<string | null>) => {
       state.otherDescription = action.payload;
+    },
+    setActivityId: (state, action: PayloadAction<number>) => {
+      state.activityId = action.payload;
     },
     resetForm: (state) => {
       state.step = 'selection';
@@ -76,6 +81,7 @@ export const formSlice = createSlice({
       state.date = '';
       state.description = '';
       state.otherDescription = '';
+      state.activityId = null;
     },
   },
 });
@@ -90,6 +96,7 @@ export const {
   setDate,
   setDescription,
   setOtherDescription,
+  setActivityId,
   resetForm,
 } = formSlice.actions;
 
@@ -119,7 +126,11 @@ export const selectDate: Selector<RootState, string> = (state) =>
 export const selectDescription: Selector<RootState, string> = (state) =>
   state.form.description;
 
-export const selectOtherDescription: Selector<RootState, string> = (state) =>
-  state.form.otherDescription;
+export const selectOtherDescription: Selector<RootState, string | null> = (
+  state,
+) => state.form.otherDescription;
+
+export const selectActivityId: Selector<RootState, number | null> = (state) =>
+  state.form.activityId;
 
 export default formSlice.reducer;

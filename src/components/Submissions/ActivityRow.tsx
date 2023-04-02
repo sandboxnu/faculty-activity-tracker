@@ -4,6 +4,19 @@ import moment from 'moment';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setActivityId,
+  setCategory,
+  setDate,
+  setDescription,
+  setName,
+  setOtherDescription,
+  setSemester,
+  setWeight,
+  setYear,
+} from '@/store/form.store';
 
 interface ActivityRowProps {
   activities: ActivityDto[];
@@ -44,12 +57,31 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
   sigLevel,
   favoriteActivity,
 }) => {
+  const dispatch = useDispatch();
   const numPages = Math.max(
     Math.ceil((activities.length + 1) / cardsPerPage),
     1,
   );
   const [startCardIdx, setCardIdx] = useState(0);
   const currPage = Math.floor(startCardIdx / 3);
+
+  const router = useRouter();
+
+  const startEditingActivity = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    activity: ActivityDto,
+  ) => {
+    router.push(`/submissions/edit`);
+    dispatch(setCategory(activity.category));
+    dispatch(setActivityId(activity.id));
+    dispatch(setName(activity.name));
+    dispatch(setWeight(activity.significance));
+    dispatch(setYear(activity.year));
+    dispatch(setSemester(activity.semester));
+    dispatch(setDescription(activity.description));
+    dispatch(setOtherDescription(activity.semesterOtherDescription));
+  };
+
   return (
     <div className="flex flex-col w-full">
       <div className="flex w-full items-center mt-3 pr-12 font-light">
@@ -70,7 +102,10 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
             className="w-1/3 flex-shrink-0 pr-12"
             style={{ transform: `translate(-${startCardIdx * 100}%)` }}
           >
-            <div className="rounded-lg bg-medium-grey shadow-sm hover:shadow-lg px-3.5 py-3.5 card h-39 cursor-pointer">
+            <div
+              onClick={(event) => startEditingActivity(event, activity)}
+              className="rounded-lg bg-medium-grey shadow-sm hover:shadow-lg px-3.5 py-3.5 card h-39 cursor-pointer"
+            >
               <div className="flex flex-col pl-2.5">
                 <div className="flex item-center justify-between">
                   <p className="text-sm text-g">
