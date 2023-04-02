@@ -28,6 +28,18 @@ yarn dev:db:up
 yarn dev:db:down
 ```
 
+## Updating Prisma
+```bash
+# generate types
+yarn generate
+
+# update/migrate prisma schema
+yarn migrate
+
+# populate database with seed data
+yarn seed
+```
+
 ## Project structure
 
 ```
