@@ -181,7 +181,7 @@ const FormInput: React.FC = () => {
       description: description,
       category: category,
       significance: weight,
-      isFavorite: true,
+      isFavorite: false,
       semesterOtherDescription: otherDescription,
     };
     console.log(newActivityDto);
