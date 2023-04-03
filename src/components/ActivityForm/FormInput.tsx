@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectActivityId,
   selectCategory,
   selectDate,
   selectDescription,
@@ -35,6 +36,7 @@ import { createActivity, ResponseStatus } from '@/client/activities.client';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { Checkbox } from '../Checkbox';
+import { useRouter } from 'next/router';
 
 const categoryLabels: Record<ActivityCategory, string> = {
   TEACHING: 'Teaching',
@@ -43,9 +45,16 @@ const categoryLabels: Record<ActivityCategory, string> = {
   SERVICE: 'Service',
 };
 
-const FormInput: React.FC = () => {
+interface FormInputProps {
+  editing: boolean;
+}
+
+const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
   const { data: session } = useSession();
+  const router = useRouter();
+
   const userId = session?.user.id;
+  const activityId: number | null = useSelector(selectActivityId);
   const category: ActivityCategory | null = useSelector(selectCategory);
   const name: string | null = useSelector(selectName);
   const weight: ActivityWeight | null = useSelector(selectWeight);
@@ -60,10 +69,11 @@ const FormInput: React.FC = () => {
   const [checkSpring, setCheckSpring] = useState(false);
   const [checkSummer, setCheckSummer] = useState(false);
   const [checkOther, setCheckOther] = useState(false);
+  const [isEditing, setEditingState] = useState(props.editing);
 
   const dispatch = useDispatch();
 
-  const populateInitialSemesters = () => {
+  const populateInitialSemesters: VoidFunction = () => {
     if (!semester) return;
     semester.forEach((sem: Semester) => {
       switch (sem) {
@@ -233,7 +243,11 @@ const FormInput: React.FC = () => {
 
   return (
     <div className="flex flex-col">
-      <h2>New Activity - {categoryLabels[category]}</h2>
+      {isEditing ? (
+        <h2>Edit Activity - {categoryLabels[category]}</h2>
+      ) : (
+        <h2>New Activity - {categoryLabels[category]}</h2>
+      )}
       <div className={inputContainer}>
         <p className={label}>Name: </p>
         <div className={inputWrapper}>
@@ -440,7 +454,12 @@ const FormInput: React.FC = () => {
       </div>
 
       <div className="flex justify-between items-center cursor-pointer my-9">
-        <button onClick={() => dispatch(setStep('selection'))}>Back</button>
+        {isEditing ? (
+          <button onClick={() => router.back()}>Back</button>
+        ) : (
+          <button onClick={() => dispatch(setStep('selection'))}>Back</button>
+        )}
+
         <button
           className="bg-ruby border-ruby-dark text-white disabled:bg-ruby-disabled"
           disabled={

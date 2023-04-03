@@ -13,7 +13,7 @@ const EditActivityForm: React.FunctionComponent = (props) => {
 
   return (
     <FormContainer>
-      <FormInput />
+      <FormInput editing={true} />
     </FormContainer>
   );
 };

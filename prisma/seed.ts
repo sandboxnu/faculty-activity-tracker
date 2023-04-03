@@ -210,17 +210,18 @@ async function createActivityData() {
     create: {
       user: {
         connect: {
-          email: 'a@b.com',
+          email: 'thebirdlvr@gmail.com',
         },
       },
       year: 2022,
-      semester: 'FALL',
+      semester: ['FALL', 'OTHER'],
       dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
       name: 'Field Trip',
       description: 'led a field trip to the MFA',
       category: 'TEACHING',
       significance: 'SIGNIFICANT',
       isFavorite: false,
+      semesterOtherDescription: 'it was so lit, i did this many years xdd',
     },
   });
 

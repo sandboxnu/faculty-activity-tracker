@@ -15,7 +15,7 @@ const StepComponent: Record<FormStep, JSX.Element> = {
   ), // TODO: Look into children
   form: (
     <FormContainer>
-      <FormInput />
+      <FormInput editing={false} />
     </FormContainer>
   ),
   success: <ResultPage success={true} />,
