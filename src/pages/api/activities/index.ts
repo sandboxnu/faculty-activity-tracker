@@ -5,7 +5,11 @@ import {
   getActivitiesForQuery,
   updateActivity,
 } from '@/services/activity';
-import { ActivityCategory, CreateActivityDto, UpdateActivityDto } from '@/models/activity.model';
+import {
+  ActivityCategory,
+  CreateActivityDto,
+  UpdateActivityDto,
+} from '@/models/activity.model';
 
 export default async function handler(
   req: NextApiRequest,
@@ -51,16 +55,18 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
   const { userId, category } = req.query;
   if (userId && category) {
     const activities = await getActivitiesForQuery({
-      userId: parseInt(userId.toString()), 
-      category: category.toString().toUpperCase() as ActivityCategory
+      userId: parseInt(userId.toString()),
+      category: category.toString().toUpperCase() as ActivityCategory,
     });
     res.status(200).json({ data: activities });
   } else if (userId) {
-    const activities = await getActivitiesForQuery({ userId: parseInt(userId.toString()) });
+    const activities = await getActivitiesForQuery({
+      userId: parseInt(userId.toString()),
+    });
     res.status(200).json({ data: activities });
   } else {
     const activities = await getAllActivities();
-    res.status(200).json({ data: activities }); 
+    res.status(200).json({ data: activities });
   }
 }
 

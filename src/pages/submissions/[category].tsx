@@ -1,127 +1,145 @@
-import ActivityRow from "@/components/Submissions/ActivityRow";
-import { getActivitiesForQuery } from "@/services/activity";
-import { ActivityDto, Semester } from "@/models/activity.model";
-import { seperateActivitiesBySemester, seperateActivitiesBySignifanceLevel } from "@/shared/utils/activity.util";
-import { toTitleCase } from "@/shared/utils/misc.util";
-import { resetForm, setWeight, setStep, setCategory } from "@/store/form.store";
-import { ActivityCategory, SignificanceLevel } from "@prisma/client";
-import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import React from "react";
-import { useDispatch } from "react-redux";
+import ActivityRow from '@/components/Submissions/ActivityRow';
+import { getActivitiesForQuery, getActivityById } from '@/services/activity';
+import { ActivityDto, Semester } from '@/models/activity.model';
+import {
+  seperateActivitiesBySemester,
+  seperateActivitiesBySignifanceLevel,
+} from '@/shared/utils/activity.util';
+import { toTitleCase } from '@/shared/utils/misc.util';
+import { resetForm, setWeight, setStep, setCategory } from '@/store/form.store';
+import { ActivityCategory, SignificanceLevel } from '@prisma/client';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { ResponseStatus, updateActivity } from '@/client/activities.client';
+import Head from 'next/head';
 
 interface SubmissionsPageProps {
-    activitiesBySigLevel: Record<SignificanceLevel, ActivityDto[]> | null;
-    activitiesBySemester: Record<Semester, ActivityDto[]> | null;
-    error?: string;
+  activitiesBySigLevel: Record<SignificanceLevel, ActivityDto[]> | null;
+  activitiesBySemester: Record<Semester, ActivityDto[]> | null;
+  error?: string;
 }
 
-const SubmissionsInfo: React.FC<SubmissionsPageProps> = ({ activitiesBySigLevel, activitiesBySemester}) => {
-  if (!activitiesBySigLevel || !activitiesBySemester) return <p> No activities found. </p>
-  const totalCount = activitiesBySigLevel['MAJOR'].length + activitiesBySigLevel['MINOR'].length + activitiesBySigLevel['SIGNIFICANT'].length
-  return (
-    <div className="flex flex-col items-start w-1/4 bg-white px-6 py-6 ">
-      <div className="flex flex-col p-5 bg-medium-grey w-full rounded-lg">
-        <h3>Instructions</h3>
-        <div className="space-y-4 my-4 text-sm"> 
-          <p>8-10	Major Activity: 2 and above + Significant and Minor Activities: 10 and above</p>
-          <p>7-8	Major Activity: 1-2 + Significant and Minor Activities: 6-10 </p>
-          <p>6-7	Major Activity: 0-1 + Significant and Minor Activities: 2-6 </p>
-          <p>6 Fulfilling required course load</p>
-        </div>
-      </div>
-      <div className="flex flex-col p-5 bg-medium-grey mt-5 w-full rounded-lg">
-        <h3>Summary</h3>
-        <div className="space-y-4 my-4 text-sm"> 
-          { 
-            Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
-                <div key={sigLevel} className='flex flex-col'> 
-                    <p>{toTitleCase(sigLevel)}: {activities.length} activities</p>
-                </div>
-            ))
-          }
-        </div>
-        
-        <div className="space-y-4 my-5"> 
-          { 
-            Object.entries(activitiesBySemester).map(([semester, activities]) => (
-                <div key={semester} className='flex flex-col'> 
-                    <p>{toTitleCase(semester)}: {activities.length} activities</p>
-                </div>
-            ))
-          }
-        </div>
-
-        <p className="my-6">Total: {totalCount} activities</p>
-      </div>
-    </div>
-  )
-}
-
-
-export const getServerSideProps: GetServerSideProps<SubmissionsPageProps> = async (context) => {
-    const session = await getSession(context);
-    const userId = session?.user?.id;
-    const category = context.params?.category;
-    if (!category) { 
-        return { props: { activitiesBySigLevel: null, activitiesBySemester: null, error: 'Category Not Found' } };
-    }
-    if (userId) {
-      const activities = await getActivitiesForQuery({
-        userId: userId, 
-        category: category.toString().toUpperCase() as ActivityCategory
-      });
-      if (activities === 'not found') {
-        return { props: { activitiesBySigLevel: null, activitiesBySemester: null } };
-      } else {
-          const parsedActivities = JSON.parse(JSON.stringify(activities, (key, value) =>
-              typeof value === 'bigint'
-                  ? value.toString()
-                  : value // return everything else unchanged
-          ));
-          const activitiesBySigLevel = seperateActivitiesBySignifanceLevel(parsedActivities);
-          const activitiesBySemester = seperateActivitiesBySemester(parsedActivities);
-        return { props: { activitiesBySigLevel, activitiesBySemester } };
-      }
+export const getServerSideProps: GetServerSideProps<
+  SubmissionsPageProps
+> = async (context) => {
+  const session = await getSession(context);
+  const userId = session?.user?.id;
+  const category = context.params?.category;
+  if (!category) {
+    return {
+      props: {
+        activitiesBySigLevel: null,
+        activitiesBySemester: null,
+        error: 'Category Not Found',
+      },
+    };
+  }
+  if (userId) {
+    const activities = await getActivitiesForQuery(
+      {
+        userId: userId,
+        category: category.toString().toUpperCase() as ActivityCategory,
+      },
+      { dateModified: 'desc' },
+    );
+    if (activities === 'not found') {
+      return {
+        props: { activitiesBySigLevel: null, activitiesBySemester: null },
+      };
     } else {
-      return { props: { activitiesBySigLevel: null, activitiesBySemester: null, error: 'User not found.' } };
+      const parsedActivities = JSON.parse(
+        JSON.stringify(
+          activities,
+          (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
+        ),
+      );
+      const activitiesBySigLevel =
+        seperateActivitiesBySignifanceLevel(parsedActivities);
+      const activitiesBySemester =
+        seperateActivitiesBySemester(parsedActivities);
+      return { props: { activitiesBySigLevel, activitiesBySemester } };
     }
+  } else {
+    return {
+      props: {
+        activitiesBySigLevel: null,
+        activitiesBySemester: null,
+        error: 'User not found.',
+      },
+    };
+  }
+};
+
+const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
+  activitiesBySigLevel,
+  activitiesBySemester,
+  error,
+}) => {
+  const router = useRouter();
+  const { category } = router.query;
+  const dispatch = useDispatch();
+  const [pageError, setPageError] = useState<string | null>(error || null);
+
+  const startNewActivity = (sigLevel: SignificanceLevel) => {
+    dispatch(resetForm());
+    dispatch(
+      setCategory(category?.toString().toUpperCase() as ActivityCategory),
+    );
+    dispatch(setWeight(sigLevel));
+    dispatch(setStep('form'));
+    router.push('/submissions/new');
   };
 
-const SubmissionsPage: React.FC<SubmissionsPageProps> = ({ activitiesBySigLevel, activitiesBySemester, error }) => {
-    const router = useRouter();
-    const { category } = router.query;
-    const dispatch = useDispatch();
+  const favoriteActivity = (activityId: number, isFavorite: boolean) => {
+    updateActivity(activityId, { isFavorite }).then((res) => {
+      if (res === ResponseStatus.Unauthorized) setPageError('Unauthorized');
+      else if (res === ResponseStatus.NotFound) setPageError('Not Found');
+      else if (res === ResponseStatus.UnknownError)
+        setPageError('Unknown Error');
+      else {
+        router.reload();
+      }
+    });
+  };
 
-    const startNewActivity = (sigLevel: SignificanceLevel) => {
-      dispatch(resetForm());
-      dispatch(setCategory(category?.toString().toUpperCase() as ActivityCategory));
-      dispatch(setWeight(sigLevel));
-      dispatch(setStep("form"));
-      router.push("/submissions/new");
-    };
-
-    return (
-      <div className='flex w-full'>
-        <div className='px-16 py-5 w-full flex flex-col border-box'>
-            <h1>{ toTitleCase(category?.toString() || "") }</h1>
-            { 
-              activitiesBySigLevel ?
-              Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
-                  <div key={sigLevel} className='flex flex-col w-full'> 
-                    <div className='flex w-full items-center mt-3 pr-12'>
-                      <p className='mr-2 text-lg'>{toTitleCase(sigLevel)} Activities</p>
-                      <div className='flex-grow h-[1.5px] bg-light-grey'/>
-                    </div>
-                    <ActivityRow activities={activities} newActivity={() => startNewActivity(sigLevel as SignificanceLevel)} leftPadding />
-                  </div>
-              ))
-              : <p> No activities found. </p>
-            }
-        </div>
+  return (
+    <div className="flex w-full">
+      <Head>
+        {' '}
+        <title>
+          {' '}
+          Submissions - {toTitleCase(category?.toString() || '')}
+        </title>{' '}
+      </Head>
+      <div className="px-16 py-5 w-full flex flex-col border-box">
+        <h1>{toTitleCase(category?.toString() || '')}</h1>
+        {pageError && (
+          <p className="text-red text-center w-full">{pageError}</p>
+        )}
+        {activitiesBySigLevel ? (
+          Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
+            <div key={sigLevel} className="flex flex-col w-full">
+              <ActivityRow
+                sigLevel={toTitleCase(sigLevel)}
+                activities={activities}
+                newActivity={() =>
+                  startNewActivity(sigLevel as SignificanceLevel)
+                }
+                leftPadding
+                favoriteActivity={favoriteActivity}
+              />
+            </div>
+          ))
+        ) : (
+          <p> No activities found. </p>
+        )}
       </div>
-    );
-}
+    </div>
+  );
+};
 
 export default SubmissionsPage;

@@ -27,32 +27,77 @@ const SideNavbar: React.FC = () => {
 
   return (
     <div className="flex flex-col items-start min-w-max bg-white font-bold px-6 py-6 space-y-4">
-        <Link href="/dashboard" className={`${navClass} ${router.pathname == "/dashboard" ? 'nav-underline-red' : 'hover:nav-underline-red'}`}>
-          Dashboard
-        </Link>
-        <Link href="/submissions/new" className={`${navClass} ${router.pathname == "/submissions/new" ? 'nav-underline-red' : 'hover:nav-underline-red'}`}
-            onClick={() => dispatch(resetForm())}>
-          Submit a New Activity
-        </Link>
-        <p className={`${navClass} cursor-pointer hover:border-white`}
-            onClick={() => category === undefined ? setSubmissionsOpen(b => !b) : {}}>
-          Submissions
-        </p>
-        { 
-            submissionsOpen &&
-            <div className='flex flex-col items-start space-y-5 pl-4'>
-                <Link href="/submissions/teaching" className={`${navClass} ${category == "teaching" ? 'nav-underline-red' : 'hover:nav-underline-red'}`}>
-                    Teaching
-                </Link>
-                <Link href="/submissions/research" className={`${navClass} ${category == "research" ? 'nav-underline-red' : 'hover:nav-underline-red'}`}>
-                    Research
-                </Link>
-                <Link href="/submissions/service" className={`${navClass} ${category == "service" ? 'nav-underline-red' : 'hover:nav-underline-red'}`}>
-                    Service
-                </Link>
-            </div>
+      <Link
+        href="/dashboard"
+        className={`${navClass} ${
+          router.pathname == '/dashboard'
+            ? 'nav-underline-red'
+            : 'hover:nav-underline-red'
+        }`}
+      >
+        Dashboard
+      </Link>
+      <Link
+        href="/submissions/new"
+        className={`${navClass} ${
+          router.pathname == '/submissions/new'
+            ? 'nav-underline-red'
+            : 'hover:nav-underline-red'
+        }`}
+        onClick={() => dispatch(resetForm())}
+      >
+        Submit a New Activity
+      </Link>
+      <p
+        className={`${navClass} cursor-pointer hover:border-white`}
+        onClick={() =>
+          category === undefined ? setSubmissionsOpen((b) => !b) : {}
         }
-      <Link href="/profile" className={`${navClass} ${ router.pathname == '/profile' ? 'nav-underline-red' : 'hover:nav-underline-red' }`}>
+      >
+        Submissions
+      </p>
+      {submissionsOpen && (
+        <div className="flex flex-col items-start space-y-5 pl-4">
+          <Link
+            href="/submissions/teaching"
+            className={`${navClass} ${
+              category == 'teaching'
+                ? 'nav-underline-red'
+                : 'hover:nav-underline-red'
+            }`}
+          >
+            Teaching
+          </Link>
+          <Link
+            href="/submissions/research"
+            className={`${navClass} ${
+              category == 'research'
+                ? 'nav-underline-red'
+                : 'hover:nav-underline-red'
+            }`}
+          >
+            Research
+          </Link>
+          <Link
+            href="/submissions/service"
+            className={`${navClass} ${
+              category == 'service'
+                ? 'nav-underline-red'
+                : 'hover:nav-underline-red'
+            }`}
+          >
+            Service
+          </Link>
+        </div>
+      )}
+      <Link
+        href="/profile"
+        className={`${navClass} ${
+          router.pathname == '/profile'
+            ? 'nav-underline-red'
+            : 'hover:nav-underline-red'
+        }`}
+      >
         My Profile
       </Link>
     </div>

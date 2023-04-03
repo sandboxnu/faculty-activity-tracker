@@ -1,47 +1,17 @@
 import {
-  ActivityCategory,
-  ActivityDto,
-  CreateActivityDto,
-  UpdateActivityDto,
-} from '../models/activity.model';
-export enum ResponseStatus {
-  Success = 200,
-  UnknownError = 500,
-  NotFound = 404,
-  Unauthorized = 401,
-}
+  CreateNarrativeDto,
+  NarrativeCategory,
+  NarrativeDto,
+  UpdateNarrativeDto,
+} from '@/models/narrative.model';
+import { ResponseStatus } from './activities.client';
 
-const apiRoot = 'http://localhost:3000/api/activities';
+const apiRoot = 'http://localhost:3000/api/narratives';
 
-export const getActivitiesForUser = async (
+export const getNarrativeForUserForCategory = async (
   userId: number,
-): Promise<ActivityDto[] | ResponseStatus.UnknownError> => {
-  try {
-    const response = await fetch(`${apiRoot}?userId=${userId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
-      },
-    });
-    if (response.ok || response.status === 200) {
-      const data = await response.json();
-      if (data.hasOwnProperty('data')) {
-        return data.data as ActivityDto[];
-      } else {
-        return ResponseStatus.UnknownError;
-      }
-    } else {
-      return ResponseStatus.UnknownError;
-    }
-  } catch {
-    return ResponseStatus.UnknownError;
-  }
-};
-
-export const getActivitiesForUserForCategory = async (
-  userId: number,
-  category: ActivityCategory,
-): Promise<ActivityDto[] | ResponseStatus.UnknownError> => {
+  category: NarrativeCategory,
+): Promise<NarrativeDto | ResponseStatus.UnknownError> => {
   try {
     const response = await fetch(
       `${apiRoot}?userId=${userId}&category=${category}`,
@@ -55,7 +25,7 @@ export const getActivitiesForUserForCategory = async (
     if (response.ok || response.status === 200) {
       const data = await response.json();
       if (data.hasOwnProperty('data')) {
-        return data.data as ActivityDto[];
+        return data.data as NarrativeDto;
       } else {
         return ResponseStatus.UnknownError;
       }
@@ -67,8 +37,8 @@ export const getActivitiesForUserForCategory = async (
   }
 };
 
-export const createActivity = async (
-  body: CreateActivityDto,
+export const createNarrative = async (
+  body: CreateNarrativeDto,
 ): Promise<
   | ResponseStatus.Success
   | ResponseStatus.Unauthorized
@@ -88,7 +58,7 @@ export const createActivity = async (
         (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
       ),
     });
-    if (response.ok || response.status === 200) return ResponseStatus.Success;
+    if (response.ok || response.status === 201) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;
     else return ResponseStatus.UnknownError;
   } catch (error) {
@@ -97,9 +67,8 @@ export const createActivity = async (
   }
 };
 
-export const updateActivity = async (
-  activityId: number,
-  body: UpdateActivityDto,
+export const updateNarrative = async (
+  body: UpdateNarrativeDto,
 ): Promise<
   | ResponseStatus.Success
   | ResponseStatus.Unauthorized
@@ -107,7 +76,7 @@ export const updateActivity = async (
   | ResponseStatus.UnknownError
 > => {
   try {
-    const response = await fetch(`${apiRoot}/${activityId}`, {
+    const response = await fetch(apiRoot, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -119,7 +88,7 @@ export const updateActivity = async (
         (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
       ),
     });
-    if (response.ok || response.status === 200) return ResponseStatus.Success;
+    if (response.ok || response.status === 201) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;
     else return ResponseStatus.UnknownError;
   } catch (error) {

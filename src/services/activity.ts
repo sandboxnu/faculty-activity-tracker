@@ -1,5 +1,9 @@
 import { PrismaClient, Activity } from '.prisma/client';
-import { CreateActivityDto, UpdateActivityDto } from '@/models/activity.model';
+import {
+  ActivityOrderByQuery,
+  CreateActivityDto,
+  UpdateActivityDto,
+} from '@/models/activity.model';
 
 const prisma = new PrismaClient();
 
@@ -19,6 +23,7 @@ export const getActivityById = async (
 
 export const getActivitiesForQuery = async (
   query: UpdateActivityDto,
+  orderBy?: ActivityOrderByQuery,
 ): Promise<Activity[] | 'not found'> => {
   if (query.year) {
     query.year = parseInt(query.year as any);
@@ -35,14 +40,19 @@ export const getActivitiesForQuery = async (
   }
   const activities = await prisma.activity.findMany({
     where: { ...query },
+    orderBy: orderBy || {},
   });
   return activities || 'not found';
 };
 
-export const getActivitiesForUser = async (userId: number): Promise<Activity[] | "not found"> => {
-  const activities = await prisma.activity.findMany({ where: { userId: userId } });
-  return activities || "not found";
-}
+export const getActivitiesForUser = async (
+  userId: number,
+): Promise<Activity[] | 'not found'> => {
+  const activities = await prisma.activity.findMany({
+    where: { userId: userId },
+  });
+  return activities || 'not found';
+};
 
 export const createActivity = async (
   activity: CreateActivityDto,

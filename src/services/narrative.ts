@@ -4,8 +4,19 @@ import {
   UpdateNarrativeDto,
   DeleteNarrativeDto,
 } from '@/models/narrative.model';
+import { NarrativeCategory } from '@prisma/client';
 
 const prisma = new PrismaClient();
+
+export const getNarrativeForUserForCategory = async (
+  userId: number,
+  category: NarrativeCategory,
+): Promise<Narrative | null> => {
+  const narrative = await prisma.narrative.findFirst({
+    where: { userId, category },
+  });
+  return narrative;
+};
 
 export const createNarrative = async (
   narrative: CreateNarrativeDto,

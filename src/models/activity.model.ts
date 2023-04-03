@@ -47,6 +47,13 @@ export type UpdateActivityDto = Omit<Partial<ActivityDto>, 'semester'>; /*{
   significance: ActivityWeight;
   isFavorite: boolean;
 };*/
+
+export type SortOrder = 'asc' | 'desc';
+
+export type ActivityOrderByQuery = Partial<{
+  [Property in keyof ActivityDto]: SortOrder;
+}>;
+
 export const isActivityCategory = (
   category: String,
 ): category is ActivityCategory => {

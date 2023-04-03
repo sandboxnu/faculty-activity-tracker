@@ -16,10 +16,10 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className='flex flex-col w-full px-8'>
-    <h1>Dashboard</h1>
-    <p className="text-2xl text-ruby">Welcome, {name || 'User'}! </p>
-  </div>
+    <div className="flex flex-col w-full px-8">
+      <h1>Dashboard</h1>
+      <p className="text-2xl text-ruby">Welcome, {name || 'User'}! </p>
+    </div>
   );
 };
 
