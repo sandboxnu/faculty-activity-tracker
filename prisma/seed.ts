@@ -352,11 +352,7 @@ async function createProfessorInfoData() {
     create: {
       user: {
         connect: {
-<<<<<<< HEAD
           email: 'maxpinheiro181@gmail.com',
-=======
-          email: 'thebirdlvr@gmail.com',
->>>>>>> 48c2603 (added admin page and user table)
         },
       },
       position: 'Tenure Track Faculty',
@@ -364,11 +360,8 @@ async function createProfessorInfoData() {
       researchPercent: 0.5,
       servicePercent: 0.1,
       sabbatical: SabbaticalOption.NO,
-<<<<<<< HEAD
-=======
       teachingReleaseExplanation:
         'Went on teaching release for Fall semester because of maternity leave',
->>>>>>> 48c2603 (added admin page and user table)
     },
   });
 }
