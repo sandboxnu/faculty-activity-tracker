@@ -67,13 +67,16 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
-  activities,
+  activities: initialActivities,
   error,
 }) => {
   const router = useRouter();
   const { category } = router.query;
   const dispatch = useDispatch();
   const [pageError, setPageError] = useState<string | null>(error || null);
+  const [activities, setActivities] = useState<ActivityDto[]>(
+    initialActivities || [],
+  );
 
   const startNewActivity = (sigLevel: SignificanceLevel) => {
     dispatch(resetForm());
@@ -92,7 +95,11 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
       else if (res === ResponseStatus.UnknownError)
         setPageError('Unknown Error');
       else {
-        router.reload();
+        setActivities((currActivities) =>
+          currActivities.map((a) =>
+            a.id === activityId ? { ...a, isFavorite } : a,
+          ),
+        );
       }
     });
   };
