@@ -21,7 +21,7 @@ export default async function handler(
         break;
 
       case 'DELETE':
-          // DELETE /activity[id] => delete activity with specified id
+        // DELETE /activity[id] => delete activity with specified id
         await handleDelete(parseInt(id.toString()), res);
         break;
       // not a GET or PUT request so shouldn't be using this route
