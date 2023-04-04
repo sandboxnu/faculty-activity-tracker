@@ -128,3 +128,28 @@ export const updateActivity = async (
     return ResponseStatus.UnknownError;
   }
 };
+
+export const updateActivityClient = async (
+  body: UpdateActivityDto,
+): Promise<ResponseStatus.Success | ResponseStatus.UnknownError> => {
+  try {
+    const response = await fetch(`${apiRoot}/${body.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify(
+        body,
+        (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
+      ),
+    });
+    if (response.ok || response.status === 200) {
+      return ResponseStatus.Success;
+    } else {
+      return ResponseStatus.UnknownError;
+    }
+  } catch (error) {
+    return ResponseStatus.UnknownError;
+  }
+};

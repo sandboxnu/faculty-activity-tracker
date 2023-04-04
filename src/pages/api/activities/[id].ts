@@ -52,11 +52,13 @@ async function handlePut(
   const updateActivityDto = JSON.parse(
     JSON.stringify(req.body),
   ) as UpdateActivityDto;
-
+  // Overwriting whatever date value with server time casted to a BigInt.
+  updateActivityDto.dateModified = BigInt(Date.now());
   try {
     const activity = await updateActivity(id, updateActivityDto);
     res.status(200).json({ data: activity });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: 'bad request' });
   }
 }

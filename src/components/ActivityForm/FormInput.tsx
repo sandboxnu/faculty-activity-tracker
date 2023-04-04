@@ -30,9 +30,14 @@ import {
   ActivityWeight,
   CreateActivityDto,
   Semester,
+  UpdateActivityDto,
 } from '../../models/activity.model';
 import Tooltip from '../../shared/components/Tooltip';
-import { createActivity, ResponseStatus } from '@/client/activities.client';
+import {
+  createActivity,
+  ResponseStatus,
+  updateActivityClient,
+} from '@/client/activities.client';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { Checkbox } from '../Checkbox';
@@ -225,6 +230,41 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
     dispatch(setStep('loading'));
     createActivity(newActivityDto).then((res) => {
       dispatch(setStep(res === ResponseStatus.Success ? 'success' : 'error'));
+    });
+  };
+
+  const updateActivity: VoidFunction = () => {
+    if (
+      !description ||
+      !category ||
+      !weight ||
+      !name ||
+      !semester ||
+      !year ||
+      (!checkFall && !checkOther && !checkSpring && !checkSummer) ||
+      (checkOther && !otherDescription) ||
+      (specifyDate && !date) ||
+      !activityId
+    )
+      return;
+
+    const updateActivityDto: UpdateActivityDto = {
+      id: activityId,
+      userId: userId,
+      semester: semester,
+      year: year,
+      dateModified: BigInt(new Date().getTime()),
+      name: name,
+      description: description,
+      category: category,
+      significance: weight,
+      isFavorite: true,
+      semesterOtherDescription: otherDescription,
+    };
+    console.log(updateActivityDto);
+    // if error then display error on page in some red bar or something and ask them to resubmit
+    updateActivityClient(updateActivityDto).then((res) => {
+      res == ResponseStatus.Success ? router.back() : '';
     });
   };
 
@@ -470,7 +510,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
             !name ||
             (checkOther && !otherDescription)
           }
-          onClick={submitActivity}
+          onClick={isEditing ? updateActivity : submitActivity}
         >
           Submit
         </button>
