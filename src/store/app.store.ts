@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import formReducer from '../store/form.store';
+import formReducer from './form.store';
 import submissionReducer from './submissions.store';
+import profileReducer from './profile.store';
 
 export const store = configureStore({
   reducer: {
     form: formReducer,
+    profile: profileReducer,
     submissions: submissionReducer,
   },
 });

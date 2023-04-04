@@ -16,6 +16,7 @@ import NarrativeInstructions from '@/components/Narratives/NarrativeInstructions
 import { NarrativeCategory } from '@prisma/client';
 import { getNarrativeForUserForCategory } from '@/client/narratives.client';
 import { NarrativeDto } from '@/models/narrative.model';
+import ProfileInstructions from '@/components/Profile/ProfileInstructions';
 
 type SidebarType = 'submissions' | 'new' | 'profile' | 'narratives';
 
@@ -76,6 +77,7 @@ const InfoSidebar: React.FC = () => {
       )}
       {sidebarType === 'new' && <FormInstructions />}
       {sidebarType === 'narratives' && <NarrativeInstructions />}
+      {sidebarType === 'profile' && <ProfileInstructions />}
     </div>
   );
 };

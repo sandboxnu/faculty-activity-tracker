@@ -9,6 +9,7 @@ export enum ResponseStatus {
   UnknownError = 500,
   NotFound = 404,
   Unauthorized = 401,
+  BadRequest = 400,
 }
 
 const apiRoot = 'http://localhost:3000/api/activities';

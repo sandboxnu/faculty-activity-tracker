@@ -335,6 +335,22 @@ async function createProfessorInfoData() {
         'Went on teaching release for Fall semester because of maternity leave',
     },
   });
+  const info5 = await prisma.professorInfo.upsert({
+    where: { id: 5 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'maxpinheiro181@gmail.com',
+        },
+      },
+      position: 'Tenure Track Faculty',
+      teachingPercent: 0.4,
+      researchPercent: 0.5,
+      servicePercent: 0.1,
+      sabbatical: SabbaticalOption.NO,
+    },
+  });
 }
 
 async function main() {
