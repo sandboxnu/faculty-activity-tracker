@@ -17,8 +17,7 @@ import { ResponseStatus, updateActivity } from '@/client/activities.client';
 import Head from 'next/head';
 
 interface SubmissionsPageProps {
-  activitiesBySigLevel: Record<SignificanceLevel, ActivityDto[]> | null;
-  activitiesBySemester: Record<Semester, ActivityDto[]> | null;
+  activities?: ActivityDto[];
   error?: string;
 }
 
@@ -31,8 +30,6 @@ export const getServerSideProps: GetServerSideProps<
   if (!category) {
     return {
       props: {
-        activitiesBySigLevel: null,
-        activitiesBySemester: null,
         error: 'Category Not Found',
       },
     };
@@ -47,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<
     );
     if (activities === 'not found') {
       return {
-        props: { activitiesBySigLevel: null, activitiesBySemester: null },
+        props: { error: 'No activities not found for user' },
       };
     } else {
       const parsedActivities = JSON.parse(
@@ -57,17 +54,12 @@ export const getServerSideProps: GetServerSideProps<
             typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
         ),
       );
-      const activitiesBySigLevel =
-        seperateActivitiesBySignifanceLevel(parsedActivities);
-      const activitiesBySemester =
-        seperateActivitiesBySemester(parsedActivities);
-      return { props: { activitiesBySigLevel, activitiesBySemester } };
+
+      return { props: { activities: parsedActivities } };
     }
   } else {
     return {
       props: {
-        activitiesBySigLevel: null,
-        activitiesBySemester: null,
         error: 'User not found.',
       },
     };
@@ -75,8 +67,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
-  activitiesBySigLevel,
-  activitiesBySemester,
+  activities,
   error,
 }) => {
   const router = useRouter();
@@ -106,37 +97,38 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
     });
   };
 
+  if (pageError || !activities)
+    return (
+      <p className="w-full text-center text-red">
+        Error: {pageError || 'unknown error.'}
+      </p>
+    );
+
+  const activitiesBySigLevel = seperateActivitiesBySignifanceLevel(activities);
+
   return (
     <div className="flex w-full">
       <Head>
-        {' '}
-        <title>
-          {' '}
-          Submissions - {toTitleCase(category?.toString() || '')}
-        </title>{' '}
+        <title>Submissions - {toTitleCase(category?.toString() || '')}</title>
       </Head>
       <div className="px-16 py-5 w-full flex flex-col border-box">
         <h1>{toTitleCase(category?.toString() || '')}</h1>
         {pageError && (
           <p className="text-red text-center w-full">{pageError}</p>
         )}
-        {activitiesBySigLevel ? (
-          Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
-            <div key={sigLevel} className="flex flex-col w-full">
-              <ActivityRow
-                sigLevel={toTitleCase(sigLevel)}
-                activities={activities}
-                newActivity={() =>
-                  startNewActivity(sigLevel as SignificanceLevel)
-                }
-                leftPadding
-                favoriteActivity={favoriteActivity}
-              />
-            </div>
-          ))
-        ) : (
-          <p> No activities found. </p>
-        )}
+        {Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
+          <div key={sigLevel} className="flex flex-col w-full">
+            <ActivityRow
+              sigLevel={toTitleCase(sigLevel)}
+              activities={activities}
+              newActivity={() =>
+                startNewActivity(sigLevel as SignificanceLevel)
+              }
+              leftPadding
+              favoriteActivity={favoriteActivity}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
