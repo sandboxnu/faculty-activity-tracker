@@ -307,7 +307,9 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       <div>{showEditingError ? <ErrorBanner text={errorText} /> : ''}</div>
       {isEditing ? (
         [
-          <h2>Submitted Activity - {categoryLabels[category]}</h2>,
+          <h2 key="submitted-activity">
+            Submitted Activity - {categoryLabels[category]}
+          </h2>,
           <p className={'text-last-date-modified-grey italic drop-shadow-sm'}>
             {`Last Date Modifed`}
             <span className={'ml-1'}>{`${convertBigIntToDate(
@@ -316,7 +318,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
           </p>,
         ]
       ) : (
-        <h2>New Activity - {categoryLabels[category]}</h2>
+        <h2 key="new-activity">New Activity - {categoryLabels[category]}</h2>
       )}
       <div className={inputContainer}>
         <p className={label}>Name: </p>
