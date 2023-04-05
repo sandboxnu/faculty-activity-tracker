@@ -106,6 +106,10 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
     });
   };
 
+  useEffect(() => {
+    populateInitialSemesters();
+  }, [populateInitialSemesters]);
+
   const handleWeightChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newWeight: ActivityWeight = event.target.value as ActivityWeight;
     if (newWeight) {
@@ -301,10 +305,6 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
 
     return formattedDate;
   };
-
-  useEffect(() => {
-    populateInitialSemesters();
-  }, []);
 
   return (
     <div className="flex flex-col">
