@@ -84,7 +84,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
 
   const dispatch = useDispatch();
 
-  const populateInitialSemesters: VoidFunction = () => {
+  useEffect(() => {
     if (!semester) return;
     semester.forEach((sem: Semester) => {
       switch (sem) {
@@ -104,11 +104,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
           break;
       }
     });
-  };
-
-  useEffect(() => {
-    populateInitialSemesters();
-  }, [populateInitialSemesters]);
+  }, []);
 
   const handleWeightChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newWeight: ActivityWeight = event.target.value as ActivityWeight;
@@ -313,7 +309,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         [
           <h2>Submitted Activity - {categoryLabels[category]}</h2>,
           <p className={'text-last-date-modified-grey italic drop-shadow-sm'}>
-            {`Last Date Modifed`}{' '}
+            {`Last Date Modifed`}
             <span className={'ml-1'}>{`${convertBigIntToDate(
               lastDateModified,
             )}`}</span>
