@@ -104,7 +104,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
           break;
       }
     });
-  }, []);
+  }, [semester]);
 
   const handleWeightChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newWeight: ActivityWeight = event.target.value as ActivityWeight;
