@@ -467,7 +467,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
             }}
           />
         </div>
-        <div className={inputStatus}>
+        <div className={'my-3.5'}>
           <Image
             src={
               checkFall || checkSpring || checkOther || checkSummer
@@ -477,7 +477,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
             alt="Icon"
             width={16}
             height={16}
-            className="mx-2"
+            className="ml-auto"
           />
           {!checkFall && !checkSpring && !checkOther && !checkSummer && (
             <p className="text-ruby inline">Select semesters.</p>
@@ -502,7 +502,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       <div className={inputContainer}>
         <div className={inputWrapper}>
           <p className={label}>Description: </p>
-          <div className={inputStatus + ' ml-auto'}>
+          <div className={inputStatus + 'ml-auto'}>
             <Image
               src={
                 description
