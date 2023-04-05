@@ -11,6 +11,7 @@ import {
   setCategory,
   setDate,
   setDescription,
+  setLastDateModified,
   setName,
   setOtherDescription,
   setSemester,
@@ -71,7 +72,7 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     activity: ActivityDto,
   ) => {
-    router.push(`/submissions/edit`);
+    // console.log(activity.dateModified);
     dispatch(setCategory(activity.category));
     dispatch(setActivityId(activity.id));
     dispatch(setName(activity.name));
@@ -80,6 +81,8 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
     dispatch(setSemester(activity.semester));
     dispatch(setDescription(activity.description));
     dispatch(setOtherDescription(activity.semesterOtherDescription));
+    dispatch(setLastDateModified(activity.dateModified));
+    router.push(`/submissions/edit`);
   };
 
   return (

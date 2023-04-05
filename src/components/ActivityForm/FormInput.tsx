@@ -10,6 +10,7 @@ import {
   selectCategory,
   selectDate,
   selectDescription,
+  selectLastDateModified,
   selectName,
   selectOtherDescription,
   selectSemester,
@@ -27,6 +28,7 @@ import {
 import { createDateFromString } from '../../shared/utils/date.utils';
 import {
   ActivityCategory,
+  ActivityDto,
   ActivityWeight,
   CreateActivityDto,
   Semester,
@@ -41,6 +43,7 @@ import {
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { Checkbox } from '../Checkbox';
+import { ErrorBanner } from '../ErrorBanner';
 import { useRouter } from 'next/router';
 
 const categoryLabels: Record<ActivityCategory, string> = {
@@ -68,6 +71,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
   const date: string = useSelector(selectDate);
   const description: string = useSelector(selectDescription);
   const otherDescription: string | null = useSelector(selectOtherDescription);
+  const lastDateModified: bigint | null = useSelector(selectLastDateModified);
 
   const [specifyDate, setSpecifyDate] = useState(false);
   const [checkFall, setCheckFall] = useState(false);
@@ -75,6 +79,8 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
   const [checkSummer, setCheckSummer] = useState(false);
   const [checkOther, setCheckOther] = useState(false);
   const [isEditing, setEditingState] = useState(props.editing);
+  const [showEditingError, toggleEditingError] = useState(false);
+  const [errorText, setErrorText] = useState('');
 
   const dispatch = useDispatch();
 
@@ -261,10 +267,16 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       isFavorite: true,
       semesterOtherDescription: otherDescription,
     };
-    console.log(updateActivityDto);
-    // if error then display error on page in some red bar or something and ask them to resubmit
     updateActivityClient(updateActivityDto).then((res) => {
-      res == ResponseStatus.Success ? router.back() : '';
+      if (res === ResponseStatus.Success) {
+        toggleEditingError(false);
+        router.back();
+      } else {
+        toggleEditingError(true);
+        setErrorText(
+          'Unable to update activity, please verify your fields and try again!',
+        );
+      }
     });
   };
 
@@ -277,14 +289,36 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
   const inputWrapper = 'flex items-center';
   const inputStatus = 'flex items-center py-3';
 
+  const convertBigIntToDate = (dateBigInt: bigint | null) => {
+    if (!dateBigInt) return null;
+
+    const newDate: Date = new Date(Number(dateBigInt));
+    const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' })
+      .format;
+    const formattedDate = `${monthName(
+      newDate,
+    )} ${newDate.getUTCDate()}, ${newDate.getUTCFullYear()}`;
+
+    return formattedDate;
+  };
+
   useEffect(() => {
     populateInitialSemesters();
   }, []);
 
   return (
     <div className="flex flex-col">
+      <div>{showEditingError ? <ErrorBanner text={errorText} /> : ''}</div>
       {isEditing ? (
-        <h2>Edit Activity - {categoryLabels[category]}</h2>
+        [
+          <h2>Submitted Activity - {categoryLabels[category]}</h2>,
+          <p className={'text-last-date-modified-grey italic drop-shadow-sm'}>
+            {`Last Date Modifed`}{' '}
+            <span className={'ml-1'}>{`${convertBigIntToDate(
+              lastDateModified,
+            )}`}</span>
+          </p>,
+        ]
       ) : (
         <h2>New Activity - {categoryLabels[category]}</h2>
       )}

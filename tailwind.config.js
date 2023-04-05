@@ -22,6 +22,11 @@ module.exports = {
         b: '#000000',
         g: '#585858',
         er: '#A1A1A1',
+        'light-red': '#ef4444',
+        'red-100': '#fee2e2',
+        'red-400': '#f87171',
+        'red-700': '#b91c1c',
+        'last-date-modified-grey': '#8C8C8C',
       },
       top: {
         8: '8%',

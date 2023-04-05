@@ -22,6 +22,7 @@ export interface FormState {
   date: string;
   description: string;
   otherDescription: string | null;
+  lastDateModified: bigint | null;
 }
 
 const initialState: FormState = {
@@ -35,6 +36,7 @@ const initialState: FormState = {
   date: '',
   description: '',
   otherDescription: '',
+  lastDateModified: null,
 };
 
 export const formSlice = createSlice({
@@ -71,6 +73,9 @@ export const formSlice = createSlice({
     setActivityId: (state, action: PayloadAction<number>) => {
       state.activityId = action.payload;
     },
+    setLastDateModified: (state, action: PayloadAction<bigint | null>) => {
+      state.lastDateModified = action.payload;
+    },
     resetForm: (state) => {
       state.step = 'selection';
       state.activityName = null;
@@ -81,6 +86,7 @@ export const formSlice = createSlice({
       state.date = '';
       state.description = '';
       state.otherDescription = '';
+      state.lastDateModified = null;
       state.activityId = null;
     },
   },
@@ -97,6 +103,7 @@ export const {
   setDescription,
   setOtherDescription,
   setActivityId,
+  setLastDateModified,
   resetForm,
 } = formSlice.actions;
 
@@ -132,5 +139,9 @@ export const selectOtherDescription: Selector<RootState, string | null> = (
 
 export const selectActivityId: Selector<RootState, number | null> = (state) =>
   state.form.activityId;
+
+export const selectLastDateModified: Selector<RootState, bigint | null> = (
+  state,
+) => state.form.lastDateModified;
 
 export default formSlice.reducer;
