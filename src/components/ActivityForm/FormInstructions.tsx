@@ -4,7 +4,7 @@ import React from 'react';
 const FormInstructions: React.FC = () => {
   return (
     <>
-      <SideBarBubble title="Instructions ">
+      <SideBarBubble title="Instructions" cookieKey="form-instructions">
         <ul className="list-inside space-y-3 my-4">
           <li className="text-sm">
             For each activity, select a category, insert information about each
