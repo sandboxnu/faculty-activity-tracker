@@ -39,8 +39,8 @@ export const getActivitiesForQuery = async (
     query.isFavorite = temp;
   }
   const activities = await prisma.activity.findMany({
-    where: { ...query },
     orderBy: orderBy || {},
+    where: { ...query, semester: query.semester && { equals: query.semester } },
   });
   return activities || 'not found';
 };

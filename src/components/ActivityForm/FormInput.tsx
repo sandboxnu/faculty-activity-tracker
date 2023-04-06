@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectActivityId,
@@ -289,19 +290,6 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
   const inputWrapper = 'flex items-center';
   const inputStatus = 'flex items-center py-3';
 
-  const convertBigIntToDate = (dateBigInt: bigint | null) => {
-    if (!dateBigInt) return null;
-
-    const newDate: Date = new Date(Number(dateBigInt));
-    const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' })
-      .format;
-    const formattedDate = `${monthName(
-      newDate,
-    )} ${newDate.getUTCDate()}, ${newDate.getUTCFullYear()}`;
-
-    return formattedDate;
-  };
-
   return (
     <div className="flex flex-col">
       <div>{showEditingError ? <ErrorBanner text={errorText} /> : ''}</div>
@@ -314,10 +302,8 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
             key="last-date-modified"
             className={'text-last-date-modified-grey italic drop-shadow-sm'}
           >
-            {`Last Date Modifed`}
-            <span className={'ml-1'}>{`${convertBigIntToDate(
-              lastDateModified,
-            )}`}</span>
+            Last Date Modified
+            {` - ${moment(Number(lastDateModified)).format('MMM D, YYYY')}`}
           </p>,
         ]
       ) : (
@@ -529,11 +515,13 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       </div>
 
       <div className="flex justify-between items-center cursor-pointer my-9">
-        {isEditing ? (
-          <button onClick={() => router.back()}>Back</button>
-        ) : (
-          <button onClick={() => dispatch(setStep('selection'))}>Back</button>
-        )}
+        <button
+          onClick={() =>
+            isEditing ? router.back() : dispatch(setStep('selection'))
+          }
+        >
+          Back
+        </button>
 
         <button
           className="bg-ruby border-ruby-dark text-white disabled:bg-ruby-disabled"
