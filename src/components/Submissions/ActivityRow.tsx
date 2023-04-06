@@ -117,9 +117,10 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
                     )}
                   </p>
                   <div
-                    onClick={() =>
-                      favoriteActivity(activity.id, !activity.isFavorite)
-                    }
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      favoriteActivity(activity.id, !activity.isFavorite);
+                    }}
                   >
                     <StarIcon
                       className={`${
