@@ -33,7 +33,7 @@ export const authOptions: AuthOptions = {
       session.accessToken = token.accessToken;
       if (session.user && session.user.email) {
         const user = await getUserForQuery({ email: session.user.email });
-        if (user !== 'not found' && user.length > 0) {
+        if (user.length > 0) {
           session.user.id = user[0].id;
         }
       }

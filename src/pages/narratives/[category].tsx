@@ -6,7 +6,7 @@ import {
   UpdateNarrativeDto,
 } from '@/models/narrative.model';
 import { getNarrativeForUserForCategory } from '@/services/narrative';
-import { toTitleCase } from '@/shared/utils/misc.util';
+import { bigintToJSON, toTitleCase } from '@/shared/utils/misc.util';
 import { NarrativeCategory } from '@prisma/client';
 import moment from 'moment';
 import { GetServerSideProps } from 'next';
@@ -38,13 +38,7 @@ export const getServerSideProps: GetServerSideProps<
       category.toString().toUpperCase() as NarrativeCategory,
     );
     if (narrative) {
-      const parsedNarrative = JSON.parse(
-        JSON.stringify(
-          narrative,
-          (key, value) =>
-            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
-        ),
-      );
+      const parsedNarrative = bigintToJSON(narrative);
       return { props: { newNarrative: false, narrative: parsedNarrative } };
     } else return { props: { newNarrative: true } };
   } else {

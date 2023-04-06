@@ -1,3 +1,4 @@
+import { bigintToJSONString } from '@/shared/utils/misc.util';
 import {
   ActivityCategory,
   ActivityDto,
@@ -84,10 +85,7 @@ export const createActivity = async (
         'Access-Control-Allow-Origin': '*',
       },
       //body: JSON.stringify(body),
-      body: JSON.stringify(
-        body,
-        (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
-      ),
+      body: bigintToJSONString(body),
     });
     if (response.ok || response.status === 200) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;
@@ -115,10 +113,7 @@ export const updateActivity = async (
         'Access-Control-Allow-Origin': '*',
       },
       //body: JSON.stringify(body),
-      body: JSON.stringify(
-        body,
-        (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
-      ),
+      body: bigintToJSONString(body),
     });
     if (response.ok || response.status === 200) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;

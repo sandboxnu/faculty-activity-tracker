@@ -4,6 +4,7 @@ import {
   NarrativeDto,
   UpdateNarrativeDto,
 } from '@/models/narrative.model';
+import { bigintToJSONString } from '@/shared/utils/misc.util';
 import { ResponseStatus } from './activities.client';
 
 const apiRoot = 'http://localhost:3000/api/narratives';
@@ -53,10 +54,7 @@ export const createNarrative = async (
         'Access-Control-Allow-Origin': '*',
       },
       //body: JSON.stringify(body),
-      body: JSON.stringify(
-        body,
-        (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
-      ),
+      body: bigintToJSONString(body),
     });
     if (response.ok || response.status === 201) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;
@@ -83,10 +81,7 @@ export const updateNarrative = async (
         'Access-Control-Allow-Origin': '*',
       },
       //body: JSON.stringify(body),
-      body: JSON.stringify(
-        body,
-        (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
-      ),
+      body: bigintToJSONString(body),
     });
     if (response.ok || response.status === 201) return ResponseStatus.Success;
     else if (response.status === 401) return ResponseStatus.Unauthorized;

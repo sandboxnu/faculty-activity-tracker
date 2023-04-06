@@ -13,17 +13,7 @@ import {
   getNarrativeForUserForCategory,
 } from '@/services/narrative';
 import { PrismaClientValidationError } from '@prisma/client/runtime';
-
-// next js .json doesnt parse bigint so we use workaround below
-// https://github.com/GoogleChromeLabs/jsbi/issues/30
-const bigintToJSON = (object: Partial<NarrativeDto>): Partial<NarrativeDto> => {
-  return JSON.parse(
-    JSON.stringify(
-      object,
-      (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
-    ),
-  );
-};
+import { bigintToJSON } from '@/shared/utils/misc.util';
 
 export default async function handler(
   req: NextApiRequest,

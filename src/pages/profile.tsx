@@ -23,10 +23,10 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
   if (!userId) return { props: { error: 'User not found.' } };
 
   const user = await getUserById(userId);
-  if (user === 'not found') return { props: { error: 'User not found.' } };
+  if (!user) return { props: { error: 'User not found.' } };
 
   const info = await getProfessInfoForUser(userId);
-  if (info === 'not found') {
+  if (!info) {
     //return { props: { error: 'Could not find professor information.' } };
     return {
       props: {
@@ -34,14 +34,14 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          position: toTitleCase(user.role || ""),
+          position: toTitleCase(user.role || ''),
           teachingPercent: 0,
           researchPercent: 0,
           servicePercent: 0,
         },
       },
     };
-  } 
+  }
   return {
     props: {
       info: {

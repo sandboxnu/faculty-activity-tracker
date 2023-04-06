@@ -13,38 +13,34 @@ export const createUser = async (user: CreateUserDto): Promise<User> => {
   return newUser;
 };
 
-export const getUserById = async (
-  userId: number,
-): Promise<User | 'not found'> => {
+export const getUserById = async (userId: number): Promise<User | null> => {
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  return user || 'not found';
+  return user;
 };
 
 export const getUserForQuery = async (
   query: UpdateUserDto,
-): Promise<User[] | 'not found'> => {
+): Promise<User[]> => {
   const users = await prisma.user.findMany({
     where: { ...query },
   });
-  return users || 'not found';
+  return users;
 };
 
-export const deleteUser = async (
-  userId: number,
-): Promise<User | 'not found'> => {
+export const deleteUser = async (userId: number): Promise<User> => {
   const deleteUser = await prisma.user.delete({
     where: { id: userId },
   });
-  return deleteUser || 'not found';
+  return deleteUser;
 };
 
 export const updateUser = async (
   userId: number,
   user: UpdateUserDto,
-): Promise<User | 'not found'> => {
+): Promise<User> => {
   const newUser = await prisma.user.update({
     where: { id: userId },
     data: { ...user },
   });
-  return newUser || 'not found';
+  return newUser;
 };

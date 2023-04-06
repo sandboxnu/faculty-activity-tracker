@@ -37,10 +37,10 @@ export default async function handler(
 
 async function handleGet(id: number, res: NextApiResponse) {
   const activity = await getActivityById(id);
-  if (activity == 'not found') {
-    res.status(404).end(`activity with id: ${id.toString()} Not Found`);
-  } else {
+  if (activity) {
     res.status(200).json({ data: activity });
+  } else {
+    res.status(404).end(`activity with id: ${id.toString()} Not Found`);
   }
 }
 
