@@ -1,7 +1,7 @@
 // TODO: Admin page
 import { useSession, getSession } from 'next-auth/react';
 import Unauthorized from '@/shared/components/Unauthorized';
-import React from 'react';
+import React, { useState } from 'react';
 import { UserDto } from 'src/models/user.model';
 import { User } from '@prisma/client';
 import { getAllUsers, getUserById } from '@/services/user';
@@ -17,6 +17,7 @@ const AdminPage: React.FunctionComponent = (props: AdminPageProps) => {
   const name = session?.user?.name;
   const email = session?.user?.email;
   const users: User[] | undefined = props.users;
+  const [userMap, setUserMap] = useState({});
   const headers = ['Name', 'Role', 'Preffered Name', 'Email', 'Actions'];
 
   if (status === 'loading') {
@@ -35,12 +36,14 @@ const AdminPage: React.FunctionComponent = (props: AdminPageProps) => {
     );
   }
 
+  const createUsersMap = (usersArray: User[]) => {};
+
   const handleAddUser: React.MouseEventHandler<HTMLButtonElement> = () => {
-    //show modal with form to add users
+    //show modal with form to add users??? - might not need
   };
 
   const handleEditUser: React.MouseEventHandler<HTMLButtonElement> = () => {
-    //show modal with user info prepopulated
+    // have users edit input and then save, take in eited fields (on change) and user.id and map those in object
   };
 
   const handleDeleteUser: React.MouseEventHandler<HTMLButtonElement> = () => {
@@ -71,15 +74,42 @@ const AdminPage: React.FunctionComponent = (props: AdminPageProps) => {
               {users?.map((user) => {
                 return (
                   <tr>
-                    <td className="border border-slate-700 px-1">{`${user.firstName} ${user.lastName}`}</td>
+                    <td className="border border-slate-700 px-1">
+                      <input
+                        className="pb-1"
+                        type="text"
+                        id="fname"
+                        name="fname"
+                        value={user.firstName}
+                      ></input>
+                      <input
+                        className="pt-1"
+                        type="text"
+                        id="lname"
+                        name="lname"
+                        value={user.lastName}
+                      ></input>
+                    </td>
                     <td className="border border-slate-700 px-1">
                       {user.role}
                     </td>
                     <td className="border border-slate-700 px-1">
-                      {user.preferredName || 'N/A'}
+                      <input
+                        className=""
+                        type="text"
+                        id="pname"
+                        name="pname"
+                        value={user.preferredName || 'N/A'}
+                      ></input>
                     </td>
                     <td className="border border-slate-700 px-1">
-                      {user.email}
+                      <input
+                        className=""
+                        type="text"
+                        id="email"
+                        name="email"
+                        value={user.email}
+                      ></input>
                     </td>
                     <td className="border border-slate-700 px-1">
                       <button className="m-1" onClick={handleEditUser}>
