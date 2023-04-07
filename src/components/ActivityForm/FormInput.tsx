@@ -1,9 +1,17 @@
-import React, { ChangeEventHandler, FocusEventHandler, useState } from 'react';
+import React, {
+  ChangeEventHandler,
+  FocusEventHandler,
+  useEffect,
+  useState,
+} from 'react';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectActivityId,
   selectCategory,
   selectDate,
   selectDescription,
+  selectLastDateModified,
   selectName,
   selectOtherDescription,
   selectSemester,
@@ -21,15 +29,23 @@ import {
 import { createDateFromString } from '../../shared/utils/date.utils';
 import {
   ActivityCategory,
+  ActivityDto,
   ActivityWeight,
   CreateActivityDto,
   Semester,
+  UpdateActivityDto,
 } from '../../models/activity.model';
 import Tooltip from '../../shared/components/Tooltip';
-import { createActivity, ResponseStatus } from '@/client/activities.client';
+import {
+  createActivity,
+  ResponseStatus,
+  updateActivityClient,
+} from '@/client/activities.client';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { Checkbox } from '../Checkbox';
+import { ErrorBanner } from '../ErrorBanner';
+import { useRouter } from 'next/router';
 
 const categoryLabels: Record<ActivityCategory, string> = {
   TEACHING: 'Teaching',
@@ -38,9 +54,16 @@ const categoryLabels: Record<ActivityCategory, string> = {
   SERVICE: 'Service',
 };
 
-const FormInput: React.FC = () => {
+interface FormInputProps {
+  editing: boolean;
+}
+
+const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
   const { data: session } = useSession();
+  const router = useRouter();
+
   const userId = session?.user.id;
+  const activityId: number | null = useSelector(selectActivityId);
   const category: ActivityCategory | null = useSelector(selectCategory);
   const name: string | null = useSelector(selectName);
   const weight: ActivityWeight | null = useSelector(selectWeight);
@@ -49,14 +72,40 @@ const FormInput: React.FC = () => {
   const date: string = useSelector(selectDate);
   const description: string = useSelector(selectDescription);
   const otherDescription: string | null = useSelector(selectOtherDescription);
+  const lastDateModified: bigint | null = useSelector(selectLastDateModified);
 
   const [specifyDate, setSpecifyDate] = useState(false);
   const [checkFall, setCheckFall] = useState(false);
   const [checkSpring, setCheckSpring] = useState(false);
   const [checkSummer, setCheckSummer] = useState(false);
   const [checkOther, setCheckOther] = useState(false);
+  const [isEditing, setEditingState] = useState(props.editing);
+  const [showEditingError, toggleEditingError] = useState(false);
+  const [errorText, setErrorText] = useState('');
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!semester) return;
+    semester.forEach((sem: Semester) => {
+      switch (sem) {
+        case 'FALL':
+          setCheckFall(true);
+          break;
+        case 'SPRING':
+          setCheckSpring(true);
+          break;
+        case 'SUMMER':
+          setCheckSummer(true);
+          break;
+        case 'OTHER':
+          setCheckOther(true);
+          break;
+        default:
+          break;
+      }
+    });
+  }, [semester]);
 
   const handleWeightChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newWeight: ActivityWeight = event.target.value as ActivityWeight;
@@ -191,6 +240,47 @@ const FormInput: React.FC = () => {
     });
   };
 
+  const updateActivity: VoidFunction = () => {
+    if (
+      !description ||
+      !category ||
+      !weight ||
+      !name ||
+      !semester ||
+      !year ||
+      (!checkFall && !checkOther && !checkSpring && !checkSummer) ||
+      (checkOther && !otherDescription) ||
+      (specifyDate && !date) ||
+      !activityId
+    )
+      return;
+
+    const updateActivityDto: UpdateActivityDto = {
+      id: activityId,
+      userId: userId,
+      semester: semester,
+      year: year,
+      dateModified: BigInt(new Date().getTime()),
+      name: name,
+      description: description,
+      category: category,
+      significance: weight,
+      isFavorite: true,
+      semesterOtherDescription: otherDescription,
+    };
+    updateActivityClient(updateActivityDto).then((res) => {
+      if (res === ResponseStatus.Success) {
+        toggleEditingError(false);
+        router.back();
+      } else {
+        toggleEditingError(true);
+        setErrorText(
+          'Unable to update activity, please verify your fields and try again!',
+        );
+      }
+    });
+  };
+
   if (category === null) return <div>Category must be selected</div>;
 
   // TODO: reduce redundancy of multiple inputs
@@ -202,7 +292,23 @@ const FormInput: React.FC = () => {
 
   return (
     <div className="flex flex-col">
-      <h2>New Activity - {categoryLabels[category]}</h2>
+      <div>{showEditingError ? <ErrorBanner text={errorText} /> : ''}</div>
+      {isEditing ? (
+        [
+          <h2 key="submitted-activity">
+            Submitted Activity - {categoryLabels[category]}
+          </h2>,
+          <p
+            key="last-date-modified"
+            className={'text-last-date-modified-grey italic drop-shadow-sm'}
+          >
+            Last Date Modified
+            {` - ${moment(Number(lastDateModified)).format('MMM D, YYYY')}`}
+          </p>,
+        ]
+      ) : (
+        <h2>New Activity - {categoryLabels[category]}</h2>
+      )}
       <div className={inputContainer}>
         <p className={label}>Name: </p>
         <div className={inputWrapper}>
@@ -347,7 +453,7 @@ const FormInput: React.FC = () => {
             }}
           />
         </div>
-        <div className={inputStatus}>
+        <div className={'my-3.5'}>
           <Image
             src={
               checkFall || checkSpring || checkOther || checkSummer
@@ -357,7 +463,7 @@ const FormInput: React.FC = () => {
             alt="Icon"
             width={16}
             height={16}
-            className="mx-2"
+            className="ml-auto"
           />
           {!checkFall && !checkSpring && !checkOther && !checkSummer && (
             <p className="text-ruby inline">Select semesters.</p>
@@ -382,7 +488,7 @@ const FormInput: React.FC = () => {
       <div className={inputContainer}>
         <div className={inputWrapper}>
           <p className={label}>Description: </p>
-          <div className={inputStatus + ' ml-auto'}>
+          <div className={inputStatus + 'ml-auto'}>
             <Image
               src={
                 description
@@ -409,7 +515,14 @@ const FormInput: React.FC = () => {
       </div>
 
       <div className="flex justify-between items-center cursor-pointer my-9">
-        <button onClick={() => dispatch(setStep('selection'))}>Back</button>
+        <button
+          onClick={() =>
+            isEditing ? router.back() : dispatch(setStep('selection'))
+          }
+        >
+          Back
+        </button>
+
         <button
           className="bg-ruby border-ruby-dark text-white disabled:bg-ruby-disabled"
           disabled={
@@ -420,7 +533,7 @@ const FormInput: React.FC = () => {
             !name ||
             (checkOther && !otherDescription)
           }
-          onClick={submitActivity}
+          onClick={isEditing ? updateActivity : submitActivity}
         >
           Submit
         </button>

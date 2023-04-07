@@ -36,16 +36,17 @@ export type CreateActivityDto = Omit<Activity, 'id'>; /*{
     semesterOtherDescription?: string;
 };*/
 
-export type UpdateActivityDto = Omit<Partial<ActivityDto>, 'semester'>; /*{
-  userId: number;
-  year: number;
-  semester: Semester[];
-  dateModified BigInt;
-  name: string;
-  description: string;
-  category: ActivityCategory;
-  significance: ActivityWeight;
-  isFavorite: boolean;
+export type UpdateActivityDto = Partial<ActivityDto>; /*{
+  id?: number
+  userId?: number;
+  year?: number;
+  semester?: Semester[];
+  dateModified?: BigInt;
+  name?: string;
+  description?: string;
+  category?: ActivityCategory;
+  significance?: ActivityWeight;
+  isFavorite?: boolean;
 };*/
 
 export type SortOrder = 'asc' | 'desc';
