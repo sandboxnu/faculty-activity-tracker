@@ -3,7 +3,7 @@ import React from 'react';
 
 const NarrativeInstructions: React.FC = () => {
   return (
-    <SideBarBubble title="Instructions ">
+    <SideBarBubble title="Instructions" cookieKey="narrative-instructions">
       <div className="space-y-2 my-2">
         <p>
           {' '}

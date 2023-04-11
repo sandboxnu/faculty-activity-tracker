@@ -1,16 +1,40 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const SideBarBubble: React.FC<{ title: string; children: JSX.Element }> = ({
-  title,
-  children,
-}) => {
-  const [dropDownOpen, setDropDownOpen] = useState(false);
+const SideBarBubble: React.FC<{
+  title: string;
+  cookieKey: string;
+  children: JSX.Element;
+}> = ({ title, cookieKey, children }) => {
+  const [dropDownOpen, setDropDownOpen] = useState(true);
+
+  const toggleDropDown = () => {
+    const newState = !dropDownOpen;
+    console.log(`SET sidebar-dropdown-${cookieKey} => ${newState}`);
+    window.localStorage.setItem(
+      `sidebar-dropdown-${cookieKey}`,
+      JSON.stringify(newState),
+    );
+    setDropDownOpen(newState);
+  };
+
+  useEffect(() => {
+    const storedDropDownCookie = JSON.parse(
+      window.localStorage.getItem(`sidebar-dropdown-${cookieKey}`) || 'null',
+    );
+    if (storedDropDownCookie !== null) {
+      console.log(
+        `GET sidebar-dropdown-${cookieKey} => ${storedDropDownCookie}`,
+      );
+      setDropDownOpen(storedDropDownCookie);
+    }
+  }, []);
+
   return (
     <div className="flex flex-col px-5 py-3 bg-medium-grey w-full rounded-lg shadow-sm">
       <div
         className="flex items-center space-x-4 cursor-pointer"
-        onClick={() => setDropDownOpen((b) => !b)}
+        onClick={toggleDropDown}
       >
         <Image
           className={dropDownOpen ? 'rotate-90' : ''}

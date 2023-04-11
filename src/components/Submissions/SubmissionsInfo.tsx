@@ -28,23 +28,25 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
     activitiesBySigLevel['SIGNIFICANT'].length;
   return (
     <>
-      <SideBarBubble title="Instructions">
+      <SideBarBubble title="Instructions" cookieKey="submissions-instructions">
         <div className="space-y-4 my-2">
           <p className="text-sm">
-            8-10 Major Activity: 2 and above + Significant and Minor Activities:
-            10 and above
+            8-10 Score: 2+ Major Activities, 10+ Significant and Minor
+            Activities
           </p>
           <p className="text-sm">
-            7-8 Major Activity: 1-2 + Significant and Minor Activities: 6-10{' '}
+            7-8 Score: 1-2 Major Activities, 6-10 Significant and Minor
+            Activities
           </p>
           <p className="text-sm">
-            6-7 Major Activity: 0-1 + Significant and Minor Activities: 2-6{' '}
+            6-7 Score: 0-1 Major Activities, 2-6 Significant and Minor
+            Activities
           </p>
           <p className="text-sm">6 Fulfilling required course load</p>
         </div>
       </SideBarBubble>
 
-      <SideBarBubble title="Summary">
+      <SideBarBubble title="Summary" cookieKey="submissions-summary">
         <>
           <div className="space-y-2 my-4">
             {Object.entries(activitiesBySigLevel).map(
@@ -72,7 +74,10 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
           <p className="mt-6 mb-2">Total: {totalCount} activities</p>
         </>
       </SideBarBubble>
-      <SideBarBubble title="Narrative Preview">
+      <SideBarBubble
+        title="Narrative Preview"
+        cookieKey="submissions-narrative-preview"
+      >
         <p className="mt-2">
           {' '}
           {narrative?.text || 'No narrative submitted yet.'}{' '}
