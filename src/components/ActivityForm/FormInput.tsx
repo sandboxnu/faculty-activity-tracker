@@ -46,6 +46,7 @@ import { useSession } from 'next-auth/react';
 import { Checkbox } from '../Checkbox';
 import { ErrorBanner } from '../ErrorBanner';
 import { useRouter } from 'next/router';
+import DropdownInput from '@/shared/components/DropdownInput';
 
 const categoryLabels: Record<ActivityCategory, string> = {
   TEACHING: 'Teaching',
@@ -53,6 +54,19 @@ const categoryLabels: Record<ActivityCategory, string> = {
     'Creative Activity, Scholarship and Research/Professional Development',
   SERVICE: 'Service',
 };
+
+const weightOptions = [
+  { label: 'Major', value: 'MAJOR' },
+  { label: 'Significant', value: 'SIGNIFICANT' },
+  { label: 'Minor', value: 'MINOR' },
+];
+
+/**
+ * <option value="">Select Weight</option>
+  <option value="MAJOR">Major</option>
+  <option value="SIGNIFICANT">Significant</option>
+  <option value="MINOR">Minor</option>
+ */
 
 interface FormInputProps {
   editing: boolean;
@@ -285,7 +299,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
 
   // TODO: reduce redundancy of multiple inputs
   const label = 'text-base font-bold';
-  const inputBox = 'border border-black rounded-lg px-3 py-2 outline-none';
+  const inputBox = 'border-[0.5px] border-g rounded-lg px-3 py-2 outline-none';
   const inputContainer = 'flex flex-col my-2 space-y-1';
   const inputWrapper = 'flex items-center';
   const inputStatus = 'flex items-center py-3';
@@ -356,16 +370,13 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
           />
         </div>
         <div className={inputWrapper}>
-          <select
-            value={weight || ''}
-            onChange={handleWeightChange}
-            className={inputBox}
-          >
-            <option value="">Select Weight</option>
-            <option value="MAJOR">Major</option>
-            <option value="SIGNIFICANT">Significant</option>
-            <option value="MINOR">Minor</option>
-          </select>
+          <DropdownInput
+            options={weightOptions}
+            placeholder="Select Weight"
+            selectValue={(value) =>
+              dispatch(setWeight(value as ActivityWeight))
+            }
+          />
           <div className={inputStatus}>
             <Image
               src={
@@ -453,7 +464,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
             }}
           />
         </div>
-        <div className={'my-3.5'}>
+        <div className={inputStatus}>
           <Image
             src={
               checkFall || checkSpring || checkOther || checkSummer
@@ -463,7 +474,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
             alt="Icon"
             width={16}
             height={16}
-            className="ml-auto"
+            className="mx-2"
           />
           {!checkFall && !checkSpring && !checkOther && !checkSummer && (
             <p className="text-ruby inline">Select semesters.</p>

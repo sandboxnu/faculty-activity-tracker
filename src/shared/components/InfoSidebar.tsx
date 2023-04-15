@@ -18,7 +18,7 @@ import { getNarrativeForUserForCategory } from '@/client/narratives.client';
 import { NarrativeDto } from '@/models/narrative.model';
 import ProfileInstructions from '@/components/Profile/ProfileInstructions';
 
-type SidebarType = 'submissions' | 'new' | 'profile' | 'narratives';
+type SidebarType = 'submissions' | 'new' | 'edit' | 'profile' | 'narratives';
 
 const InfoSidebar: React.FC = () => {
   const router = useRouter();
@@ -58,6 +58,8 @@ const InfoSidebar: React.FC = () => {
       }
     } else if (pathname === '/submissions/new') {
       setType('new');
+    } else if (pathname === '/submissions/edit') {
+      setType('edit');
     } else if (pathname === '/profile') {
       setType('profile');
     } else if (pathname.includes('narratives')) {
@@ -75,7 +77,9 @@ const InfoSidebar: React.FC = () => {
           narrative={narrative}
         />
       )}
-      {sidebarType === 'new' && <FormInstructions />}
+      {(sidebarType === 'new' || sidebarType === 'edit') && (
+        <FormInstructions />
+      )}
       {sidebarType === 'narratives' && <NarrativeInstructions />}
       {sidebarType === 'profile' && <ProfileInstructions />}
     </div>
