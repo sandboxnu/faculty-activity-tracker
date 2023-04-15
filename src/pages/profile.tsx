@@ -34,14 +34,14 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          position: toTitleCase(user.role || ""),
+          position: toTitleCase(user.role || ''),
           teachingPercent: 0,
           researchPercent: 0,
           servicePercent: 0,
         },
       },
     };
-  } 
+  }
   return {
     props: {
       info: {
@@ -66,7 +66,7 @@ const Profile: React.FC<ProfilePageProps> = ({ info, error }) => {
     );
 
   return (
-    <div className="px-12 py-5 w-full">
+    <div className="w-full">
       <Head>
         <title>My Profle</title>
       </Head>

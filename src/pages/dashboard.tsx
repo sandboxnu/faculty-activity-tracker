@@ -17,12 +17,12 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col w-full px-8">
+    <div className="flex flex-col w-full">
       <Head>
         <title>Dashboard</title>
       </Head>
       <h1>Dashboard</h1>
-      <p className="text-2xl text-ruby">Welcome, {name || 'User'}! </p>
+      <p className="text-lg text-ruby my-4">Welcome, {name || 'User'}! </p>
     </div>
   );
 };

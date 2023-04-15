@@ -7,7 +7,7 @@ const FormContainer: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const step: FormStep = useSelector(selectStep);
   return (
     <div className="flex w-full h-full">
-      <div className="px-8 pb-20 w-full">{children}</div>
+      <div className="pb-20 w-full">{children}</div>
     </div>
   );
 };

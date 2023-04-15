@@ -4,7 +4,7 @@ import { toTitleCase } from '@/shared/utils/misc.util';
 
 const SubmissionsPage: React.FC = () => {
   return (
-    <div className="px-8 flex flex-col w-full">
+    <div className="flex flex-col w-full">
       <h1>Activities</h1>
       <div className="flex space-x-5">
         {['teaching', 'service', 'research'].map((category) => (

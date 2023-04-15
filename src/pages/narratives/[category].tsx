@@ -108,7 +108,7 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
       <p className="w-full text-center text-red mt-20"> Invalid Category </p>
     );
   return (
-    <div className="w-full px-16 py-5">
+    <div className="w-full">
       <Head>
         <title>{`Narrative - ${toTitleCase(
           category?.toString() || '',

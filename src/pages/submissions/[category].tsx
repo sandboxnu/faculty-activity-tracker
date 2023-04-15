@@ -120,7 +120,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
           category?.toString() || '',
         )}`}</title>
       </Head>
-      <div className="px-16 py-5 w-full flex flex-col border-box">
+      <div className="w-full flex flex-col border-box">
         <h1>{toTitleCase(category?.toString() || '')}</h1>
         {pageError && (
           <p className="text-red text-center w-full">{pageError}</p>

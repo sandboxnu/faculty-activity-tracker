@@ -25,7 +25,7 @@ const CategorySelector: React.FC = () => {
 
   return (
     <div className="">
-      <p className="text-3xl mb-3">Category</p>
+      <h1>Category</h1>
       <ol className="list-inside my-6 space-y-4">
         <li>Teaching: Educational activities that benefit NU students.</li>
         <li>
