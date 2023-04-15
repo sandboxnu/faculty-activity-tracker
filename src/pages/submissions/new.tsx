@@ -3,6 +3,7 @@ import FormContainer from '@/components/ActivityForm/FormContainer';
 import FormInput from '@/components/ActivityForm/FormInput';
 import ResultPage from '@/components/ActivityForm/ResultPage';
 import { FormStep, selectStep } from '@/store/form.store';
+import Head from 'next/head';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 //import './ActivityForm.css';
@@ -26,7 +27,14 @@ const StepComponent: Record<FormStep, JSX.Element> = {
 const NewActivityForm: React.FC = () => {
   const step: FormStep = useSelector(selectStep);
 
-  return StepComponent[step];
+  return (
+    <>
+      <Head>
+        <title>New Submission</title>
+      </Head>
+      {StepComponent[step]}
+    </>
+  );
 };
 
 export default NewActivityForm;

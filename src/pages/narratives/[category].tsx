@@ -110,18 +110,15 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
   return (
     <div className="w-full px-16 py-5">
       <Head>
-        {' '}
-        <title>
-          {' '}
-          Narrative - {toTitleCase(category?.toString() || '')}
-        </title>{' '}
+        <title>{`Narrative - ${toTitleCase(
+          category?.toString() || '',
+        )}`}</title>
       </Head>
       <h1> {toTitleCase(category.toString())} - Narrative </h1>
       {newNarrative === false && narrative && (
         <p className="text-neutral-500 italic">
-          {' '}
-          Last Date Modified -{' '}
-          {moment(Number(narrative.dateModified)).format('MMM D, YYYY')}{' '}
+          Last Date Modified -&nbsp;
+          {moment(Number(narrative.dateModified)).format('MMM D, YYYY')}
         </p>
       )}
       <h3 className="mt-7"> Narrative: </h3>

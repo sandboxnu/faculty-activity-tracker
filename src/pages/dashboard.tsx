@@ -1,6 +1,7 @@
 import React from 'react';
 import Unauthorized from '@/shared/components/Unauthorized';
 import { useSession } from 'next-auth/react';
+import Head from 'next/head';
 
 const Dashboard: React.FC = () => {
   const { data: session, status } = useSession();
@@ -17,6 +18,9 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full px-8">
+      <Head>
+        <title>Dashboard</title>
+      </Head>
       <h1>Dashboard</h1>
       <p className="text-2xl text-ruby">Welcome, {name || 'User'}! </p>
     </div>

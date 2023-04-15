@@ -116,7 +116,9 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
   return (
     <div className="flex w-full">
       <Head>
-        <title>Submissions - {toTitleCase(category?.toString() || '')}</title>
+        <title>{`Submissions - ${toTitleCase(
+          category?.toString() || '',
+        )}`}</title>
       </Head>
       <div className="px-16 py-5 w-full flex flex-col border-box">
         <h1>{toTitleCase(category?.toString() || '')}</h1>
