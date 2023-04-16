@@ -60,6 +60,7 @@ async function handleDelete(id: number, res: NextApiResponse) {
     const user = await deleteUser(id);
     res.status(200).json({ data: user });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       error:
         "User delete endpoint needs at least 1 valid argument. Valid args are {'id'}",

@@ -2,10 +2,14 @@
 import { useSession, getSession } from 'next-auth/react';
 import Unauthorized from '@/shared/components/Unauthorized';
 import React, { useState } from 'react';
-import { UserDto } from 'src/models/user.model';
-import { User } from '@prisma/client';
+import { CreateUserDto, UserDto } from 'src/models/user.model';
+import { User, Role } from '@prisma/client';
 import { getAllUsers, getUserById } from '@/services/user';
 import { GetServerSideProps } from 'next';
+import AdminTableRow from '../components/AdminPage/AdminTableRow';
+import { deleteUser, addUser } from '../client/users.client';
+import { useRouter } from 'next/router';
+import { ResponseStatus } from '@/client/activities.client';
 
 interface AdminPageProps {
   users?: UserDto[];
@@ -17,8 +21,29 @@ const AdminPage: React.FunctionComponent = (props: AdminPageProps) => {
   const name = session?.user?.name;
   const email = session?.user?.email;
   const users: User[] | undefined = props.users;
-  const [userMap, setUserMap] = useState({});
-  const headers = ['Name', 'Role', 'Preffered Name', 'Email', 'Actions'];
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [role, setRole] = useState<Role>(Role.MERIT_COMMITTEE_MEMBER);
+  const [preferredName, setPreferredName] = useState<string>('');
+  const [newEmail, setNewEmail] = useState<string>('');
+  const [isAddingUser, toggleAddingUser] = useState<boolean>(false);
+
+  const roles: Role[] = [
+    Role.DEAN,
+    Role.FACULTY,
+    Role.MERIT_COMMITTEE_HEAD,
+    Role.MERIT_COMMITTEE_MEMBER,
+  ];
+  const headers = [
+    'First Name',
+    'Last Name',
+    'Role',
+    'Preferred Name',
+    'Email',
+    'Actions',
+  ];
+
+  const router = useRouter();
 
   if (status === 'loading') {
     return <p>Loading...</p>;
@@ -35,31 +60,102 @@ const AdminPage: React.FunctionComponent = (props: AdminPageProps) => {
       </p>
     );
   }
-
-  const createUsersMap = (usersArray: User[]) => {};
-
   const handleAddUser: React.MouseEventHandler<HTMLButtonElement> = () => {
-    //show modal with form to add users??? - might not need
+    toggleAddingUser(!isAddingUser);
   };
 
-  const handleEditUser: React.MouseEventHandler<HTMLButtonElement> = () => {
-    // have users edit input and then save, take in eited fields (on change) and user.id and map those in object
-  };
-
-  const handleDeleteUser: React.MouseEventHandler<HTMLButtonElement> = () => {
-    // show confirmation modal -> y : delete || n : just close modal
+  const handleSaveUser: React.MouseEventHandler<HTMLButtonElement> = () => {
+    if (!firstName || !lastName || !role || !email) return;
+    const newUser: CreateUserDto = {
+      firstName: firstName,
+      lastName: lastName,
+      role: role,
+      preferredName: preferredName,
+      email: newEmail,
+    };
+    addUser(newUser)
+      .then((res) => {
+        if (res === ResponseStatus.Success) {
+          toggleAddingUser(!isAddingUser);
+          setFirstName('');
+          setLastName('');
+          setNewEmail('');
+          setRole(Role.MERIT_COMMITTEE_MEMBER);
+          setPreferredName('');
+          router.reload();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // TODO: Add user button, Remove user button, Edit user button
   return (
     <>
-      <div className="m-2">
-        <div className="flex w-100">
-          <button className="my-3" onClick={handleAddUser}>
-            Add User
-          </button>
+      <div className="m-2 overflow-x-scroll">
+        <div className="flex w-full">
+          {isAddingUser ? (
+            <button key="saveUser" className="my-3" onClick={handleSaveUser}>
+              Save User
+            </button>
+          ) : (
+            <button key="addUser" className="my-3" onClick={handleAddUser}>
+              Add User
+            </button>
+          )}
         </div>
-        <div className="flex justify-center w-100">
+        {isAddingUser ? (
+          <div className="flex space-x-3 pr-1 m-3">
+            <input
+              className=" border border-slate-700  px-1 w-1/6"
+              type="text"
+              size={1}
+              onChange={(e) => setFirstName(e.target.value)}
+              value={firstName}
+              placeholder="First Name"
+            ></input>
+            <input
+              className="border border-slate-700 px-1 w-1/6"
+              type="text"
+              size={1}
+              onChange={(e) => setLastName(e.target.value)}
+              value={lastName}
+              placeholder="Last Name"
+            ></input>
+            <select
+              name="roles"
+              className="px-1 border border-slate-700 mx-1"
+              onChange={(e) => setRole(e.target.value as Role)}
+              value={role}
+            >
+              {roles.map((role) => (
+                <option value={role}>{role}</option>
+              ))}
+            </select>
+            <input
+              className="border border-slate-700 px-1 w-1/6"
+              type="text"
+              size={1}
+              onChange={(e) => setPreferredName(e.target.value)}
+              value={preferredName}
+              placeholder="Preferred Name"
+            ></input>
+            <input
+              className="border border-slate-700 px-1 w-1/6"
+              type="email"
+              pattern=".+@husky.neu.edu"
+              size={1}
+              onChange={(e) => setNewEmail(e.target.value)}
+              value={newEmail}
+              placeholder="Email"
+              required
+            ></input>
+          </div>
+        ) : (
+          ''
+        )}
+        <div className="flex justify-center w-full">
           <table className="table-auto border-collapse border border-slate-500">
             <thead>
               <tr>
@@ -72,58 +168,7 @@ const AdminPage: React.FunctionComponent = (props: AdminPageProps) => {
             </thead>
             <tbody>
               {users?.map((user) => {
-                return (
-                  <tr>
-                    <td className="border border-slate-700 px-1">
-                      <input
-                        className="pb-1"
-                        type="text"
-                        id="fname"
-                        name="fname"
-                        value={user.firstName}
-                      ></input>
-                      <input
-                        className="pt-1"
-                        type="text"
-                        id="lname"
-                        name="lname"
-                        value={user.lastName}
-                      ></input>
-                    </td>
-                    <td className="border border-slate-700 px-1">
-                      {user.role}
-                    </td>
-                    <td className="border border-slate-700 px-1">
-                      <input
-                        className=""
-                        type="text"
-                        id="pname"
-                        name="pname"
-                        value={user.preferredName || 'N/A'}
-                      ></input>
-                    </td>
-                    <td className="border border-slate-700 px-1">
-                      <input
-                        className=""
-                        type="text"
-                        id="email"
-                        name="email"
-                        value={user.email}
-                      ></input>
-                    </td>
-                    <td className="border border-slate-700 px-1">
-                      <button className="m-1" onClick={handleEditUser}>
-                        Edit User
-                      </button>
-                      <button
-                        className="m-1 bg-ruby border-ruby-dark text-white"
-                        onClick={handleDeleteUser}
-                      >
-                        Delete User
-                      </button>
-                    </td>
-                  </tr>
-                );
+                return <AdminTableRow user={user} />;
               })}
             </tbody>
           </table>
