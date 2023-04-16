@@ -4,8 +4,8 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 const Header: React.FC = () => {
-  const { data: session } = useSession();
-  const signedIn = session?.user.id !== undefined;
+  const { status } = useSession();
+  const signedIn = status === 'authenticated';
 
   return (
     <div className="flex items-baseline w-screen bg-black font-bold px-5 py-3">
