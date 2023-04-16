@@ -101,7 +101,9 @@ const AdminTableRow: React.FC<AdminTableRowProps> = ({ user }) => {
           value={role}
         >
           {roles.map((role) => (
-            <option value={role}>{role}</option>
+            <option key={role} value={role}>
+              {role}
+            </option>
           ))}
         </select>
       ) : (
