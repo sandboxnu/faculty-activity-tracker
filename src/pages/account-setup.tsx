@@ -33,7 +33,6 @@ export const getServerSideProps: GetServerSideProps<
       },
     };
   }
-
   if (session?.user?.email && session?.user?.name) {
     return {
       props: { name: session.user.name, email: session.user.email },
