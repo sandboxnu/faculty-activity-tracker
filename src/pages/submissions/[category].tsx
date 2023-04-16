@@ -11,7 +11,7 @@ import { ActivityCategory, SignificanceLevel } from '@prisma/client';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ResponseStatus, updateActivity } from '@/client/activities.client';
 import Head from 'next/head';
@@ -103,6 +103,10 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
       }
     });
   };
+
+  useEffect(() => {
+    if (initialActivities) setActivities(initialActivities);
+  }, [category, initialActivities]);
 
   if (pageError || !activities)
     return (
