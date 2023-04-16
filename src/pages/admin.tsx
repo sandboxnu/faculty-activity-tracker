@@ -130,7 +130,9 @@ const AdminPage: React.FunctionComponent = (props: AdminPageProps) => {
               value={role}
             >
               {roles.map((role) => (
-                <option value={role}>{role}</option>
+                <option key={role} value={role}>
+                  {role}
+                </option>
               ))}
             </select>
             <input
@@ -161,14 +163,16 @@ const AdminPage: React.FunctionComponent = (props: AdminPageProps) => {
               <tr>
                 {headers.map((header) => {
                   return (
-                    <th className="border border-slate-600 px-1">{header}</th>
+                    <th key={header} className="border border-slate-600 px-1">
+                      {header}
+                    </th>
                   );
                 })}
               </tr>
             </thead>
             <tbody>
               {users?.map((user) => {
-                return <AdminTableRow user={user} />;
+                return <AdminTableRow key={user.id} user={user} />;
               })}
             </tbody>
           </table>
