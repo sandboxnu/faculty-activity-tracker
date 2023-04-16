@@ -20,7 +20,13 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
   const session = await getSession(context);
   const userId = session?.user?.id;
 
-  if (!userId) return { props: { error: 'User not found.' } };
+  if (!userId)
+    return {
+      redirect: {
+        destination: '/account-setup',
+        permanent: false,
+      },
+    };
 
   const user = await getUserById(userId);
   if (user === 'not found') return { props: { error: 'User not found.' } };
