@@ -1,7 +1,18 @@
+import DropdownInput from '@/shared/components/DropdownInput';
 import React, { ChangeEventHandler } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActivityCategory } from '../../models/activity.model';
 import { selectCategory, setCategory, setStep } from '../../store/form.store';
+
+const categoryOptions = [
+  { label: 'Teaching', value: 'TEACHING' },
+  {
+    label:
+      'Creative Activity, Scholarship and Research/Professional Development',
+    value: 'RESEARCH',
+  },
+  { label: 'Service', value: 'SERVICE' },
+];
 
 const CategorySelector: React.FC = () => {
   const category: ActivityCategory | null = useSelector(selectCategory);
@@ -33,23 +44,14 @@ const CategorySelector: React.FC = () => {
         </li>
         <li>Service: Activities outside of NU community.</li>
       </ol>
-      <label>
-        <div>
-          <select
-            value={category || ''}
-            onChange={handleChange}
-            className={inputBox + ' w-1/2'}
-          >
-            <option value="">Select a Category</option>
-            <option value="TEACHING">Teaching</option>
-            <option value="RESEARCH">
-              Creative Activity, Scholarship and Research/Professional
-              Development
-            </option>
-            <option value="SERVICE">Service</option>
-          </select>
-        </div>
-      </label>
+      <DropdownInput
+        options={categoryOptions}
+        placeholder="Select a Category"
+        selectValue={(value) =>
+          dispatch(setCategory(value as ActivityCategory))
+        }
+        addOnClass="w-1/2"
+      />
       <button
         className="bg-ruby border-ruby-dark text-white disabled:bg-ruby-disabled float-right mt-4"
         onClick={submit}

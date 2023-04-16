@@ -11,6 +11,9 @@ module.exports = {
         sm: '0px 1px 2px rgba(0,0,0,0.25)',
         lg: '0px 3.5px 3.5px rgba(0,0,0,0.25)',
       },
+      borderRadius: {
+        lg: '10px',
+      },
       colors: {
         ruby: '#D41B2C',
         'ruby-dark': '#A41F2C',
