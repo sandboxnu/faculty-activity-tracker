@@ -26,7 +26,6 @@ import {
   setWeight,
   setYear,
 } from '../../store/form.store';
-import { createDateFromString } from '../../shared/utils/date.utils';
 import {
   ActivityCategory,
   ActivityDto,
@@ -47,6 +46,9 @@ import { Checkbox } from '../Checkbox';
 import { ErrorBanner } from '../ErrorBanner';
 import { useRouter } from 'next/router';
 import DropdownInput from '@/shared/components/DropdownInput';
+import InputContainer from '@/shared/components/InputContainer';
+import TextInput from '@/shared/components/TextInput';
+import TextAreaInput from '@/shared/components/TextAreaInput';
 
 const categoryLabels: Record<ActivityCategory, string> = {
   TEACHING: 'Teaching',
@@ -61,12 +63,24 @@ const weightOptions = [
   { label: 'Minor', value: 'MINOR' },
 ];
 
-/**
- * <option value="">Select Weight</option>
-  <option value="MAJOR">Major</option>
-  <option value="SIGNIFICANT">Significant</option>
-  <option value="MINOR">Minor</option>
- */
+const WeightInfo = () => (
+  <div className="flex items-center space-x-2 text-g">
+    <Image
+      src="/media/infoIcon.svg"
+      alt="Little information icon"
+      width={16}
+      height={16}
+    />
+    <Tooltip
+      tooltipTitle="Weight Examples"
+      text={[
+        'Major: New courses, significantly redesigned courses, large courses (more than 25 students), running a dialogue',
+        'Significant: Workshops, fieldtrips, collaborations, client projects, etc.',
+        'Minor: Directed study, guest critic, guest lecture, letter of recommendation, mentoring',
+      ]}
+    />
+  </div>
+);
 
 interface FormInputProps {
   editing: boolean;
@@ -88,7 +102,6 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
   const otherDescription: string | null = useSelector(selectOtherDescription);
   const lastDateModified: bigint | null = useSelector(selectLastDateModified);
 
-  const [specifyDate, setSpecifyDate] = useState(false);
   const [checkFall, setCheckFall] = useState(false);
   const [checkSpring, setCheckSpring] = useState(false);
   const [checkSummer, setCheckSummer] = useState(false);
@@ -121,30 +134,6 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
     });
   }, [semester]);
 
-  const handleWeightChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
-    const newWeight: ActivityWeight = event.target.value as ActivityWeight;
-    if (newWeight) {
-      dispatch(setWeight(newWeight));
-    }
-  };
-
-  const handleDateChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    const newDate: string = event.target.value;
-    dispatch(setDate(newDate));
-  };
-
-  const handleDescriptionChange: ChangeEventHandler<HTMLTextAreaElement> = (
-    event,
-  ) => {
-    const newDescription: string = event.target.value;
-    dispatch(setDescription(newDescription));
-  };
-
-  const handleNameChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    const newName: string = event.target.value;
-    dispatch(setName(newName));
-  };
-
   const handleAddSemester: ChangeEventHandler<Element> = (event) => {
     const newSemester: Semester = event.target.parentElement?.textContent
       ?.trim()
@@ -170,23 +159,16 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
     console.log('removed' + semester);
   };
 
-  const handleYearChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+  const handleYearChange = (val: string) => {
     // delete entire input => reset year
-    if (event.target.value === '') {
+    if (val === '') {
       dispatch(setYear(null));
     } else {
-      const newYear: number = parseInt(event.target.value);
+      const newYear: number = parseInt(val);
       if (!isNaN(newYear)) {
         dispatch(setYear(newYear));
       }
     }
-  };
-
-  const handleOtherDescriptionChange: ChangeEventHandler<
-    HTMLTextAreaElement
-  > = (event) => {
-    const newOtherDescription: string = event.target.value;
-    dispatch(setOtherDescription(newOtherDescription));
   };
 
   const displayOtherDescription = () => {
@@ -194,28 +176,16 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       <div className={inputContainer}>
         <div className={inputWrapper}>
           <p className={'text-slate-600'}>
-            If you checked Other, please explain in the below.
+            If you checked Other, please explain in the area below.
           </p>
           <div className={inputStatus + ' ml-auto'}></div>
         </div>
-        <textarea
+        <TextAreaInput
           value={otherDescription || ''}
-          onChange={handleOtherDescriptionChange}
-          rows={3}
-          className={inputBox}
+          change={(val) => dispatch(setOtherDescription(val))}
         />
       </div>
     );
-  };
-
-  const changeToDate: FocusEventHandler<HTMLInputElement> = (event) => {
-    event.target.type = 'date';
-  };
-
-  const changeToText: FocusEventHandler<HTMLInputElement> = (event) => {
-    if (!event.target.value) {
-      event.target.type = 'text';
-    }
   };
 
   const submitActivity = () => {
@@ -227,12 +197,9 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       !semester ||
       !year ||
       (!checkFall && !checkOther && !checkSpring && !checkSummer) ||
-      (checkOther && !otherDescription) ||
-      (specifyDate && !date)
+      (checkOther && !otherDescription)
     )
       return;
-    const dateObject = createDateFromString(date);
-    if (specifyDate && !dateObject) return;
 
     const newActivityDto: CreateActivityDto = {
       userId: userId || 1,
@@ -264,7 +231,6 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       !year ||
       (!checkFall && !checkOther && !checkSpring && !checkSummer) ||
       (checkOther && !otherDescription) ||
-      (specifyDate && !date) ||
       !activityId
     )
       return;
@@ -297,9 +263,6 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
 
   if (category === null) return <div>Category must be selected</div>;
 
-  // TODO: reduce redundancy of multiple inputs
-  const label = 'text-base font-bold';
-  const inputBox = 'border-[0.5px] border-g rounded-lg px-3 py-2 outline-none';
   const inputContainer = 'flex flex-col my-2 space-y-1';
   const inputWrapper = 'flex items-center';
   const inputStatus = 'flex items-center py-3';
@@ -308,121 +271,58 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
     <div className="flex flex-col">
       <div>{showEditingError ? <ErrorBanner text={errorText} /> : ''}</div>
       {isEditing ? (
-        [
-          <h2 key="submitted-activity">
-            Submitted Activity - {categoryLabels[category]}
-          </h2>,
-          <p
-            key="last-date-modified"
-            className={'text-last-date-modified-grey italic drop-shadow-sm'}
-          >
+        <>
+          <h2>Submitted Activity - {categoryLabels[category]}</h2>
+          <p className={'text-last-date-modified-grey italic drop-shadow-sm'}>
             Last Date Modified
             {` - ${moment(Number(lastDateModified)).format('MMM D, YYYY')}`}
-          </p>,
-        ]
+          </p>
+        </>
       ) : (
         <h2>New Activity - {categoryLabels[category]}</h2>
       )}
-      <div className={inputContainer}>
-        <p className={label}>Name: </p>
-        <div className={inputWrapper}>
-          <input
-            type={'text'}
-            placeholder="Enter Activity Name"
-            onChange={handleNameChange}
-            value={name || ''}
-            className={inputBox}
-          ></input>
-          <div className={inputStatus}>
-            <Image
-              src={
-                name
-                  ? '/media/successCheckmark.svg'
-                  : '/media/failureWarning.svg'
-              }
-              alt="Icon"
-              width={16}
-              height={16}
-              className="mx-2"
-            />
-            {!name && (
-              <p className="text-ruby inline">Enter an activity name.</p>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className={inputContainer}>
-        <p className={label}>Weight: </p>
-        <div className="flex items-center space-x-2">
-          <Image
-            src="/media/infoIcon.svg"
-            alt="Little information icon"
-            width={22}
-            height={22}
-          />
-          <Tooltip
-            tooltipTitle="Weight Examples"
-            text={[
-              'Major: New courses, significantly redesigned courses, large courses (more than 25 students), running a dialogue',
-              'Significant: Workshops, fieldtrips, collaborations, client projects, etc.',
-              'Minor: Directed study, guest critic, guest lecture, letter of recommendation, mentoring',
-            ]}
-          />
-        </div>
-        <div className={inputWrapper}>
-          <DropdownInput
-            options={weightOptions}
-            placeholder="Select Weight"
-            selectValue={(value) =>
-              dispatch(setWeight(value as ActivityWeight))
-            }
-          />
-          <div className={inputStatus}>
-            <Image
-              src={
-                weight
-                  ? '/media/successCheckmark.svg'
-                  : '/media/failureWarning.svg'
-              }
-              alt="Icon"
-              width={16}
-              height={16}
-              className="mx-2"
-            />
-            {!weight && <p className="text-ruby inline">Select a weight.</p>}
-          </div>
-        </div>
-      </div>
-      <div className={inputContainer}>
-        <p className={label}>Year: </p>
-        <div className={inputWrapper}>
-          <input
-            type={'text'}
-            placeholder="Enter Year"
-            onChange={handleYearChange}
-            value={year || ''}
-            className={inputBox}
-          ></input>
-          <div className={inputStatus}>
-            <Image
-              src={
-                year
-                  ? '/media/successCheckmark.svg'
-                  : '/media/failureWarning.svg'
-              }
-              alt="Icon"
-              width={16}
-              height={16}
-              className="mx-2"
-            />
-            {!year && <p className="text-ruby inline">Enter year.</p>}
-          </div>
-        </div>
-      </div>
-      <div className="flex space-x-6">
-        <div className={inputContainer}>
-          <p className={label}>Semester: </p>
-          {/* This could be a map but woo wee lazy, rip me at PR if you want it */}
+      <InputContainer
+        label="Name: "
+        incomplete={!name}
+        incompleteMessage="Enter an activity name."
+      >
+        <TextInput
+          value={name || ''}
+          change={(val) => dispatch(setName(val))}
+          placeholder="Enter Activity Name"
+        />
+      </InputContainer>
+      <WeightInfo />
+      <InputContainer
+        label="Weight: "
+        incomplete={!weight}
+        incompleteMessage="Select a weight."
+      >
+        <DropdownInput
+          options={weightOptions}
+          placeholder="Select Weight"
+          addOnClass="w-[175px]"
+          initialValue={weightOptions.find((o) => o.value === weight)}
+          selectValue={(value) => dispatch(setWeight(value as ActivityWeight))}
+        />
+      </InputContainer>
+      <InputContainer
+        label="Year: "
+        incomplete={!year}
+        incompleteMessage="Enter a year."
+      >
+        <TextInput
+          value={year || ''}
+          change={(val) => handleYearChange(val)}
+          placeholder="Enter Year"
+        />
+      </InputContainer>
+      <InputContainer
+        label="Semester: "
+        incomplete={!checkFall && !checkSpring && !checkOther && !checkSummer}
+        incompleteMessage="Select semesters."
+      >
+        <>
           <Checkbox
             label="Fall"
             value={checkFall}
@@ -463,68 +363,20 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
                 : handleAddSemester(event);
             }}
           />
-        </div>
-        <div className={inputStatus}>
-          <Image
-            src={
-              checkFall || checkSpring || checkOther || checkSummer
-                ? '/media/successCheckmark.svg'
-                : '/media/failureWarning.svg'
-            }
-            alt="Icon"
-            width={16}
-            height={16}
-            className="mx-2"
-          />
-          {!checkFall && !checkSpring && !checkOther && !checkSummer && (
-            <p className="text-ruby inline">Select semesters.</p>
-          )}
-        </div>
-      </div>
+        </>
+      </InputContainer>
       {checkOther ? displayOtherDescription() : ''}
-      {specifyDate && (
-        <div className={inputContainer}>
-          <p className={label}>Date: </p>
-          <input
-            className="date-input"
-            type="text"
-            placeholder="Enter Date"
-            value={date}
-            onChange={handleDateChange}
-            onFocus={changeToDate}
-            onBlur={changeToText}
-          />
-        </div>
-      )}
-      <div className={inputContainer}>
-        <div className={inputWrapper}>
-          <p className={label}>Description: </p>
-          <div className={inputStatus + 'ml-auto'}>
-            <Image
-              src={
-                description
-                  ? '/media/successCheckmark.svg'
-                  : '/media/failureWarning.svg'
-              }
-              alt="Icon"
-              width={16}
-              height={16}
-              className="mx-2"
-            />
-            {!description && (
-              <p className="text-ruby inline">Enter a description.</p>
-            )}
-          </div>
-        </div>
-        <textarea
-          placeholder="Enter Description"
+      <InputContainer
+        label="Description: "
+        incomplete={!description}
+        incompleteMessage="Enter a description."
+      >
+        <TextAreaInput
           value={description || ''}
-          onChange={handleDescriptionChange}
-          rows={3}
-          className={inputBox}
+          placeholder="Enter Description"
+          change={(val) => dispatch(setDescription(val))}
         />
-      </div>
-
+      </InputContainer>
       <div className="flex justify-between items-center cursor-pointer my-9">
         <button
           onClick={() =>

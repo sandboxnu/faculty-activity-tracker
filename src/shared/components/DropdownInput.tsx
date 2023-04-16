@@ -6,6 +6,7 @@ type Option = { label: string; value: string };
 interface DropdownInputProps {
   options: Option[];
   placeholder: string;
+  initialValue?: Option | undefined;
   selectValue: (value: string) => void;
   addOnClass?: string;
   absoluteDropdown?: boolean;
@@ -14,11 +15,14 @@ interface DropdownInputProps {
 const DropdownInput: React.FC<DropdownInputProps> = ({
   options,
   placeholder,
+  initialValue,
   selectValue,
   addOnClass = '',
   absoluteDropdown = true,
 }) => {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+  const [selectedOption, setSelectedOption] = useState<Option | null>(
+    initialValue || null,
+  );
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
