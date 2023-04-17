@@ -19,9 +19,13 @@ interface ProfessorInfoFormProps {
     sabbatical: SabbaticalOption,
     teachingReleaseExplanation?: string,
   ) => void;
+  back: () => void;
 }
 
-const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({ submit }) => {
+const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
+  submit,
+  back,
+}) => {
   const [position, setPosition] = useState('');
   const teachingPercent = useSelector(selectTeachingPercent);
   const researchPercent = useSelector(selectResearchPercent);
@@ -49,21 +53,29 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({ submit }) => {
         research={researchPercent}
         service={servicePercent}
       />
-      <button
-        className="bg-red disabled:bg-red-disabled text-white px-3 py-2 rounded-xl self-start"
-        onClick={() =>
-          submit(
-            position,
-            teachingPercent,
-            researchPercent,
-            servicePercent,
-            sabbatical,
-          )
-        }
-        disabled={!position}
-      >
-        Submit
-      </button>
+      <div className="flex justify-between items-center my-3">
+        <button
+          className="bg-medium-grey border border-g text-g px-3 py-2 rounded-xl"
+          onClick={back}
+        >
+          Back
+        </button>
+        <button
+          className="bg-ruby disabled:bg-ruby-disabled text-white px-3 py-2 rounded-xl"
+          onClick={() =>
+            submit(
+              position,
+              teachingPercent,
+              researchPercent,
+              servicePercent,
+              sabbatical,
+            )
+          }
+          disabled={!position}
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 };

@@ -4,14 +4,23 @@ import React, { useState } from 'react';
 
 interface UserInfoFormProps {
   initialName: string;
+  initialPreferredName?: string;
   submit: (firstName: string, lastName: string, preferredName?: string) => void;
+  back: () => void;
 }
 
-const UserInfoForm: React.FC<UserInfoFormProps> = ({ initialName, submit }) => {
+const UserInfoForm: React.FC<UserInfoFormProps> = ({
+  initialName,
+  initialPreferredName,
+  submit,
+  back,
+}) => {
   const parsedName = initialName.split(' ');
   const [firstName, setFirstName] = useState(parsedName[0] || '');
   const [lastName, setLastName] = useState(parsedName[1] || '');
-  const [preferredName, setPreferredName] = useState('');
+  const [preferredName, setPreferredName] = useState(
+    initialPreferredName || '',
+  );
 
   return (
     <div className="flex flex-col">
@@ -48,13 +57,21 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ initialName, submit }) => {
           placeholder="Preferred Name"
         />
       </InputContainer>
-      <button
-        className="bg-red disabled:bg-red-disabled text-white px-3 py-2 rounded-xl self-start"
-        onClick={() => submit(firstName, lastName, preferredName)}
-        disabled={!firstName || !lastName}
-      >
-        Submit
-      </button>
+      <div className="flex justify-between items-center my-3">
+        <button
+          className="bg-medium-grey border border-g text-g px-3 py-2 rounded-xl"
+          onClick={back}
+        >
+          Back
+        </button>
+        <button
+          className="bg-ruby disabled:bg-ruby-disabled text-white px-3 py-2 rounded-xl"
+          onClick={() => submit(firstName, lastName, preferredName)}
+          disabled={!firstName || !lastName}
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 };

@@ -3,12 +3,12 @@ import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Head from 'next/head';
-import { CreateUserDto } from '@/models/user.model';
+import { CreateUserDto, UpdateUserDto, UserDto } from '@/models/user.model';
 import { CreateProfessorInfoDto } from '@/models/professorInfo.model';
 import RoleSetup from '@/components/AccountSetup/RoleSetup';
 import { Role } from '@prisma/client';
 import UserInfoForm from '@/components/AccountSetup/UserInfoForm';
-import { createUser } from '@/client/users.client';
+import { createUser, updateUser } from '@/client/users.client';
 import { ResponseStatus } from '@/client/activities.client';
 import ProfessorInfoForm from '@/components/AccountSetup/ProfessorInfoForm';
 
@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps<
       },
     };
   }
-  console.log(session);
+
   if (session?.user?.email && session?.user?.name) {
     return {
       props: { name: session.user.name, email: session.user.email },
@@ -44,13 +44,11 @@ export const getServerSideProps: GetServerSideProps<
   }
 };
 
-/* Onboarding:
- - determine role: enter passphrase
- - enter user info (pull email from session)
- - enter professor info
- */
-
-type AccountSetupStep = 'role' | 'user info' | 'professor info';
+type AccountSetupStep =
+  | 'role'
+  | 'user info'
+  | 'edit user info'
+  | 'professor info';
 
 const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
   name,
@@ -59,7 +57,7 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
 }) => {
   const [pageError, setPageError] = useState<string | null>(error || null);
   const [userRole, setUserRole] = useState<Role | null>(null);
-  const [userId, setUserId] = useState<number | null>(null);
+  const [newUser, setNewUser] = useState<UserDto | null>(null);
   const [step, setStep] = useState<AccountSetupStep>('role');
 
   const createProfessorInfo = () => {
@@ -93,7 +91,7 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
       preferredName: preferredName || null,
       role: userRole,
     };
-
+    console.log('CREATE');
     createUser(newUser).then((res) => {
       if (res === ResponseStatus.Unauthorized) setPageError('Unauthorized');
       else if (res === ResponseStatus.BadRequest) setPageError('Bad Request');
@@ -101,7 +99,31 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
         setPageError('Unknown Error');
       else {
         setStep('professor info');
-        setUserId(res.id);
+        setNewUser(res);
+      }
+    });
+  };
+
+  const editUser = (
+    firstName: string,
+    lastName: string,
+    preferredName?: string,
+  ) => {
+    if (!newUser || !email || !userRole) return;
+
+    let updatedUser: UpdateUserDto = {
+      email,
+      firstName,
+      lastName,
+      preferredName: preferredName || null,
+      role: userRole,
+    };
+    console.log('EDIT');
+    updateUser(newUser.id, updatedUser).then((res) => {
+      if (res === ResponseStatus.UnknownError) setPageError('Unknown Error');
+      else {
+        setStep('professor info');
+        setNewUser(res);
       }
     });
   };
@@ -109,9 +131,36 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
   const SetupStepComponent: Record<AccountSetupStep, JSX.Element> = {
     role: <RoleSetup confirmRole={confirmRole} />,
     'user info': (
-      <UserInfoForm initialName={name || ''} submit={createNewUser} />
+      <UserInfoForm
+        initialName={name || ''}
+        submit={createNewUser}
+        back={() => {
+          setStep('role');
+          setUserRole(null);
+        }}
+      />
     ),
-    'professor info': <ProfessorInfoForm submit={createProfessorInfo} />,
+    'edit user info': (
+      <UserInfoForm
+        initialName={
+          newUser ? `${newUser.firstName} ${newUser.lastName}` : name || ''
+        }
+        submit={newUser ? editUser : createNewUser}
+        back={() => {
+          setStep('role');
+          setUserRole(null);
+          //setNewUser(null);
+        }}
+      />
+    ),
+    'professor info': (
+      <ProfessorInfoForm
+        submit={createProfessorInfo}
+        back={() => {
+          setStep('edit user info');
+        }}
+      />
+    ),
   };
 
   if (pageError || !email || !name)

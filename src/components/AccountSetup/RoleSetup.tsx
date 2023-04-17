@@ -29,13 +29,16 @@ const RoleSetup: React.FC<RoleSetupProps> = ({ confirmRole }) => {
           placeholder="access code"
         />
       </div>
-      <button
-        className="bg-red disabled:bg-red-disabled text-white px-3 py-2 rounded-xl"
-        onClick={submitCode}
-        disabled={codeInput === ''}
-      >
-        Submit
-      </button>
+      <div className="flex justify-between items-center my-3">
+        <div />
+        <button
+          className="bg-ruby disabled:bg-ruby-disabled text-white px-3 py-2 rounded-xl"
+          onClick={submitCode}
+          disabled={codeInput === ''}
+        >
+          Submit
+        </button>
+      </div>
       {error && <p className="text-red my-4">{error}</p>}
     </div>
   );
