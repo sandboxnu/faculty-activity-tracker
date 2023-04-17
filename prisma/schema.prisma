@@ -14,6 +14,7 @@ model User {
   lastName      String
   preferredName String?
   role          Role           @default(FACULTY)
+  dateModified  BigInt         @default(dbgenerated("extract(epoch from now())::bigint"))
   ProfessorInfo ProfessorInfo?
   Activity      Activity[]
   Narrative     Narrative[]

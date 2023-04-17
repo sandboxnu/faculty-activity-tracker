@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { CreateUserDto } from '../../models/user.model';
 import { Role } from '@prisma/client';
 import Image from 'next/image';
-import { roles, TextOrInput } from './AdminTableRow';
+import { TextOrInput } from './AdminTableRow';
+import { formatRole } from '@/shared/utils/user.util';
+import { roles } from '@/pages/admin';
 
 interface NewUserRowProps {
   submit: (newUser: CreateUserDto) => void;
@@ -17,12 +19,19 @@ const NewUserRow: React.FC<NewUserRowProps> = ({ submit, cancel }) => {
 
   const update = () => {
     if (!firstName || !lastName || !role || !email) return;
-    submit({ firstName, lastName, role, email, preferredName: '' });
+    submit({
+      firstName,
+      lastName,
+      role,
+      email,
+      preferredName: '',
+      dateModified: BigInt(Date.now()),
+    });
   };
 
   return (
     <div className="flex w-full items-center rounded-xl border border-er px-4 py-3 shadow my-2">
-      <div className="basis-10">
+      <div className="basis-15">
         <TextOrInput
           value={firstName}
           change={(val) => setFirstName(val)}
@@ -54,12 +63,12 @@ const NewUserRow: React.FC<NewUserRowProps> = ({ submit, cancel }) => {
         >
           {roles.map((role) => (
             <option key={role} value={role}>
-              {role}
+              {formatRole(role)}
             </option>
           ))}
         </select>
       </div>
-      <div className="basis-10">
+      <div className="basis-5">
         <div className="flex items-center space-x-2">
           <div className="cursor-pointer" onClick={update}>
             <Image

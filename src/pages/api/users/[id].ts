@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getUserById, updateUser, deleteUser } from '@/services/user';
 import { CreateUserDto, UpdateUserDto } from '@/models/user.model';
+import { bigintToJSON } from '@/shared/utils/misc.util';
 
 export default async function handler(
   req: NextApiRequest,
@@ -37,7 +38,7 @@ async function handleGet(id: number, res: NextApiResponse) {
   if (user == 'not found') {
     res.status(404).end(`user with id: ${id.toString()} Not Found`);
   } else {
-    res.status(200).json({ data: user });
+    res.status(200).json({ data: bigintToJSON(user) });
   }
 }
 
@@ -46,10 +47,12 @@ async function handlePut(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const newUserDto = JSON.parse(JSON.stringify(req.body)) as UpdateUserDto;
+  //const newUserDto = JSON.parse(JSON.stringify(req.body)) as UpdateUserDto;
+  const newUserDto = bigintToJSON(req.body) as UpdateUserDto;
+  newUserDto.dateModified = BigInt(Date.now());
   try {
     const user = await updateUser(parseInt(id.toString()), newUserDto);
-    res.status(200).json({ data: user });
+    res.status(200).json({ data: bigintToJSON(user) });
   } catch (e) {
     res.status(500).json({ error: 'bad request' });
   }
@@ -58,7 +61,7 @@ async function handlePut(
 async function handleDelete(id: number, res: NextApiResponse) {
   try {
     const user = await deleteUser(id);
-    res.status(200).json({ data: user });
+    res.status(200).json({ data: bigintToJSON(user) });
   } catch (error) {
     console.log(error);
     res.status(500).json({

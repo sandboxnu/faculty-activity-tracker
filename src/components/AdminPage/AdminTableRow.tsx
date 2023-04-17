@@ -1,14 +1,17 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import { UpdateUserDto, UserDto } from '../../models/user.model';
 import { Role } from '@prisma/client';
-import { updateUser, deleteUser } from '../../client/users.client';
+import { updateUser } from '../../client/users.client';
 import { ResponseStatus } from '@/client/activities.client';
 import Router, { useRouter } from 'next/router';
 import Image from 'next/image';
 import { formatRole } from '@/shared/utils/user.util';
+import { roles } from '@/pages/admin';
 
 interface AdminTableRowProps {
   user: UserDto;
+  submit: (newUser: UpdateUserDto) => void;
+  delete: () => void;
 }
 
 export const TextOrInput: React.FC<{
@@ -30,14 +33,11 @@ export const TextOrInput: React.FC<{
     <p className="">{value}</p>
   );
 
-export const roles: Role[] = [
-  Role.DEAN,
-  Role.FACULTY,
-  Role.MERIT_COMMITTEE_HEAD,
-  Role.MERIT_COMMITTEE_MEMBER,
-];
-
-const AdminTableRow: React.FC<AdminTableRowProps> = ({ user }) => {
+const AdminTableRow: React.FC<AdminTableRowProps> = ({
+  user,
+  submit,
+  delete: deleteUser,
+}) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [role, setRole] = useState(user.role);
@@ -59,33 +59,13 @@ const AdminTableRow: React.FC<AdminTableRowProps> = ({ user }) => {
   };
 
   const handleSaveUser = () => {
-    const updatedUser: UpdateUserDto = {
+    submit({
       firstName: firstName,
       lastName: lastName,
       email: email,
       role: role,
-    };
-
-    updateUser(user.id, updatedUser)
-      .then((res) => {
-        if (res === ResponseStatus.Success) {
-          toggleEditing(!isEditing);
-          console.log(res);
-        }
-      })
-      .catch((e) => console.log(e));
-  };
-
-  const handleDeleteUser = () => {
-    if (confirm('Do you really want to delete this user?')) {
-      deleteUser(user.id)
-        .then((res) => {
-          if (res === ResponseStatus.Success) {
-            router.reload();
-          }
-        })
-        .catch((e) => console.log(e));
-    }
+    });
+    toggleEditing(false);
   };
 
   return (
@@ -93,7 +73,7 @@ const AdminTableRow: React.FC<AdminTableRowProps> = ({ user }) => {
       key={`user-${user.id}`}
       className="flex w-full items-center rounded-xl border border-er px-4 py-3 shadow"
     >
-      <div className="basis-10">
+      <div className="basis-15">
         <TextOrInput
           value={firstName}
           change={(val) => setFirstName(val)}
@@ -123,7 +103,7 @@ const AdminTableRow: React.FC<AdminTableRowProps> = ({ user }) => {
           >
             {roles.map((role) => (
               <option key={role} value={role}>
-                {role}
+                {formatRole(role)}
               </option>
             ))}
           </select>
@@ -131,7 +111,7 @@ const AdminTableRow: React.FC<AdminTableRowProps> = ({ user }) => {
           <p>{formatRole(user.role)}</p>
         )}
       </div>
-      <div className="basis-10">
+      <div className="basis-5">
         {
           <div className="flex items-center space-x-2">
             <div
@@ -147,7 +127,7 @@ const AdminTableRow: React.FC<AdminTableRowProps> = ({ user }) => {
             </div>
             <div
               className="cursor-pointer"
-              onClick={isEditing ? cancel : handleDeleteUser}
+              onClick={isEditing ? cancel : deleteUser}
             >
               <Image
                 src={`/media/${isEditing ? 'close' : 'trash'}Icon.svg`}

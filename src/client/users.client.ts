@@ -1,16 +1,12 @@
-import { CreateUserDto, UpdateUserDto, UserDto } from '@/models/user.model';
+import { bigintStringify, bigintToJSON } from '@/shared/utils/misc.util';
+import { UserDto, CreateUserDto, UpdateUserDto } from '../models/user.model';
 import { ResponseStatus } from './activities.client';
 
 const apiRoot = 'http://localhost:3000/api/users';
 
 export const createUser = async (
   body: CreateUserDto,
-): Promise<
-  | UserDto
-  | ResponseStatus.Unauthorized
-  | ResponseStatus.BadRequest
-  | ResponseStatus.UnknownError
-> => {
+): Promise<UserDto | ResponseStatus.UnknownError> => {
   try {
     const response = await fetch(apiRoot, {
       method: 'POST',
@@ -18,18 +14,14 @@ export const createUser = async (
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify(body),
+      body: bigintStringify(body),
     });
     if (response.ok || response.status === 200) {
-      const data = await response.json();
-      if (data.hasOwnProperty('data')) {
-        return data.data as UserDto;
-      } else {
-        return ResponseStatus.UnknownError;
-      }
-    } else if (response.status === 400) return ResponseStatus.BadRequest;
-    else if (response.status === 401) return ResponseStatus.Unauthorized;
-    else return ResponseStatus.UnknownError;
+      const data = bigintToJSON(await response.json());
+      return data.hasOwnProperty('data')
+        ? (data.data as UserDto)
+        : ResponseStatus.UnknownError;
+    } else return ResponseStatus.UnknownError;
   } catch (error) {
     console.log(error);
     return ResponseStatus.UnknownError;
@@ -47,14 +39,39 @@ export const updateUser = async (
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify(body),
+      body: bigintStringify(body),
     });
     if (response.ok || response.status === 200) {
-      const data = await response.json();
+      const data = bigintToJSON(await response.json());
       return data.hasOwnProperty('data')
         ? (data.data as UserDto)
         : ResponseStatus.UnknownError;
     } else return ResponseStatus.UnknownError;
+  } catch (error) {
+    console.log(error);
+    return ResponseStatus.UnknownError;
+  }
+};
+
+export const deleteUser = async (
+  id: number,
+): Promise<
+  | ResponseStatus.Success
+  | ResponseStatus.Unauthorized
+  | ResponseStatus.NotFound
+  | ResponseStatus.UnknownError
+> => {
+  try {
+    const response = await fetch(`${apiRoot}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
+    if (response.ok || response.status === 201) return ResponseStatus.Success;
+    else if (response.status === 401) return ResponseStatus.Unauthorized;
+    else return ResponseStatus.UnknownError;
   } catch (error) {
     console.log(error);
     return ResponseStatus.UnknownError;

@@ -14,3 +14,29 @@ const roleFormats: Record<Role, string> = {
 };
 
 export const formatRole = (role: Role): string => roleFormats[role];
+
+export type SortType = 'first name' | 'last name' | 'email' | 'role';
+
+export type SortDir = 'asc' | 'desc';
+
+export const userSorter: Record<
+  SortType,
+  Record<SortDir, (a: UserDto, b: UserDto) => number>
+> = {
+  'first name': {
+    asc: (a, b) => a.firstName.localeCompare(b.firstName),
+    desc: (a, b) => a.firstName.localeCompare(b.firstName) * -1,
+  },
+  'last name': {
+    asc: (a, b) => a.lastName.localeCompare(b.lastName),
+    desc: (a, b) => a.lastName.localeCompare(b.lastName) * -1,
+  },
+  email: {
+    asc: (a, b) => a.email.localeCompare(b.email),
+    desc: (a, b) => a.email.localeCompare(b.email) * -1,
+  },
+  role: {
+    asc: (a, b) => a.role.localeCompare(b.role),
+    desc: (a, b) => a.role.localeCompare(b.role) * -1,
+  },
+};

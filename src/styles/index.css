@@ -83,8 +83,16 @@ button,
   white-space: normal;
 }
 
+.basis-5 {
+  flex: 0 0 5%;
+}
+
 .basis-10 {
   flex: 0 0 10%;
+}
+
+.basis-15 {
+  flex: 0 0 15%;
 }
 
 .basis-20 {

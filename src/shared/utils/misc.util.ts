@@ -4,3 +4,19 @@ export const toTitleCase = (str: string): string => {
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase())
     .join(' ');
 };
+
+export const bigintToJSON = <T>(object: T): T => {
+  return JSON.parse(
+    JSON.stringify(
+      object,
+      (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
+    ),
+  );
+};
+
+export const bigintStringify = <T>(object: T): string => {
+  return JSON.stringify(
+    object,
+    (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
+  );
+};
