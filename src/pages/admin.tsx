@@ -10,179 +10,16 @@ import AdminTableRow from '../components/AdminPage/AdminTableRow';
 import { deleteUser, addUser } from '../client/users.client';
 import { useRouter } from 'next/router';
 import { ResponseStatus } from '@/client/activities.client';
+import { isAdminUser } from '@/shared/utils/user.util';
+import Head from 'next/head';
+import Image from 'next/image';
+import NewUserRow from '@/components/AdminPage/NewUserRow';
 
 interface AdminPageProps {
   users?: UserDto[];
   error?: string;
 }
 
-const AdminPage: React.FunctionComponent = (props: AdminPageProps) => {
-  const { data: session, status } = useSession();
-  const name = session?.user?.name;
-  const email = session?.user?.email;
-  const users: User[] | undefined = props.users;
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [role, setRole] = useState<Role>(Role.MERIT_COMMITTEE_MEMBER);
-  const [preferredName, setPreferredName] = useState<string>('');
-  const [newEmail, setNewEmail] = useState<string>('');
-  const [isAddingUser, toggleAddingUser] = useState<boolean>(false);
-
-  const roles: Role[] = [
-    Role.DEAN,
-    Role.FACULTY,
-    Role.MERIT_COMMITTEE_HEAD,
-    Role.MERIT_COMMITTEE_MEMBER,
-  ];
-  const headers = [
-    'First Name',
-    'Last Name',
-    'Role',
-    'Preferred Name',
-    'Email',
-    'Actions',
-  ];
-
-  const router = useRouter();
-
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
-
-  // make sure user is logged in and MC member
-  if (status === 'unauthenticated' || props.error === 'User not found') {
-    return <Unauthorized />;
-  }
-  if (props.error === 'bad role') {
-    return (
-      <p className="text-red w-full text-center mt-20">
-        Error: {'You must be a merit committee member to view this page!'}
-      </p>
-    );
-  }
-  const handleAddUser: React.MouseEventHandler<HTMLButtonElement> = () => {
-    toggleAddingUser(!isAddingUser);
-  };
-
-  const handleSaveUser: React.MouseEventHandler<HTMLButtonElement> = () => {
-    if (!firstName || !lastName || !role || !email) return;
-    const newUser: CreateUserDto = {
-      firstName: firstName,
-      lastName: lastName,
-      role: role,
-      preferredName: preferredName,
-      email: newEmail,
-    };
-    addUser(newUser)
-      .then((res) => {
-        if (res === ResponseStatus.Success) {
-          toggleAddingUser(!isAddingUser);
-          setFirstName('');
-          setLastName('');
-          setNewEmail('');
-          setRole(Role.MERIT_COMMITTEE_MEMBER);
-          setPreferredName('');
-          router.reload();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  // TODO: Add user button, Remove user button, Edit user button
-  return (
-    <>
-      <div className="m-2 overflow-x-scroll">
-        <div className="flex w-full">
-          {isAddingUser ? (
-            <button key="saveUser" className="my-3" onClick={handleSaveUser}>
-              Save User
-            </button>
-          ) : (
-            <button key="addUser" className="my-3" onClick={handleAddUser}>
-              Add User
-            </button>
-          )}
-        </div>
-        {isAddingUser ? (
-          <div className="flex space-x-3 pr-1 m-3">
-            <input
-              className=" border border-slate-700  px-1 w-1/6"
-              type="text"
-              size={1}
-              onChange={(e) => setFirstName(e.target.value)}
-              value={firstName}
-              placeholder="First Name"
-            ></input>
-            <input
-              className="border border-slate-700 px-1 w-1/6"
-              type="text"
-              size={1}
-              onChange={(e) => setLastName(e.target.value)}
-              value={lastName}
-              placeholder="Last Name"
-            ></input>
-            <select
-              name="roles"
-              className="px-1 border border-slate-700 mx-1"
-              onChange={(e) => setRole(e.target.value as Role)}
-              value={role}
-            >
-              {roles.map((role) => (
-                <option key={role} value={role}>
-                  {role}
-                </option>
-              ))}
-            </select>
-            <input
-              className="border border-slate-700 px-1 w-1/6"
-              type="text"
-              size={1}
-              onChange={(e) => setPreferredName(e.target.value)}
-              value={preferredName}
-              placeholder="Preferred Name"
-            ></input>
-            <input
-              className="border border-slate-700 px-1 w-1/6"
-              type="email"
-              pattern=".+@husky.neu.edu"
-              size={1}
-              onChange={(e) => setNewEmail(e.target.value)}
-              value={newEmail}
-              placeholder="Email"
-              required
-            ></input>
-          </div>
-        ) : (
-          ''
-        )}
-        <div className="flex justify-center w-full">
-          <table className="table-auto border-collapse border border-slate-500">
-            <thead>
-              <tr>
-                {headers.map((header) => {
-                  return (
-                    <th key={header} className="border border-slate-600 px-1">
-                      {header}
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {users?.map((user) => {
-                return <AdminTableRow key={user.id} user={user} />;
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </>
-  );
-};
-
-// This gets called on every request
 export const getServerSideProps: GetServerSideProps<AdminPageProps> = async (
   context,
 ) => {
@@ -191,17 +28,105 @@ export const getServerSideProps: GetServerSideProps<AdminPageProps> = async (
 
   if (!userId) return { props: { error: 'User not found' } };
 
-  const user: User | 'not found' = await getUserById(userId);
-  if (user === 'not found') return { props: { error: 'User not found' } };
-  console.log(user.role);
-  console.log(user);
+  // const user: User | 'not found' = await getUserById(userId);
+  // if (user === 'not found') return { props: { error: 'User not found' } };
 
-  if (user && user.role === 'FACULTY') return { props: { error: 'bad role' } };
+  // if (user && !isAdminUser(user)) return { props: { error: 'bad role' } };
+  if (!session?.user?.admin) return { props: { error: 'bad role' } };
 
-  // Fetch data from external API
   const users: User[] = await getAllUsers();
 
   return { props: { users } };
+};
+
+const Header = () => (
+  <div className="flex w-full items-center px-4">
+    <div className="basis-10">
+      <p>First Name</p>
+    </div>
+    <div className="basis-20">
+      <p>Last Name</p>
+    </div>
+    <div className="basis-30">
+      <p>Email</p>
+    </div>
+    <div className="basis-30">
+      <p>Role</p>
+    </div>
+    <div className="basis-10">
+      <p>Actions</p>
+    </div>
+  </div>
+);
+
+const AdminPage: React.FC<AdminPageProps> = ({ users, error }) => {
+  const { data: session, status } = useSession();
+  const name = session?.user?.name;
+  const email = session?.user?.email;
+  const [isAddingUser, toggleAddingUser] = useState<boolean>(false);
+
+  const router = useRouter();
+
+  const cancel = () => {
+    toggleAddingUser(false);
+  };
+
+  const handleAddUser: React.MouseEventHandler<HTMLButtonElement> = () => {
+    toggleAddingUser(!isAddingUser);
+  };
+
+  const createNewUser = (newUser: CreateUserDto) => {
+    addUser(newUser)
+      .then((res) => {
+        if (res === ResponseStatus.Success) {
+          toggleAddingUser(!isAddingUser);
+          router.reload();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // make sure user is logged in and MC member
+  if (status === 'unauthenticated' || error === 'User not found') {
+    return <Unauthorized />;
+  }
+
+  if (error || !users) {
+    return (
+      <p className="text-red w-full text-center mt-20">
+        Error: {error || 'unknown error'}
+      </p>
+    );
+  }
+
+  return (
+    <>
+      <Head>
+        <title>Admin</title>
+      </Head>
+      <div className="w-full relative">
+        <div className="w-full flex justify-between">
+          <h2>Users</h2>
+          <div className="flex items-center space-x-2">
+            <button onClick={isAddingUser ? cancel : handleAddUser}>
+              {isAddingUser ? 'Cancel' : 'Add User'}
+            </button>
+          </div>
+        </div>
+        <div className="flex flex-col w-full space-y-3 my-4">
+          <Header />
+          {isAddingUser && (
+            <NewUserRow submit={createNewUser} cancel={cancel} />
+          )}
+          {users.map((user) => (
+            <AdminTableRow key={user.id} user={user} />
+          ))}
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default AdminPage;

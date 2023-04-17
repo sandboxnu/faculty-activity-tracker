@@ -4,42 +4,69 @@ import { Role } from '@prisma/client';
 import { updateUser, deleteUser } from '../../client/users.client';
 import { ResponseStatus } from '@/client/activities.client';
 import Router, { useRouter } from 'next/router';
+import Image from 'next/image';
+import { formatRole } from '@/shared/utils/user.util';
 
 interface AdminTableRowProps {
   user: UserDto;
 }
 
+export const TextOrInput: React.FC<{
+  editing: boolean;
+  value: string;
+  change: (val: string) => void;
+  placeholder?: string;
+}> = ({ editing, value, change, placeholder }) =>
+  editing ? (
+    <input
+      className="w-full outline-none"
+      type="text"
+      size={1}
+      onChange={(e) => change(e.target.value)}
+      value={value}
+      placeholder={placeholder}
+    />
+  ) : (
+    <p className="">{value}</p>
+  );
+
+export const roles: Role[] = [
+  Role.DEAN,
+  Role.FACULTY,
+  Role.MERIT_COMMITTEE_HEAD,
+  Role.MERIT_COMMITTEE_MEMBER,
+];
+
 const AdminTableRow: React.FC<AdminTableRowProps> = ({ user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [role, setRole] = useState(user.role);
-  const [preferredName, setPreferredName] = useState(user.preferredName);
   const [email, setEmail] = useState(user.email);
   const [isEditing, toggleEditing] = useState(false);
-  const roles: Role[] = [
-    Role.DEAN,
-    Role.FACULTY,
-    Role.MERIT_COMMITTEE_HEAD,
-    Role.MERIT_COMMITTEE_MEMBER,
-  ];
+
   const router = useRouter();
 
   const handleEditUser = () => {
     toggleEditing(!isEditing);
   };
 
+  const cancel = () => {
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setRole(user.role);
+    setEmail(user.email);
+    toggleEditing(false);
+  };
+
   const handleSaveUser = () => {
-    // toggleEditing(!isEditing);
-    const updatedUser: UserDto = {
-      id: user.id,
+    const updatedUser: UpdateUserDto = {
       firstName: firstName,
       lastName: lastName,
       email: email,
-      preferredName: preferredName,
       role: role,
     };
 
-    updateUser(updatedUser)
+    updateUser(user.id, updatedUser)
       .then((res) => {
         if (res === ResponseStatus.Success) {
           toggleEditing(!isEditing);
@@ -49,7 +76,7 @@ const AdminTableRow: React.FC<AdminTableRowProps> = ({ user }) => {
       .catch((e) => console.log(e));
   };
 
-  const handleDeleteUser: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const handleDeleteUser = () => {
     if (confirm('Do you really want to delete this user?')) {
       deleteUser(user.id)
         .then((res) => {
@@ -62,103 +89,77 @@ const AdminTableRow: React.FC<AdminTableRowProps> = ({ user }) => {
   };
 
   return (
-    <tr>
-      {isEditing ? (
-        <td className="border border-slate-700 px-1">
-          <input
-            className="pb-1 w-full"
-            type="text"
-            size={1}
-            id="fname"
-            name="fname"
-            onChange={(e) => setFirstName(e.target.value)}
-            value={firstName}
-          ></input>
-        </td>
-      ) : (
-        <td className="border border-slate-700 px-1">{`${firstName}`}</td>
-      )}
-      {isEditing ? (
-        <td className="border border-slate-700 px-1">
-          <input
-            className="pt-1 w-full"
-            type="text"
-            size={1}
-            id="lname"
-            name="lname"
-            onChange={(e) => setLastName(e.target.value)}
-            value={lastName}
-          ></input>
-        </td>
-      ) : (
-        <td className="border border-slate-700 px-1">{`${lastName}`}</td>
-      )}
-      {isEditing ? (
-        <select
-          name="roles"
-          className="my-3 border border-slate-700 mx-1"
-          onChange={(e) => setRole(e.target.value as Role)}
-          value={role}
-        >
-          {roles.map((role) => (
-            <option key={role} value={role}>
-              {role}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <td className="border border-slate-700 px-1">{role}</td>
-      )}
-      {isEditing ? (
-        <td className="border border-slate-700 px-1">
-          <input
-            className="w-full border border-slate-700 px-1"
-            type="text"
-            id="pname"
-            size={1}
-            name="pname"
-            onChange={(e) => setPreferredName(e.target.value)}
-            value={preferredName || ''}
-            placeholder="N/A"
-          ></input>
-        </td>
-      ) : (
-        <td className="border border-slate-700 px-1">
-          {preferredName || 'N/A'}
-        </td>
-      )}
-
-      {isEditing ? (
-        <td className="border border-slate-700 px-1">
-          <input
-            className="w-full"
-            type="text"
-            size={1}
-            id="email"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          ></input>
-        </td>
-      ) : (
-        <td className="border border-slate-700 px-1">{email}</td>
-      )}
-
-      <td className="border border-slate-700 px-1">
-        <button
-          className="m-1"
-          onClick={isEditing ? handleSaveUser : handleEditUser}
-        >
-          {isEditing ? 'Save' : 'Edit'}
-        </button>
-        <button
-          className="m-1 bg-ruby border-ruby-dark text-white"
-          onClick={handleDeleteUser}
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
+    <div
+      key={`user-${user.id}`}
+      className="flex w-full items-center rounded-xl border border-er px-4 py-3 shadow"
+    >
+      <div className="basis-10">
+        <TextOrInput
+          value={firstName}
+          change={(val) => setFirstName(val)}
+          editing={isEditing}
+        />
+      </div>
+      <div className="basis-20">
+        <TextOrInput
+          value={lastName}
+          change={(val) => setLastName(val)}
+          editing={isEditing}
+        />
+      </div>
+      <div className="basis-30 overflow-x-scroll">
+        <TextOrInput
+          value={email}
+          change={(val) => setEmail(val)}
+          editing={isEditing}
+        />
+      </div>
+      <div className="basis-30">
+        {isEditing ? (
+          <select
+            className="rounded border-[0.5px] border-g outline-none"
+            onChange={(e) => setRole(e.target.value as Role)}
+            value={role}
+          >
+            {roles.map((role) => (
+              <option key={role} value={role}>
+                {role}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <p>{formatRole(user.role)}</p>
+        )}
+      </div>
+      <div className="basis-10">
+        {
+          <div className="flex items-center space-x-2">
+            <div
+              className="cursor-pointer"
+              onClick={isEditing ? handleSaveUser : handleEditUser}
+            >
+              <Image
+                src={`/media/${isEditing ? 'save' : 'edit'}Icon.svg`}
+                width={16}
+                height={16}
+                alt="edit"
+              />
+            </div>
+            <div
+              className="cursor-pointer"
+              onClick={isEditing ? cancel : handleDeleteUser}
+            >
+              <Image
+                src={`/media/${isEditing ? 'close' : 'trash'}Icon.svg`}
+                width={16}
+                height={16}
+                alt="edit"
+              />
+            </div>
+          </div>
+        }
+      </div>
+    </div>
   );
 };
 

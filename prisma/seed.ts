@@ -106,7 +106,7 @@ async function createUserData() {
       email: 'maxpinheiro181@gmail.com',
       firstName: 'Max',
       lastName: 'Pinheiro',
-      role: 'FACULTY',
+      role: 'MERIT_COMMITTEE_MEMBER',
     },
   });
 

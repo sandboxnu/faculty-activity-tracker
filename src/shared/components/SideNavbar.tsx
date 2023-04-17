@@ -3,12 +3,15 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { resetForm } from '../../store/form.store';
+import { useSession } from 'next-auth/react';
 
 const SideNavbar: React.FC = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = router.pathname;
   const { category } = router.query;
+  const { data: session } = useSession();
+  const isAdmin = session?.user.admin;
 
   useEffect(() => {
     // don't think this is the best logic
@@ -100,6 +103,18 @@ const SideNavbar: React.FC = () => {
       >
         My Profile
       </Link>
+      {isAdmin && (
+        <Link
+          href="/admin"
+          className={`${navClass} ${
+            router.pathname == '/admin'
+              ? 'nav-underline-red'
+              : 'hover:nav-underline-red'
+          }`}
+        >
+          Admin
+        </Link>
+      )}
     </div>
   );
 };
