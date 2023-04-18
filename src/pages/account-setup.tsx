@@ -156,7 +156,7 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
       <div className="flex flex-col w-full">
         <span className="flex items-baseline space-x-2 mb-4">
           <h2>Welcome, {name}!</h2>
-          <p className="text-lg font-light">Let's set up your account.</p>
+          <p className="text-lg font-light">Let&apos;s set up your account.</p>
         </span>
         {SetupStepComponent[step]}
       </div>
