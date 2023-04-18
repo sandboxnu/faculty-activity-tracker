@@ -1,9 +1,4 @@
-import React, {
-  ChangeEventHandler,
-  FocusEventHandler,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -28,7 +23,6 @@ import {
 } from '../../store/form.store';
 import {
   ActivityCategory,
-  ActivityDto,
   ActivityWeight,
   CreateActivityDto,
   Semester,
@@ -322,7 +316,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         incomplete={!checkFall && !checkSpring && !checkOther && !checkSummer}
         incompleteMessage="Select semesters."
       >
-        <>
+        <div className="flex flex-col space-y-2">
           <Checkbox
             label="Fall"
             value={checkFall}
@@ -363,7 +357,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
                 : handleAddSemester(event);
             }}
           />
-        </>
+        </div>
       </InputContainer>
       {checkOther ? displayOtherDescription() : ''}
       <InputContainer
@@ -375,6 +369,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
           value={description || ''}
           placeholder="Enter Description"
           change={(val) => dispatch(setDescription(val))}
+          addOnClass="w-full"
         />
       </InputContainer>
       <div className="flex justify-between items-center cursor-pointer my-9">

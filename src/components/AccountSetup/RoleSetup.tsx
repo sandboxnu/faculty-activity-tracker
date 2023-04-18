@@ -1,3 +1,5 @@
+import { obtainRoleForAccessCode } from '@/client/accessCodes.client';
+import { ResponseStatus } from '@/client/activities.client';
 import { Role } from '@prisma/client';
 import React, { useState } from 'react';
 
@@ -11,11 +13,15 @@ const RoleSetup: React.FC<RoleSetupProps> = ({ confirmRole }) => {
   const [error, setError] = useState<string | null>(null);
 
   const submitCode = () => {
-    if (codeInput === 'chungus') {
-      confirmRole('MERIT_COMMITTEE_MEMBER');
-    } else {
-      setError('invalid code');
-    }
+    obtainRoleForAccessCode(codeInput).then((res) => {
+      if (res === ResponseStatus.NotFound) setError('Incorrect access code.');
+      else if (res === ResponseStatus.Unauthorized) setError('Unauthorized');
+      else if (res === ResponseStatus.BadRequest) setError('Bad request');
+      else if (res === ResponseStatus.UnknownError) setError('Unknown error');
+      else {
+        confirmRole(res);
+      }
+    });
   };
 
   return (
@@ -25,9 +31,13 @@ const RoleSetup: React.FC<RoleSetupProps> = ({ confirmRole }) => {
         <input
           className={inputBox}
           value={codeInput}
-          onChange={(e) => setCodeInput(e.target.value)}
+          onChange={(e) => {
+            setCodeInput(e.target.value);
+            if (error) setError(null);
+          }}
           placeholder="access code"
         />
+        {error && <p className="text-red">{error}</p>}
       </div>
       <div className="flex justify-between items-center my-3">
         <div />
@@ -39,7 +49,6 @@ const RoleSetup: React.FC<RoleSetupProps> = ({ confirmRole }) => {
           Submit
         </button>
       </div>
-      {error && <p className="text-red my-4">{error}</p>}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import {
   selectTeachingPercent,
   selectResearchPercent,
   selectServicePercent,
+  setPercent,
 } from '@/store/profile.store';
 import PercentageInfo from './PercentageInfo';
 import { UpdateProfessorInfoDto } from '@/models/professorInfo.model';
@@ -16,6 +17,7 @@ import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
 import { ResponseStatus } from '@/client/activities.client';
 import { useRouter } from 'next/router';
 import Avatar from './Avatar';
+import InputContainer from '@/shared/components/InputContainer';
 
 export interface ProfileInformation {
   firstName: string;
@@ -57,6 +59,9 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
 
   const cancel = () => {
     dispatch(reset());
+    dispatch(setTeachingPercent(teachingPercent));
+    dispatch(setResearchPercent(researchPercent));
+    dispatch(setServicePercent(servicePercent));
     setEditing(false);
   };
 
@@ -101,9 +106,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
           />
         )}
         <div className="ml-9">
-          <h2>
-            {`${firstName} ${lastName}`}
-          </h2>
+          <h2>{`${firstName} ${lastName}`}</h2>
           <p>{position}</p>
         </div>
       </div>
@@ -112,12 +115,26 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
           <p className="text-base font-bold mr-2">Activity Distribution</p>
           <div className="flex-grow h-[1.5px] bg-light-grey" />
         </div>
-        <PercentageInfo
-          editing={editing}
-          teaching={teachingPercent}
-          research={researchPercent}
-          service={servicePercent}
-        />
+        <InputContainer
+          label=""
+          incomplete={
+            editing && teachingInput + researchInput + serviceInput !== 1
+          }
+          incompleteMessage="Percentages must sum to 100."
+          statusPosition="right"
+        >
+          <div className="mb-6">
+            <PercentageInfo
+              editing={editing}
+              teaching={editing ? teachingInput : teachingPercent}
+              research={editing ? researchInput : researchPercent}
+              service={editing ? serviceInput : servicePercent}
+              setPercent={(type, percent) =>
+                dispatch(setPercent({ type, percent }))
+              }
+            />
+          </div>
+        </InputContainer>
       </div>
       <div key="contact-info">
         <div className="flex items-center w-full mt-10 pr-5">

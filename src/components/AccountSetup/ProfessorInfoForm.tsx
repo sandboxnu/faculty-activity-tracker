@@ -1,13 +1,8 @@
+import DropdownInput, { Option } from '@/shared/components/DropdownInput';
 import InputContainer from '@/shared/components/InputContainer';
-import TextInput from '@/shared/components/TextInput';
-import {
-  selectTeachingPercent,
-  selectResearchPercent,
-  selectServicePercent,
-} from '@/store/profile.store';
+import TextAreaInput from '@/shared/components/TextAreaInput';
 import { SabbaticalOption } from '@prisma/client';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import PercentageInfo from '../Profile/PercentageInfo';
 
 interface ProfessorInfoFormProps {
@@ -22,37 +17,121 @@ interface ProfessorInfoFormProps {
   back: () => void;
 }
 
+const positionOptions: Option[] = [
+  { label: 'Faculty', value: 'Faculty' },
+  { label: 'Tenure', value: 'Tenure' },
+];
+
+const sabbaticalOptions: Option<SabbaticalOption>[] = [
+  { label: 'No', value: SabbaticalOption.NO },
+  { label: 'Year', value: SabbaticalOption.YEAR },
+  { label: 'Semester', value: SabbaticalOption.SEMESTER },
+];
+
 const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
   submit,
   back,
 }) => {
   const [position, setPosition] = useState('');
-  const teachingPercent = useSelector(selectTeachingPercent);
-  const researchPercent = useSelector(selectResearchPercent);
-  const servicePercent = useSelector(selectServicePercent);
-  const [sabbatical, setSabbatical] = useState<SabbaticalOption>(
+  const [teachingPercent, setTeachingPercent] = useState(0);
+  const [researchPercent, setResearchPercent] = useState(0);
+  const [servicePercent, setServicePercent] = useState(0);
+  const [sabbatical, setSabbatical] = useState<SabbaticalOption | undefined>(
     SabbaticalOption.NO,
   );
+  const [teachingReleaseExplanation, setExplanation] = useState('');
+
+  const percentSetters: Record<string, (percent: number) => void> = {
+    teaching: (percent) => setTeachingPercent(percent),
+    creative: (percent) => setResearchPercent(percent),
+    serice: (percent) => setServicePercent(percent),
+    default: (_) => {},
+  };
+
+  const selectPosition = (position: string) => {
+    setPosition(position);
+    if (position === 'Faculty') {
+      setTeachingPercent(0.8);
+      setResearchPercent(0.1);
+      setServicePercent(0.1);
+    } else {
+      setTeachingPercent(0.4);
+      setResearchPercent(0.5);
+      setServicePercent(0.1);
+    }
+  };
+
+  const setPercent = (type: string, percent: number) =>
+    percentSetters[type](percent);
+
+  const submitInfo = () => {
+    if (
+      !position ||
+      !sabbatical ||
+      teachingPercent + researchPercent + servicePercent !== 1
+    )
+      return;
+
+    submit(
+      position,
+      teachingPercent,
+      researchPercent,
+      servicePercent,
+      sabbatical,
+      teachingReleaseExplanation,
+    );
+  };
 
   return (
     <div className="flex flex-col">
       <InputContainer
         label="Position: "
         incomplete={!position}
-        incompleteMessage="Enter a position."
+        incompleteMessage="Select a position."
       >
-        <TextInput
-          value={position}
-          change={(val) => setPosition(val)}
-          placeholder="Position"
+        <DropdownInput
+          options={positionOptions}
+          placeholder="Select a Position"
+          selectValue={(value) => selectPosition(value?.toString() || '')}
         />
       </InputContainer>
-      <PercentageInfo
-        editing={true}
-        teaching={teachingPercent}
-        research={researchPercent}
-        service={servicePercent}
-      />
+      <InputContainer
+        label="Activity Distribution: "
+        incomplete={teachingPercent + researchPercent + servicePercent !== 1}
+        incompleteMessage="Percentages must sum to 100."
+      >
+        <PercentageInfo
+          editing={true}
+          teaching={teachingPercent}
+          research={researchPercent}
+          service={servicePercent}
+          setPercent={setPercent}
+        />
+      </InputContainer>
+      <InputContainer
+        label="Sabbatical: "
+        incomplete={!sabbatical}
+        incompleteMessage="Select a sabbatical option."
+      >
+        <DropdownInput<SabbaticalOption>
+          options={sabbaticalOptions}
+          initialValue={sabbaticalOptions.find((o) => o.value === sabbatical)}
+          placeholder="Select a Sabbatical"
+          selectValue={(value) => setSabbatical(value as SabbaticalOption)}
+        />
+      </InputContainer>
+      <InputContainer
+        label="Teaching Release Explanation: "
+        incomplete={false}
+        incompleteMessage=""
+      >
+        <TextAreaInput
+          value={teachingReleaseExplanation}
+          change={(val) => setExplanation(val)}
+          placeholder="Teaching release explanation (optional)."
+          addOnClass="w-full"
+        />
+      </InputContainer>
       <div className="flex justify-between items-center my-3">
         <button
           className="bg-medium-grey border border-g text-g px-3 py-2 rounded-xl"
@@ -62,16 +141,12 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
         </button>
         <button
           className="bg-ruby disabled:bg-ruby-disabled text-white px-3 py-2 rounded-xl"
-          onClick={() =>
-            submit(
-              position,
-              teachingPercent,
-              researchPercent,
-              servicePercent,
-              sabbatical,
-            )
+          onClick={submitInfo}
+          disabled={
+            !position ||
+            !sabbatical ||
+            teachingPercent + researchPercent + servicePercent !== 1
           }
-          disabled={!position}
         >
           Submit
         </button>
