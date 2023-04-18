@@ -18,8 +18,8 @@ interface ProfessorInfoFormProps {
 }
 
 const positionOptions: Option[] = [
-  { label: 'Faculty', value: 'Faculty' },
-  { label: 'Tenure', value: 'Tenure' },
+  { label: 'Non-Tenure Track', value: 'Non-Tenure Track' },
+  { label: 'Tenure Track / Tenured', value: 'Tenure Track / Tenured' },
 ];
 
 const sabbaticalOptions: Option<SabbaticalOption>[] = [
@@ -50,7 +50,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
 
   const selectPosition = (position: string) => {
     setPosition(position);
-    if (position === 'Faculty') {
+    if (position === 'Non-Tenure Track') {
       setTeachingPercent(0.8);
       setResearchPercent(0.1);
       setServicePercent(0.1);
