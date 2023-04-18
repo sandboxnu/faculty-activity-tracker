@@ -242,7 +242,10 @@ const AdminPage: React.FC<AdminPageProps> = ({
         <div className="w-full flex justify-between">
           <h2>Users</h2>
           <div className="flex items-center space-x-2">
-            <button onClick={() => toggleAddingUser((b) => !b)}>
+            <button
+              onClick={() => toggleAddingUser((b) => !b)}
+              className="bg-ruby bg-opacity-80 hover:bg-opacity-100 text-white"
+            >
               {isAddingUser ? 'Cancel' : 'Add User'}
             </button>
           </div>
