@@ -1,18 +1,11 @@
 import React from 'react';
-import Image from 'next/image';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectResearchPercent,
-  selectServicePercent,
-  selectTeachingPercent,
-  setPercent,
-} from '@/store/profile.store';
 
 interface PercentageInfoProps {
   editing: boolean;
   teaching: number;
   research: number;
   service: number;
+  setPercent: (type: string, percent: number) => void;
 }
 
 const PercentageInfo: React.FC<PercentageInfoProps> = ({
@@ -20,17 +13,12 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
   teaching,
   research,
   service,
+  setPercent,
 }) => {
-  const teachingInput = useSelector(selectTeachingPercent);
-  const researchInput = useSelector(selectResearchPercent);
-  const serviceInput = useSelector(selectServicePercent);
-  const isBalanced = teachingInput + researchInput + serviceInput === 1;
-  const dispatch = useDispatch();
-
   const labels: Record<string, number> = {
-    Teaching: editing ? teachingInput : teaching,
-    Creative: editing ? researchInput : research,
-    Service: editing ? serviceInput : service,
+    Teaching: teaching,
+    Creative: research,
+    Service: service,
   };
 
   return (
@@ -47,11 +35,9 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
                 step={1}
                 value={percent * 100}
                 onChange={(e) =>
-                  dispatch(
-                    setPercent({
-                      type: field.toLowerCase(),
-                      percent: parseFloat(e.target.value) / 100,
-                    }),
+                  setPercent(
+                    field.toLowerCase(),
+                    parseFloat(e.target.value) / 100,
                   )
                 }
                 className="px-4 py-1.5 border-[0.5px] border-g rounded-xl mr-2"
@@ -65,22 +51,6 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
           </div>
         </div>
       ))}
-      {editing && (
-        <div className="flex items-center pb-2.5 self-end">
-          <Image
-            src={`/media/${
-              isBalanced ? 'successCheckmark' : 'failureWarning'
-            }.svg`}
-            alt="Icon"
-            width={16}
-            height={16}
-            className="mx-2"
-          />
-          {!isBalanced && (
-            <p className="text-ruby inline">Percentages must sum to 100.</p>
-          )}
-        </div>
-      )}
     </div>
   );
 };

@@ -21,7 +21,7 @@ model User {
 
 model ProfessorInfo {
   id                         Int              @id @default(autoincrement())
-  user                       User             @relation(fields: [userId], references: [id])
+  user                       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                     Int              @unique
   position                   String
   teachingPercent            Float
@@ -33,7 +33,7 @@ model ProfessorInfo {
 
 model Activity {
   id                       Int               @id @default(autoincrement())
-  user                     User              @relation(fields: [userId], references: [id])
+  user                     User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                   Int
   year                     Int
   semester                 Semester[]
@@ -48,12 +48,18 @@ model Activity {
 
 model Narrative {
   id           Int               @id @default(autoincrement())
-  user         User              @relation(fields: [userId], references: [id])
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int
   year         Int
   dateModified BigInt
   category     NarrativeCategory
   text         String
+}
+
+model RoleAccessCode {
+  id          Int             @id @default(autoincrement())
+  role        Role            @unique
+  accessCode  String
 }
 
 enum Role {

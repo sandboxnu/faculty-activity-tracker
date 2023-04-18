@@ -1,6 +1,6 @@
 // prisma/seed.ts
 
-import { PrismaClient, SabbaticalOption, Semester } from '@prisma/client';
+import { PrismaClient, Role, SabbaticalOption, Semester } from '@prisma/client';
 
 // initialize Prisma Client
 const prisma = new PrismaClient();
@@ -210,7 +210,7 @@ async function createActivityData() {
     create: {
       user: {
         connect: {
-          email: 'thebirdlvr@gmail.com',
+          email: 'maxpinheiro181@gmail.com',
         },
       },
       year: 2022,
@@ -354,10 +354,30 @@ async function createProfessorInfoData() {
   });
 }
 
+async function createRoleAccessCodeData() {
+  const code1 = await prisma.roleAccessCode.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      role: Role.FACULTY,
+      accessCode: 'fatty',
+    },
+  });
+  const code2 = await prisma.roleAccessCode.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      role: Role.MERIT_COMMITTEE_MEMBER,
+      accessCode: 'chungus',
+    },
+  });
+}
+
 async function main() {
   await createUserData();
   await createActivityData();
   await createProfessorInfoData();
+  await createRoleAccessCodeData();
 }
 
 // execute the main function

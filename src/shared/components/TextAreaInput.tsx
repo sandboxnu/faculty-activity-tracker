@@ -5,7 +5,7 @@ export interface TextAreaInputProps {
   change: (val: string) => void;
   rows?: number;
   placeholder?: string;
-  className?: string;
+  addOnClass?: string;
 }
 
 const TextAreaInput: React.FC<TextAreaInputProps> = ({
@@ -13,7 +13,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
   change,
   rows = 3,
   placeholder,
-  className,
+  addOnClass = '',
 }) => {
   return (
     <textarea
@@ -21,10 +21,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
       onChange={(e) => change(e.target.value)}
       rows={rows}
       placeholder={placeholder || ''}
-      className={
-        className ||
-        'border-[0.5px] border-g rounded-lg px-3 py-2 outline-none min-w-[175px]'
-      }
+      className={`border-[0.5px] border-g rounded-lg px-3 py-2 outline-none min-w-[175px] ${addOnClass}`}
     />
   );
 };

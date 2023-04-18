@@ -50,7 +50,7 @@ const CategorySelector: React.FC = () => {
         selectValue={(value) =>
           dispatch(setCategory(value as ActivityCategory))
         }
-        addOnClass="w-1/2"
+        addOnClass="min-w-[250px]"
       />
       <button
         className="bg-ruby border-ruby-dark text-white disabled:bg-ruby-disabled float-right mt-4"
