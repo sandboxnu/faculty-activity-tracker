@@ -7,7 +7,7 @@ import { User, Role } from '@prisma/client';
 import { getAllUsers, getUserById, getUserForQuery } from '@/services/user';
 import { GetServerSideProps } from 'next';
 import AdminTableRow from '../components/AdminPage/AdminTableRow';
-import { deleteUser, addUser, updateUser } from '../client/users.client';
+import { deleteUser, createUser, updateUser } from '../client/users.client';
 import { ResponseStatus } from '@/client/activities.client';
 import {
   isAdminUser,
@@ -72,7 +72,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
   };
 
   const createNewUser = (newUser: CreateUserDto) => {
-    addUser(newUser)
+    createUser(newUser)
       .then((res) => {
         if (res === ResponseStatus.UnknownError) setError('Unknown error');
         else {
