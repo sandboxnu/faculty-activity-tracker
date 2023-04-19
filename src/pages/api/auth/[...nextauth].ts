@@ -1,4 +1,6 @@
 import { getUserForQuery } from '@/services/user';
+import { isAdminUser } from '@/shared/utils/user.util';
+import { Role } from '@prisma/client';
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
@@ -35,6 +37,7 @@ export const authOptions: AuthOptions = {
         const user = await getUserForQuery({ email: session.user.email });
         if (user !== 'not found' && user.length > 0) {
           session.user.id = user[0].id;
+          session.user.admin = isAdminUser(user[0]);
         }
       }
       return session;

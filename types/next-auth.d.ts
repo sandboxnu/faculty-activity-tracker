@@ -8,6 +8,7 @@ declare module 'next-auth' {
     accessToken?: Account.accessToken;
     user: {
       id: number | undefined;
+      admin?: boolean | undefined;
     } & DefaultSession['user'];
   }
 }

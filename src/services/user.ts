@@ -1,5 +1,9 @@
 import { PrismaClient, User } from '.prisma/client';
-import { CreateUserDto, UpdateUserDto } from '@/models/user.model';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  UserOrderByQuery,
+} from '@/models/user.model';
 
 const prisma = new PrismaClient();
 
@@ -22,8 +26,10 @@ export const getUserById = async (
 
 export const getUserForQuery = async (
   query: UpdateUserDto,
+  orderBy?: UserOrderByQuery,
 ): Promise<User[] | 'not found'> => {
   const users = await prisma.user.findMany({
+    orderBy: orderBy || {},
     where: { ...query },
   });
   return users || 'not found';

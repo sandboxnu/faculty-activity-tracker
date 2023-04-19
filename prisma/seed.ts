@@ -13,7 +13,7 @@ async function createUserData() {
       email: 'a@b.com',
       firstName: 'Dave',
       lastName: 'Dog',
-      role: 'FACULTY',
+      role: 'DEAN',
     },
   });
 
@@ -106,7 +106,7 @@ async function createUserData() {
       email: 'maxpinheiro181@gmail.com',
       firstName: 'Max',
       lastName: 'Pinheiro',
-      role: 'FACULTY',
+      role: 'MERIT_COMMITTEE_MEMBER',
     },
   });
 
@@ -118,6 +118,16 @@ async function createUserData() {
       firstName: 'Ansh',
       lastName: 'Marwa',
       role: 'FACULTY',
+    },
+  });
+  const user11 = await prisma.user.upsert({
+    where: { email: 'thebirdlvr@gmail.com' },
+    update: {},
+    create: {
+      email: 'thebirdlvr@gmail.com',
+      firstName: 'Christina',
+      lastName: 'Long',
+      role: 'MERIT_COMMITTEE_MEMBER',
     },
   });
 }
@@ -350,6 +360,8 @@ async function createProfessorInfoData() {
       researchPercent: 0.5,
       servicePercent: 0.1,
       sabbatical: SabbaticalOption.NO,
+      teachingReleaseExplanation:
+        'Went on teaching release for Fall semester because of maternity leave',
     },
   });
 }

@@ -5,7 +5,7 @@ import {
   seperateActivitiesBySemester,
   seperateActivitiesBySignifanceLevel,
 } from '@/shared/utils/activity.util';
-import { toTitleCase } from '@/shared/utils/misc.util';
+import { bigintToJSON, toTitleCase } from '@/shared/utils/misc.util';
 import { resetForm, setWeight, setStep, setCategory } from '@/store/form.store';
 import { ActivityCategory, SignificanceLevel } from '@prisma/client';
 import { GetServerSideProps } from 'next';
@@ -47,13 +47,7 @@ export const getServerSideProps: GetServerSideProps<
         props: { error: 'No activities not found for user' },
       };
     } else {
-      const parsedActivities = JSON.parse(
-        JSON.stringify(
-          activities,
-          (key, value) =>
-            typeof value === 'bigint' ? value.toString() : value, // return everything else unchanged
-        ),
-      );
+      const parsedActivities = bigintToJSON(activities);
 
       return { props: { activities: parsedActivities } };
     }

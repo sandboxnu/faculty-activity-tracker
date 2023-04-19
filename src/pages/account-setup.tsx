@@ -76,6 +76,7 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
       lastName,
       preferredName: preferredName || null,
       role: userRole,
+      dateModified: BigInt(Date.now()),
     };
     setStep('professor info');
     setUserInfo(newUser);
@@ -93,10 +94,7 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
 
     const newUser = await createUser(userInfo);
 
-    if (newUser === ResponseStatus.Unauthorized) setPageError('Unauthorized');
-    else if (newUser === ResponseStatus.BadRequest) setPageError('Bad Request');
-    else if (newUser === ResponseStatus.UnknownError)
-      setPageError('Unknown Error');
+    if (newUser === ResponseStatus.UnknownError) setPageError('Unknown Error');
     else {
       let newProfessorInfo: CreateProfessorInfoDto = {
         userId: newUser.id,

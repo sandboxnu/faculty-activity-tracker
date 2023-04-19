@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getAllUsers, getUserForQuery, createUser } from '@/services/user';
 import { CreateUserDto, UpdateUserDto } from '@/models/user.model';
+import { bigintToJSON } from '@/shared/utils/misc.util';
 
 export default async function handler(
   req: NextApiRequest,
@@ -30,20 +31,21 @@ export default async function handler(
 }
 
 async function handlePost(req: NextApiRequest, res: NextApiResponse) {
-  const newUserDto = JSON.parse(JSON.stringify(req.body)) as CreateUserDto;
+  const newUserDto = bigintToJSON(req.body) as CreateUserDto;
+  newUserDto.dateModified = BigInt(Date.now());
   const newUser = await createUser(newUserDto);
-  res.status(200).json({ data: newUser });
+  res.status(200).json({ data: bigintToJSON(newUser) });
 }
 
 async function handleGet(res: NextApiResponse) {
   const users = await getAllUsers();
-  res.status(200).json({ data: users });
+  res.status(200).json({ data: bigintToJSON(users) });
 }
 
 async function handleGetUserQuery(query: UpdateUserDto, res: NextApiResponse) {
   try {
     const users = await getUserForQuery(query);
-    res.status(200).json({ data: users });
+    res.status(200).json({ data: bigintToJSON(users) });
   } catch (error) {
     res.status(404).end('invalid query parameters');
   }
