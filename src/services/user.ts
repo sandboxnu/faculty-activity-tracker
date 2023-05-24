@@ -30,7 +30,7 @@ export const getUserWithInfo = async (
 ): Promise<UserWithInfo | null> => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    include: { ProfessorInfo: true },
+    include: { professorInfo: true },
   });
   return user;
 };
@@ -40,7 +40,7 @@ export const getUserWithActivities = async (
 ): Promise<UserWithActivities | null> => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    include: { Activity: true },
+    include: { activities: true },
   });
   return user;
 };
@@ -50,7 +50,7 @@ export const getUserWithAllData = async (
 ): Promise<UserWithAllData | null> => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    include: { Activity: true, Narrative: true, ProfessorInfo: true },
+    include: { activities: true, narratives: true, professorInfo: true },
   });
   return user;
 };

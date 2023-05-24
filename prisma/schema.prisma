@@ -15,9 +15,10 @@ model User {
   preferredName String?
   role          Role           @default(FACULTY)
   dateModified  BigInt         @default(dbgenerated("extract(epoch from now())::bigint"))
-  ProfessorInfo ProfessorInfo?
-  Activity      Activity[]
-  Narrative     Narrative[]
+  professorInfo ProfessorInfo?
+  scoreInfo     ProfessorScore?
+  activities    Activity[]
+  narratives    Narrative[]
 }
 
 model ProfessorInfo {
@@ -30,6 +31,17 @@ model ProfessorInfo {
   servicePercent             Float
   sabbatical                 SabbaticalOption
   teachingReleaseExplanation String?
+}
+
+model ProfessorScore {
+  id                         Int              @id @default(autoincrement())
+  user                       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                     Int              @unique
+  comment                    String
+  teachingScore              Float
+  researchScore              Float
+  serviceScore               Float
+  totalScore                 Float
 }
 
 model Activity {
@@ -45,6 +57,7 @@ model Activity {
   category                 ActivityCategory
   significance             SignificanceLevel
   isFavorite               Boolean
+  meritStatus              ActivityMeritStatus?
 }
 
 model Narrative {
@@ -100,4 +113,9 @@ enum Semester {
   SPRING
   SUMMER
   OTHER
+}
+
+enum ActivityMeritStatus {
+  ACCEPTED
+  REJECTED
 }
