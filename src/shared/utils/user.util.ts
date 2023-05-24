@@ -2,9 +2,7 @@ import { UserDto } from '@/models/user.model';
 import { ActivityCategory, Role } from '@prisma/client';
 
 export const isAdminUser = (user: UserDto): boolean =>
-  user.role === Role.MERIT_COMMITTEE_HEAD ||
-  user.role === Role.MERIT_COMMITTEE_MEMBER ||
-  user.role === Role.DEAN;
+  user.role === Role.MERIT_COMMITTEE_HEAD || user.role === Role.DEAN;
 
 const roleFormats: Record<Role, string> = {
   FACULTY: 'Faculty',
