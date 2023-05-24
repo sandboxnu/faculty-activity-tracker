@@ -1,5 +1,5 @@
 import { UserDto } from '@/models/user.model';
-import { Role } from '@prisma/client';
+import { ActivityCategory, Role } from '@prisma/client';
 
 export const isAdminUser = (user: UserDto): boolean =>
   user.role === Role.MERIT_COMMITTEE_HEAD ||

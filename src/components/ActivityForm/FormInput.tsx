@@ -25,6 +25,7 @@ import {
   ActivityCategory,
   ActivityWeight,
   CreateActivityDto,
+  formatCategory,
   Semester,
   UpdateActivityDto,
 } from '../../models/activity.model';
@@ -43,13 +44,6 @@ import DropdownInput from '@/shared/components/DropdownInput';
 import InputContainer from '@/shared/components/InputContainer';
 import TextInput from '@/shared/components/TextInput';
 import TextAreaInput from '@/shared/components/TextAreaInput';
-
-const categoryLabels: Record<ActivityCategory, string> = {
-  TEACHING: 'Teaching',
-  RESEARCH:
-    'Creative Activity, Scholarship and Research/Professional Development',
-  SERVICE: 'Service',
-};
 
 const weightOptions = [
   { label: 'Major', value: 'MAJOR' },
@@ -266,14 +260,14 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       <div>{showEditingError ? <ErrorBanner text={errorText} /> : ''}</div>
       {isEditing ? (
         <>
-          <h2>Submitted Activity - {categoryLabels[category]}</h2>
+          <h2>Submitted Activity - {formatCategory(category)}</h2>
           <p className={'text-last-date-modified-grey italic drop-shadow-sm'}>
             Last Date Modified
             {` - ${moment(Number(lastDateModified)).format('MMM D, YYYY')}`}
           </p>
         </>
       ) : (
-        <h2>New Activity - {categoryLabels[category]}</h2>
+        <h2>New Activity - {formatCategory(category)}</h2>
       )}
       <InputContainer
         label="Name: "

@@ -9,45 +9,11 @@ export type ActivityCategory = PrismaActivityCategory; //'TEACHING' | 'RESEARCH'
 export type ActivityWeight = SignificanceLevel; //'MAJOR' | 'SIGNIFICANT' | 'MINOR';
 export type Semester = PrismaSemester; //'FALL' | 'SPRING' | 'SUMMER' | 'OTHER';
 
-export type ActivityDto = Activity; /*{
-    id: string;
-    userId: string;
-    year: number;
-    semester: Semester[];
-    dateModified: BigInt;
-    name: string;
-    description: string;
-    category: ActivityCategory;
-    significance: ActivityWeight;
-    isFavorite: boolean;
-    semesterOtherDescription?: string;
-};*/
+export type ActivityDto = Activity;
 
-export type CreateActivityDto = Omit<Activity, 'id'>; /*{
-    userId: string;
-    year: number;
-    semester: Semester[];
-    dateModified BigInt;
-    name: string;
-    description: string;
-    category: ActivityCategory;
-    significance: ActivityWeight;
-    isFavorite: boolean;
-    semesterOtherDescription?: string;
-};*/
+export type CreateActivityDto = Omit<Activity, 'id'>;
 
-export type UpdateActivityDto = Partial<ActivityDto>; /*{
-  id?: number
-  userId?: number;
-  year?: number;
-  semester?: Semester[];
-  dateModified?: BigInt;
-  name?: string;
-  description?: string;
-  category?: ActivityCategory;
-  significance?: ActivityWeight;
-  isFavorite?: boolean;
-};*/
+export type UpdateActivityDto = Partial<ActivityDto>;
 
 export type SortOrder = 'asc' | 'desc';
 
@@ -69,3 +35,6 @@ export const categoryLabels: Record<ActivityCategory, string> = {
     'Creative Activity, Scholarship and Research/Professional Development',
   SERVICE: 'Service',
 };
+
+export const formatCategory = (category: ActivityCategory): string =>
+  categoryLabels[category];
