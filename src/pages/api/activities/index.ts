@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import {
   createActivity,
   getAllActivities,
-  getActivitiesForQuery,
+  getActivitiesByQuery,
   updateActivity,
 } from '@/services/activity';
 import {
@@ -54,13 +54,13 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
 async function handleGet(req: NextApiRequest, res: NextApiResponse) {
   const { userId, category } = req.query;
   if (userId && category) {
-    const activities = await getActivitiesForQuery({
+    const activities = await getActivitiesByQuery({
       userId: parseInt(userId.toString()),
       category: category.toString().toUpperCase() as ActivityCategory,
     });
     res.status(200).json({ data: activities });
   } else if (userId) {
-    const activities = await getActivitiesForQuery({
+    const activities = await getActivitiesByQuery({
       userId: parseInt(userId.toString()),
     });
     res.status(200).json({ data: activities });
@@ -75,7 +75,7 @@ async function handleGetActivityQuery(
   res: NextApiResponse,
 ) {
   try {
-    const activities = await getActivitiesForQuery(query);
+    const activities = await getActivitiesByQuery(query);
     res.status(200).json({ data: activities });
   } catch (error) {
     res.status(404).end('invalid query parameters');

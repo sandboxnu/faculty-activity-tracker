@@ -31,19 +31,31 @@ export const createNarrative = async (
 
 export const updateNarrative = async (
   narrative: UpdateNarrativeDto,
-): Promise<Narrative> => {
-  const updatedNarrative = await prisma.narrative.update({
-    where: { id: narrative.id },
-    data: { ...narrative },
-  });
-  return updatedNarrative;
+): Promise<Narrative | null> => {
+  try {
+    const updatedNarrative = await prisma.narrative.update({
+      where: { id: narrative.id },
+      data: { ...narrative },
+    });
+    return updatedNarrative;
+  } catch (e) {
+    // RecordNotFound exception
+    console.error(e);
+    return null;
+  }
 };
 
 export const deleteNarrative = async (
   narrative: DeleteNarrativeDto,
-): Promise<Narrative> => {
-  const deletedNarrative = await prisma.narrative.delete({
-    where: { id: narrative.id },
-  });
-  return deletedNarrative;
+): Promise<Narrative | null> => {
+  try {
+    const deletedNarrative = await prisma.narrative.delete({
+      where: { id: narrative.id },
+    });
+    return deletedNarrative;
+  } catch (e) {
+    // RecordNotFound exception
+    console.error(e);
+    return null;
+  }
 };

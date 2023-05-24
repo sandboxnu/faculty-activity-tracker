@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import {
   deleteProfessorInfoForUser,
-  getProfessInfoForUser,
+  getProfessorInfoForUser,
   upsertProfessorInfoForUser,
 } from '@/services/professorInfo';
 import { UpdateProfessorInfoDto } from '@/models/professorInfo.model';
@@ -45,11 +45,11 @@ export default async function handler(
 }
 
 async function handleGet(userId: number, res: NextApiResponse) {
-  const info = await getProfessInfoForUser(userId);
-  if (info == 'not found') {
-    res.status(404).end(`Professor info for user with id: ${userId} Not Found`);
-  } else {
+  const info = await getProfessorInfoForUser(userId);
+  if (info) {
     res.status(200).json({ data: info });
+  } else {
+    res.status(404).end(`Professor info for user with id: ${userId} Not Found`);
   }
 }
 

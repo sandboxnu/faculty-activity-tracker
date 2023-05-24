@@ -1,8 +1,8 @@
 import ProfileInfo, {
   ProfileInformation,
 } from '@/components/Profile/ProfileInfo';
-import { getProfessInfoForUser } from '@/services/professorInfo';
-import { getUserById } from '@/services/user';
+import { getProfessorInfoForUser } from '@/services/professorInfo';
+import { getUserById, getUserWithInfo } from '@/services/user';
 import { toTitleCase } from '@/shared/utils/misc.util';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
@@ -28,36 +28,19 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
       },
     };
 
-  const user = await getUserById(userId);
-  if (user === 'not found') return { props: { error: 'User not found.' } };
+  const user = await getUserWithInfo(userId);
+  if (!user) return { props: { error: 'User not found.' } };
 
-  const info = await getProfessInfoForUser(userId);
-  if (info === 'not found') {
-    //return { props: { error: 'Could not find professor information.' } };
-    return {
-      props: {
-        info: {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          position: toTitleCase(user.role || ''),
-          teachingPercent: 0,
-          researchPercent: 0,
-          servicePercent: 0,
-        },
-      },
-    };
-  }
   return {
     props: {
       info: {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        position: info.position,
-        teachingPercent: info.teachingPercent,
-        researchPercent: info.researchPercent,
-        servicePercent: info.servicePercent,
+        position: user.ProfessorInfo?.position || toTitleCase(user.role || ''),
+        teachingPercent: user.ProfessorInfo?.teachingPercent || 0,
+        researchPercent: user.ProfessorInfo?.researchPercent || 0,
+        servicePercent: user.ProfessorInfo?.servicePercent || 0,
       },
     },
   };

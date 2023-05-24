@@ -23,10 +23,10 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   const code = JSON.parse(JSON.stringify(req.body)).toString();
   try {
     const role = await obtainRole(code);
-    if (role === 'not found') {
-      res.status(404).json({ error: 'No role found for access code' });
-    } else {
+    if (role) {
       res.status(200).json({ data: role });
+    } else {
+      res.status(404).json({ error: 'No role found for access code' });
     }
   } catch (e) {
     res.status(500).json({ error: 'bad request' });

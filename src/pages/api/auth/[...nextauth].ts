@@ -1,4 +1,4 @@
-import { getUserForQuery } from '@/services/user';
+import { getUsersByQuery } from '@/services/user';
 import { isAdminUser } from '@/shared/utils/user.util';
 import { Role } from '@prisma/client';
 import NextAuth, { AuthOptions } from 'next-auth';
@@ -34,10 +34,10 @@ export const authOptions: AuthOptions = {
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
       if (session.user && session.user.email) {
-        const user = await getUserForQuery({ email: session.user.email });
-        if (user !== 'not found' && user.length > 0) {
-          session.user.id = user[0].id;
-          session.user.admin = isAdminUser(user[0]);
+        const users = await getUsersByQuery({ email: session.user.email });
+        if (users?.length > 0) {
+          session.user.id = users[0].id;
+          session.user.admin = isAdminUser(users[0]);
         }
       }
       return session;

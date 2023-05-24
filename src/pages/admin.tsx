@@ -4,7 +4,7 @@ import Unauthorized from '@/shared/components/Unauthorized';
 import React, { useState } from 'react';
 import { CreateUserDto, UpdateUserDto, UserDto } from 'src/models/user.model';
 import { User, Role } from '@prisma/client';
-import { getAllUsers, getUserById, getUserForQuery } from '@/services/user';
+import { getAllUsers, getUserById, getUsersByQuery } from '@/services/user';
 import { GetServerSideProps } from 'next';
 import AdminTableRow from '../components/AdminPage/AdminTableRow';
 import { deleteUser, createUser, updateUser } from '../client/users.client';
@@ -33,16 +33,11 @@ export const getServerSideProps: GetServerSideProps<AdminPageProps> = async (
 
   if (!userId) return { props: { error: 'User not found' } };
 
-  // const user: User | 'not found' = await getUserById(userId);
-  // if (user === 'not found') return { props: { error: 'User not found' } };
-
   // if (user && !isAdminUser(user)) return { props: { error: 'bad role' } };
   if (!session?.user?.admin) return { props: { error: 'bad role' } };
 
   //const users: User[] = await getAllUsers();
-  const users = await getUserForQuery({}, { dateModified: 'desc' });
-
-  if (users === 'not found') return { props: { error: 'Users not found' } };
+  const users = await getUsersByQuery({}, { dateModified: 'desc' });
 
   return { props: { users: bigintToJSON(users) } };
 };

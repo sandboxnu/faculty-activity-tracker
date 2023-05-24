@@ -1,6 +1,16 @@
-import { Role, User } from '@prisma/client';
+import { Activity, Narrative, ProfessorInfo, Role, User } from '@prisma/client';
 
 export type UserDto = User;
+
+export type UserWithInfo = User & { ProfessorInfo: ProfessorInfo | null };
+
+export type UserWithActivities = User & { Activity: Activity[] };
+
+export type UserWithAllData = User & {
+  ProfessorInfo: ProfessorInfo | null;
+  Activity: Activity[];
+  Narrative: Narrative[];
+};
 
 export type CreateUserDto = Omit<User, 'id'>;
 

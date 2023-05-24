@@ -48,7 +48,11 @@ export default async function handler(
 
     try {
       const updatedNarrative = await updateNarrative(updatedNarrativeDto);
-      res.status(200).json({ data: bigintToJSON(updatedNarrative) });
+      if (updatedNarrative) {
+        res.status(200).json({ data: bigintToJSON(updatedNarrative) });
+      } else {
+        res.status(404).json({ error: 'Narrative not found' });
+      }
     } catch (e) {
       console.log(e);
       res.status(500).json({ error: e });
@@ -57,7 +61,11 @@ export default async function handler(
     const deletedNarrativeDto = req.body as DeleteNarrativeDto;
     try {
       const deletedNarrative = await deleteNarrative(deletedNarrativeDto);
-      res.status(200).json({ data: bigintToJSON(deletedNarrative) });
+      if (deletedNarrative) {
+        res.status(200).json({ data: bigintToJSON(deletedNarrative) });
+      } else {
+        res.status(404).json({ error: 'Narrative not found' });
+      }
     } catch (e) {
       if (e instanceof PrismaClientValidationError) {
         res.status(500).json({

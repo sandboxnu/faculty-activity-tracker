@@ -3,6 +3,9 @@ import {
   CreateUserDto,
   UpdateUserDto,
   UserOrderByQuery,
+  UserWithActivities,
+  UserWithAllData,
+  UserWithInfo,
 } from '@/models/user.model';
 
 const prisma = new PrismaClient();
@@ -17,40 +20,78 @@ export const createUser = async (user: CreateUserDto): Promise<User> => {
   return newUser;
 };
 
-export const getUserById = async (
-  userId: number,
-): Promise<User | 'not found'> => {
+export const getUserById = async (userId: number): Promise<User | null> => {
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  return user || 'not found';
+  return user;
 };
 
-export const getUserForQuery = async (
+export const getUserWithInfo = async (
+  userId: number,
+): Promise<UserWithInfo | null> => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { ProfessorInfo: true },
+  });
+  return user;
+};
+
+export const getUserWithActivities = async (
+  userId: number,
+): Promise<UserWithActivities | null> => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { Activity: true },
+  });
+  return user;
+};
+
+export const getUserWithAllData = async (
+  userId: number,
+): Promise<UserWithAllData | null> => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { Activity: true, Narrative: true, ProfessorInfo: true },
+  });
+  return user;
+};
+
+export const getUsersByQuery = async (
   query: UpdateUserDto,
   orderBy?: UserOrderByQuery,
-): Promise<User[] | 'not found'> => {
+): Promise<User[]> => {
   const users = await prisma.user.findMany({
     orderBy: orderBy || {},
     where: { ...query },
   });
-  return users || 'not found';
+  return users;
 };
 
-export const deleteUser = async (
-  userId: number,
-): Promise<User | 'not found'> => {
-  const deleteUser = await prisma.user.delete({
-    where: { id: userId },
-  });
-  return deleteUser || 'not found';
+export const deleteUser = async (userId: number): Promise<User | null> => {
+  try {
+    const deleteUser = await prisma.user.delete({
+      where: { id: userId },
+    });
+    return deleteUser;
+  } catch (e) {
+    // RecordNotFound exception
+    console.error(e);
+    return null;
+  }
 };
 
 export const updateUser = async (
   userId: number,
   user: UpdateUserDto,
-): Promise<User | 'not found'> => {
-  const newUser = await prisma.user.update({
-    where: { id: userId },
-    data: { ...user },
-  });
-  return newUser || 'not found';
+): Promise<User | null> => {
+  try {
+    const newUser = await prisma.user.update({
+      where: { id: userId },
+      data: { ...user },
+    });
+    return newUser;
+  } catch (e) {
+    // RecordNotFound exception
+    console.error(e);
+    return null;
+  }
 };

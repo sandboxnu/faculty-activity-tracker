@@ -1,5 +1,5 @@
 import ActivityRow from '@/components/Submissions/ActivityRow';
-import { getActivitiesForQuery, getActivityById } from '@/services/activity';
+import { getActivitiesByQuery, getActivityById } from '@/services/activity';
 import { ActivityDto, Semester } from '@/models/activity.model';
 import {
   seperateActivitiesBySemester,
@@ -34,28 +34,26 @@ export const getServerSideProps: GetServerSideProps<
       },
     };
   }
-  if (userId) {
-    const activities = await getActivitiesForQuery(
-      {
-        userId: userId,
-        category: category.toString().toUpperCase() as ActivityCategory,
-      },
-      { dateModified: 'desc' },
-    );
-    if (activities === 'not found') {
-      return {
-        props: { error: 'No activities not found for user' },
-      };
-    } else {
-      const parsedActivities = bigintToJSON(activities);
-
-      return { props: { activities: parsedActivities } };
-    }
-  } else {
+  if (!userId) {
     return {
       props: {
         error: 'User not found.',
       },
+    };
+  }
+
+  const activities = await getActivitiesByQuery(
+    {
+      userId: userId,
+      category: category.toString().toUpperCase() as ActivityCategory,
+    },
+    { dateModified: 'desc' },
+  );
+  if (activities) {
+    return { props: { activities: bigintToJSON(activities) } };
+  } else {
+    return {
+      props: { error: 'No activities not found for user' },
     };
   }
 };
