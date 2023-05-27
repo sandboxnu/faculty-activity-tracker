@@ -8,17 +8,17 @@ datasource db {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
-  email         String         @unique
-  firstName     String
-  lastName      String
-  preferredName String?
-  role          Role           @default(FACULTY)
-  dateModified  BigInt         @default(dbgenerated("extract(epoch from now())::bigint"))
-  professorInfo ProfessorInfo?
-  scoreInfo     ProfessorScore?
-  activities    Activity[]
-  narratives    Narrative[]
+  id             Int            @id @default(autoincrement())
+  email          String         @unique
+  firstName      String
+  lastName       String
+  preferredName  String?
+  role           Role           @default(FACULTY)
+  dateModified   BigInt         @default(dbgenerated("extract(epoch from now())::bigint"))
+  professorInfo  ProfessorInfo?
+  professorScore ProfessorScore?
+  activities     Activity[]
+  narratives     Narrative[]
 }
 
 model ProfessorInfo {
