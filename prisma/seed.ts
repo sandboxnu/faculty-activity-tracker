@@ -151,6 +151,7 @@ async function createActivityData() {
       category: 'TEACHING',
       significance: 'MAJOR',
       isFavorite: false,
+      meritStatus: 'ACCEPTED',
     },
   });
 
@@ -160,7 +161,7 @@ async function createActivityData() {
     create: {
       user: {
         connect: {
-          email: 'a3@b.com',
+          email: 'a2@b.com',
         },
       },
       year: 2020,
@@ -171,6 +172,7 @@ async function createActivityData() {
       category: 'SERVICE',
       significance: 'SIGNIFICANT',
       isFavorite: false,
+      meritStatus: 'ACCEPTED',
     },
   });
 
@@ -180,7 +182,7 @@ async function createActivityData() {
     create: {
       user: {
         connect: {
-          email: 'a6@b.com',
+          email: 'a3@b.com',
         },
       },
       year: 2022,
@@ -191,6 +193,7 @@ async function createActivityData() {
       category: 'RESEARCH',
       significance: 'MINOR',
       isFavorite: false,
+      meritStatus: 'REJECTED',
     },
   });
 
@@ -362,6 +365,59 @@ async function createProfessorInfoData() {
       sabbatical: SabbaticalOption.NO,
       teachingReleaseExplanation:
         'Went on teaching release for Fall semester because of maternity leave',
+    },
+  });
+}
+
+async function createProfessorScoreData() {
+  const score1 = await prisma.professorScore.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'a@b.com',
+        },
+      },
+      comment: '',
+      teachingScore: 8,
+      researchScore: 7,
+      serviceScore: 6,
+      totalScore: 8.3,
+    },
+  });
+
+  const score2 = await prisma.professorScore.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'a2@b.com',
+        },
+      },
+      comment: 'Not enough research activities.',
+      teachingScore: 9,
+      researchScore: 2,
+      serviceScore: 6,
+      totalScore: 5,
+    },
+  });
+
+  const score3 = await prisma.professorScore.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'a3@b.com',
+        },
+      },
+      comment: '',
+      teachingScore: 8,
+      researchScore: 8,
+      serviceScore: 8,
+      totalScore: 8,
     },
   });
 }

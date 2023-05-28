@@ -201,6 +201,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       significance: weight,
       isFavorite: false,
       semesterOtherDescription: otherDescription,
+      meritStatus: null,
     };
     console.log(newActivityDto);
     dispatch(setStep('loading'));
