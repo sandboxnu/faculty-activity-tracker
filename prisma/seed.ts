@@ -622,25 +622,6 @@ async function createRoleAccessCodeData() {
   });
 }
 
-async function createRoleAccessCodeData() {
-  const code1 = await prisma.roleAccessCode.upsert({
-    where: { id: 1 },
-    update: {},
-    create: {
-      role: Role.FACULTY,
-      accessCode: 'fatty',
-    },
-  });
-  const code2 = await prisma.roleAccessCode.upsert({
-    where: { id: 2 },
-    update: {},
-    create: {
-      role: Role.MERIT_COMMITTEE_MEMBER,
-      accessCode: 'chungus',
-    },
-  });
-}
-
 async function main() {
   await createUserData();
   await createActivityData();
