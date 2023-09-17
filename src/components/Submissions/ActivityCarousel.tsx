@@ -1,15 +1,13 @@
 import { ActivityDto } from '@/models/activity.model';
 import React, { useState } from 'react';
 import moment from 'moment';
-import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   setActivityId,
   setCategory,
-  setDate,
   setDescription,
   setLastDateModified,
   setName,
@@ -19,7 +17,7 @@ import {
   setYear,
 } from '@/store/form.store';
 
-interface ActivityRowProps {
+interface ActivityCarouselProps {
   activities: ActivityDto[];
   newActivity: () => void;
   leftPadding?: boolean;
@@ -51,7 +49,7 @@ const StarIcon: React.FC<{
 const cardsPerPage = 3;
 const numShift = 3;
 
-const ActivityRow: React.FC<ActivityRowProps> = ({
+const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
   activities,
   newActivity,
   leftPadding,
@@ -162,7 +160,38 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
             </div>
           </div>
         </div>
-        {startCardIdx + cardsPerPage < activities.length + 1 && (
+        <div
+          className={`cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 ${
+            startCardIdx + cardsPerPage < activities.length + 1
+              ? 'cursor-pointer'
+              : 'opacity-25 cursor-not-allowed'
+          }`}
+          onClick={() => setCardIdx((prev) => prev + numShift)}
+        >
+          <Image
+            src={'/media/rightArrow.svg'}
+            alt="right arrow"
+            width={16}
+            height={16}
+          />
+        </div>
+        <div
+          className={`absolute left-0 top-1/2 -translate-y-1/2 ${
+            startCardIdx > 0
+              ? 'cursor-pointer'
+              : 'opacity-25 cursor-not-allowed'
+          }`}
+          onClick={() => setCardIdx((prev) => prev - numShift)}
+        >
+          <Image
+            src={'/media/rightArrow.svg'}
+            alt="left arrow"
+            width={16}
+            height={16}
+            className="rotate-180"
+          />
+        </div>
+        {/* {startCardIdx + cardsPerPage < activities.length + 1 && (
           <div
             className="cursor-pointer absolute right-0 top-1/2 -translate-y-1/2"
             onClick={() => setCardIdx((prev) => prev + numShift)}
@@ -188,10 +217,10 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
               className="rotate-180"
             />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
 };
 
-export default ActivityRow;
+export default ActivityCarousel;

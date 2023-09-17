@@ -1,4 +1,4 @@
-import ActivityRow from '@/components/Submissions/ActivityRow';
+import ActivityCarousel from '@/components/Submissions/ActivityCarousel';
 import { getActivitiesByQuery, getActivityById } from '@/services/activity';
 import { ActivityDto, Semester } from '@/models/activity.model';
 import {
@@ -123,7 +123,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
         )}
         {Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
           <div key={sigLevel} className="flex flex-col w-full">
-            <ActivityRow
+            <ActivityCarousel
               sigLevel={toTitleCase(sigLevel)}
               activities={activities}
               newActivity={() =>
