@@ -13,7 +13,8 @@
     "generate": "yarn prisma generate",
     "seed": "yarn prisma db seed",
     "format:check": "prettier --check --ignore-path .gitignore .",
-    "format": "prettier --write --ignore-path .gitignore ."
+    "format": "prettier --write --ignore-path .gitignore .",
+    "prisma:studio": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' npx prisma studio"
   },
   "dependencies": {
     "@next/font": "13.1.6",
