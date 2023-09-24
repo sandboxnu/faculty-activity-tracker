@@ -1,6 +1,6 @@
 import { updateActivity, ResponseStatus } from '@/client/activities.client';
 import { createNarrative, updateNarrative } from '@/client/narratives.client';
-import ActivityRow from '@/components/Submissions/ActivityRow';
+import ActivityCarousel from '@/components/Submissions/ActivityCarousel';
 import {
   CreateNarrativeDto,
   NarrativeDto,
@@ -163,11 +163,12 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
       )}
 
       {favActivities.length !== 0 && (
-        <ActivityRow
+        <ActivityCarousel
           activities={favActivities}
           label="Favourite"
           favoriteActivity={unfavoriteActivity}
           displayNewActivity={false}
+          leftPadding={true}
         />
       )}
 

@@ -171,10 +171,10 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
         
         )}
         <div
-          className={`cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 ${
-            startCardIdx + cardsPerPage < activities.length + 1
+          className={`absolute right-0 top-1/2 -translate-y-1/2 ${
+            startCardIdx + cardsPerPage < activities.length + (displayNewActivity ? 1 : 0)
               ? 'cursor-pointer'
-              : 'opacity-25 cursor-not-allowed'
+              : 'opacity-25 pointer-events-none'
           }`}
           onClick={() => setCardIdx((prev) => prev + numShift)}
         >
@@ -189,7 +189,7 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
           className={`absolute left-0 top-1/2 -translate-y-1/2 ${
             startCardIdx > 0
               ? 'cursor-pointer'
-              : 'opacity-25 cursor-not-allowed'
+              : 'opacity-25 pointer-events-none'
           }`}
           onClick={() => setCardIdx((prev) => prev - numShift)}
         >
