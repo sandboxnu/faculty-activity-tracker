@@ -102,7 +102,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
 
   if (pageError || !activities)
     return (
-      <p className="w-full text-center text-red">
+      <p className="w-full text-center text-red-500">
         Error: {pageError || 'unknown error.'}
       </p>
     );
@@ -119,7 +119,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
       <div className="w-full flex flex-col border-box">
         <h1>{toTitleCase(category?.toString() || '')}</h1>
         {pageError && (
-          <p className="text-red text-center w-full">{pageError}</p>
+          <p className="text-red-500 text-center w-full">{pageError}</p>
         )}
         {Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
           <div key={sigLevel} className="flex flex-col w-full">

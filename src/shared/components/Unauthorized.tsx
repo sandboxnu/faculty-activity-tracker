@@ -9,7 +9,7 @@ const Unauthorized: React.FC = () => {
       <p>You must be logged in to view this page!</p>
       <button
         onClick={() => signIn('google', { callbackUrl: '/account-setup' })}
-        className="my-5 button bg-ruby border-ruby-dark text-white"
+        className="my-5 button bg-red-500 text-white"
       >
         Login
       </button>

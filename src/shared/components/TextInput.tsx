@@ -21,7 +21,7 @@ const TextInput: React.FC<TextInputProps> = ({
       value={value}
       className={
         className ||
-        'border-[0.5px] border-g rounded-lg px-3 py-2 outline-none max-w-[175px]'
+        'border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none max-w-[175px]'
       }
     />
   );

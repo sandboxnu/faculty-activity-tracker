@@ -87,7 +87,7 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
     <div className="flex flex-col w-full">
       <div className="flex w-full items-center mt-3 pr-12 font-light">
         <p className="mr-2 text-base">{sigLevel} Activities</p>
-        <div className="flex-grow h-[1.5px] bg-light-grey" />
+        <div className="flex-grow h-[1.5px] bg-gray-200" />
         <p className="ml-2">
           Page {currPage + 1} of {numPages}
         </p>
@@ -105,11 +105,11 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
           >
             <div
               onClick={(event) => startEditingActivity(event, activity)}
-              className="rounded-lg bg-medium-grey shadow-sm hover:shadow-lg px-3.5 py-3.5 card h-39 cursor-pointer"
+              className="rounded-lg bg-gray-100 shadow-sm hover:shadow-lg px-3.5 py-3.5 card h-39 cursor-pointer"
             >
               <div className="flex flex-col pl-2.5">
                 <div className="flex item-center justify-between">
-                  <p className="text-sm text-g">
+                  <p className="text-sm text-gray-500">
                     {moment(Number(activity.dateModified)).format(
                       'MMM D, YYYY',
                     )}
@@ -123,8 +123,8 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
                     <StarIcon
                       className={`${
                         activity.isFavorite
-                          ? 'stroke-red fill-red/30'
-                          : 'stroke-g hover:stroke-red'
+                          ? 'stroke-red-500 fill-red-500/30'
+                          : 'stroke-gray-500 hover:stroke-red-500'
                       } cursor-pointer duration-100`}
                     />
                   </div>
@@ -132,10 +132,10 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
                 <p className="text-lg font-semibold my-3 truncate">
                   {activity.name}
                 </p>
-                <p className="text-g text-ellipsis-2 leading-5">
+                <p className="text-gray-500 text-ellipsis-2 leading-5">
                   {activity.description}
                 </p>
-                <div className="hover-bar bg-red" />
+                <div className="hover-bar bg-red-500" />
               </div>
             </div>
           </div>
@@ -145,7 +145,7 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
           style={{ transform: `translate(-${startCardIdx * 100}%)` }}
         >
           <div
-            className="rounded-lg bg-medium-grey shadow-sm hover:shadow-lg px-3.5 py-3.5 card h-39 cursor-pointer"
+            className="rounded-lg bg-gray-100 shadow-sm hover:shadow-lg px-3.5 py-3.5 card h-39 cursor-pointer"
             onClick={newActivity}
           >
             <div className="flex flex-col items-center justify-center h-full">
@@ -154,7 +154,7 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
                 alt="new activity"
                 width={46}
                 height={36}
-                className="fill-red"
+                className="fill-red-500"
               />
               <p className="font-bold mt-2">Add Activity</p>
             </div>

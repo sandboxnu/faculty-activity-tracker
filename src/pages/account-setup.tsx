@@ -141,7 +141,7 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
 
   if (pageError || !email || !name)
     return (
-      <p className="w-full text-center text-red">
+      <p className="w-full text-center text-red-500">
         Error: {pageError || 'unknown error.'}
       </p>
     );
