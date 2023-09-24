@@ -40,10 +40,10 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
                     parseFloat(e.target.value) / 100,
                   )
                 }
-                className="px-4 py-1.5 border-[0.5px] border-g rounded-xl mr-2"
+                className="px-4 py-1.5 border-[0.5px] border-gray-500 rounded-xl mr-2"
               />
             ) : (
-              <p className="px-4 py-1.5 border-[0.5px] border-g rounded-xl mr-2">
+              <p className="px-4 py-1.5 border-[0.5px] border-gray-500 rounded-xl mr-2">
                 {percent * 100}
               </p>
             )}

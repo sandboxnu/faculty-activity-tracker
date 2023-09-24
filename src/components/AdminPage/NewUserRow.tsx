@@ -30,7 +30,7 @@ const NewUserRow: React.FC<NewUserRowProps> = ({ submit, cancel }) => {
   };
 
   return (
-    <div className="flex w-full items-center rounded-xl border border-er px-4 py-3 shadow my-2">
+    <div className="flex w-full items-center rounded-xl border border-gray-300 px-4 py-3 shadow my-2">
       <div className="basis-15">
         <TextOrInput
           value={firstName}
@@ -57,7 +57,7 @@ const NewUserRow: React.FC<NewUserRowProps> = ({ submit, cancel }) => {
       </div>
       <div className="basis-30">
         <select
-          className="rounded border-[0.5px] border-g outline-none"
+          className="rounded border-[0.5px] border-gray-500 outline-none"
           onChange={(e) => setRole(e.target.value as Role)}
           value={role}
         >

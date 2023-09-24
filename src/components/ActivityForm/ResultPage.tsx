@@ -26,7 +26,7 @@ const ResultPage: React.FC<{ success: boolean }> = ({ success }) => {
             If you&apos;d like to view or edit previous submissions, navigate to{' '}
             <Link
               href={`/submissions/${category?.toLowerCase()}`}
-              className="text-ruby"
+              className="text-red-500"
             >
               Submissions
             </Link>

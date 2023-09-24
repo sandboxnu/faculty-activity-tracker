@@ -34,7 +34,7 @@ const DropdownInput = <T extends unknown>({
       <div
         className={`${
           absoluteDropdown ? 'absolute' : 'relative'
-        } w-[175px] flex flex-col bg-white border-[0.5px] border-g rounded-lg cursor-pointer ${addOnClass}`}
+        } w-[175px] flex flex-col bg-white border-[0.5px] border-gray-500 rounded-lg cursor-pointer ${addOnClass}`}
       >
         <div
           className="flex items-center justify-between px-3 py-2"
@@ -55,7 +55,7 @@ const DropdownInput = <T extends unknown>({
               .filter((o) => o.value !== selectedOption?.value)
               .map((o, idx) => (
                 <div
-                  className={`w-full px-3 py-2.5 cursor-pointer hover:bg-grey ${
+                  className={`w-full px-3 py-2.5 cursor-pointer hover:bg-gray-100 ${
                     !o.value && 'text-neutral-400'
                   }`}
                   key={o.value?.toString() || ''}

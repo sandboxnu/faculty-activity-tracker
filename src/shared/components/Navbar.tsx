@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
         <Link
           key={path}
           className={`text-white font-bold pb-2 border-b-2 border-transparent ${
-            router.pathname == path ? 'border-ruby' : 'hover:border-white'
+            router.pathname == path ? 'border-red-500' : 'hover:border-white'
           }`}
           href={path}
           onClick={() => (onClick !== undefined ? onClick() : {})}

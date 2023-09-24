@@ -52,7 +52,7 @@ const weightOptions = [
 ];
 
 const WeightInfo = () => (
-  <div className="flex items-center space-x-2 text-g">
+  <div className="flex items-center space-x-2 text-gray-500">
     <Image
       src="/media/infoIcon.svg"
       alt="Little information icon"
@@ -262,7 +262,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       {isEditing ? (
         <>
           <h2>Submitted Activity - {formatCategory(category)}</h2>
-          <p className={'text-last-date-modified-grey italic drop-shadow-sm'}>
+          <p className={'text-gray-400 italic drop-shadow-sm'}>
             Last Date Modified
             {` - ${moment(Number(lastDateModified)).format('MMM D, YYYY')}`}
           </p>
@@ -377,7 +377,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         </button>
 
         <button
-          className="bg-ruby border-ruby-dark text-white disabled:bg-ruby-disabled"
+          className="bg-red-500 text-white disabled:bg-red-300"
           disabled={
             weight === null ||
             date === null ||

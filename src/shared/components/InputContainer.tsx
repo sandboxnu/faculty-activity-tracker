@@ -25,7 +25,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
         height={16}
         className="mx-2"
       />
-      {incomplete && <p className="text-ruby inline">{incompleteMessage}</p>}
+      {incomplete && <p className="text-red-500 inline">{incompleteMessage}</p>}
     </div>
   );
 

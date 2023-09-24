@@ -92,14 +92,17 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
 
   if (pageError)
     return (
-      <p className="w-full text-center text-red mt-20">
+      <p className="w-full text-center text-red-500 mt-20">
         {' '}
         Error: {pageError || 'Unknown Error'}
       </p>
     );
   if (!category)
     return (
-      <p className="w-full text-center text-red mt-20"> Invalid Category </p>
+      <p className="w-full text-center text-red-500 mt-20">
+        {' '}
+        Invalid Category{' '}
+      </p>
     );
   return (
     <div className="w-full">
@@ -132,7 +135,7 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
         </button>
         <button
           onClick={submit}
-          className="bg-red text-white font-bold rounded-xl px-8 py-3"
+          className="bg-red-500 text-white font-bold rounded-xl px-8 py-3"
         >
           {' '}
           Submit{' '}

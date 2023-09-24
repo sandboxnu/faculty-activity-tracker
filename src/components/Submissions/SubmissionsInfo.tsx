@@ -85,7 +85,7 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
       </SideBarBubble>
       <Link
         href={`/narratives/${category}`}
-        className="bg-red text-white font-bold rounded-xl px-3 py-2 mx-auto shadow-sm"
+        className="bg-red-500 text-white font-bold rounded-xl px-3 py-2 mx-auto shadow-sm"
       >
         {' '}
         {!narrative ? 'Submit' : 'Edit'} Narrative{' '}

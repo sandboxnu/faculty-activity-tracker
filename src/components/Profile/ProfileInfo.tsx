@@ -85,7 +85,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
 
   if (error)
     return (
-      <p className="text-red w-full text-center mt-20">
+      <p className="text-red-500 w-full text-center mt-20">
         Error: {error || 'unknown error.'}
       </p>
     );
@@ -113,7 +113,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
       <div key="activity-info">
         <div className="flex items-center w-full mb-6 pr-5">
           <p className="text-base font-bold mr-2">Activity Distribution</p>
-          <div className="flex-grow h-[1.5px] bg-light-grey" />
+          <div className="flex-grow h-[1.5px] bg-gray-200" />
         </div>
         <InputContainer
           label=""
@@ -139,12 +139,12 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
       <div key="contact-info">
         <div className="flex items-center w-full mt-10 pr-5">
           <p className="text-base font-bold mr-2">Contact Information</p>
-          <div className="flex-grow h-[1.5px] bg-light-grey" />
+          <div className="flex-grow h-[1.5px] bg-gray-200" />
         </div>
         <div className="mt-5 mb-6">
           <div className="flex flex-col">
             <p className="mb-2">Email</p>
-            <p className="px-4 py-1.5 border-[0.5px] border-g rounded-xl w-max min-w-[250px]">
+            <p className="px-4 py-1.5 border-[0.5px] border-gray-500 rounded-xl w-max min-w-[250px]">
               {email}
             </p>
           </div>
@@ -154,13 +154,13 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
         {editing && (
           <button
             onClick={cancel}
-            className="px-3 py-2 bg-medium-grey border border-g text-g rounded-xl"
+            className="px-3 py-2 bg-gray-100 border border-gray-500 text-gray-500 rounded-xl"
           >
             Cancel
           </button>
         )}
         <button
-          className="px-3 py-2 bg-red text-white rounded-xl disabled:bg-ruby-disabled"
+          className="px-3 py-2 bg-red-500 text-white rounded-xl disabled:bg-red-300"
           onClick={editing ? submit : startEditing}
           disabled={
             editing && teachingInput + researchInput + serviceInput !== 1

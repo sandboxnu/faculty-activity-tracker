@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
 const Profile: React.FC<ProfilePageProps> = ({ info, error }) => {
   if (error || !info)
     return (
-      <p className="text-red w-full text-center mt-20">
+      <p className="text-red-500 w-full text-center mt-20">
         Error: {error || 'unknown error.'}
       </p>
     );

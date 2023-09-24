@@ -31,7 +31,7 @@ const SideBarBubble: React.FC<{
   }, []);
 
   return (
-    <div className="flex flex-col px-5 py-3 bg-medium-grey w-full rounded-lg shadow-sm">
+    <div className="flex flex-col px-5 py-3 bg-gray-100 w-full rounded-lg shadow-sm">
       <div
         className="flex items-center space-x-4 cursor-pointer"
         onClick={toggleDropDown}
