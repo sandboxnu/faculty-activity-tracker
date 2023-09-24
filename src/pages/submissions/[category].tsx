@@ -124,7 +124,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
         {Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
           <div key={sigLevel} className="flex flex-col w-full">
             <ActivityCarousel
-              sigLevel={toTitleCase(sigLevel)}
+              label={toTitleCase(sigLevel)}
               activities={activities}
               newActivity={() =>
                 startNewActivity(sigLevel as SignificanceLevel)
