@@ -41,7 +41,7 @@ const StepWrapper: React.FC<StepWrapperProps> = ({
           className="flex justify-center rounded-lg bg-red cursor-pointer px-6 py-3"
           onClick={next}
         >
-          <p className="text-xs text-white">Next</p>
+          <p className="text-xs text-white font-bold">Next</p>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import CategorySelector from '@/components/ActivityForm/CategorySelector';
 import FormContainer from '@/components/ActivityForm/FormContainer';
 import FormInput from '@/components/ActivityForm/FormInput';
 import ResultPage from '@/components/ActivityForm/ResultPage';
+import AppLayout from '@/shared/components/AppLayout';
 import { FormStep, selectStep } from '@/store/form.store';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
@@ -32,7 +33,7 @@ const NewActivityForm: React.FC = () => {
       <Head>
         <title>New Submission</title>
       </Head>
-      {StepComponent[step]}
+      <AppLayout>{StepComponent[step]}</AppLayout>
     </>
   );
 };

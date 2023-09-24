@@ -5,6 +5,38 @@ interface StepIndicatorProps {
   numSteps: number;
 }
 
+type CompletionState = 'complete' | 'in progress' | 'incomplete';
+
+const completionState = (idx: number, currStep: number): CompletionState =>
+  idx < currStep ? 'complete' : idx === currStep ? 'in progress' : 'incomplete';
+
+const textCompletionClass: Record<CompletionState, string> = {
+  complete: `text-red/50`,
+  'in progress': `text-red`,
+  incomplete: `text-black/40`,
+};
+
+const bgCompletionClass: Record<CompletionState, string> = {
+  complete: 'bg-red/50',
+  'in progress': 'bg-red',
+  incomplete: 'bg-[#C6C6C6]',
+};
+
+const StepBar: React.FC<{ state: CompletionState }> = ({ state }) => (
+  <div
+    className={`flex flex-grow w-12 h-1.5 rounded-full ${bgCompletionClass[state]}`}
+  />
+);
+
+const StepLabel: React.FC<{ step: number; state: CompletionState }> = ({
+  step,
+  state,
+}) => (
+  <p className={`text-sm font-semibold ${textCompletionClass[state]}`}>
+    {step + 1}
+  </p>
+);
+
 const idempotentArray = (length: number): number[] =>
   Array.apply(null, Array(length)).map((_, idx) => idx);
 
@@ -15,27 +47,9 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({
   return (
     <div className="flex items-center space-x-7">
       {idempotentArray(numSteps).map((idx) => (
-        <div className="flex flex-col items-center space-y-1.5 px-4" key={idx}>
-          <p
-            className={`text-sm text-semibold ${
-              idx < currentStep
-                ? 'text-red/50'
-                : idx === currentStep
-                ? 'text-red'
-                : 'text-black/40'
-            }`}
-          >
-            {idx + 1}
-          </p>
-          <div
-            className={`flex flex-grow w-11 h-1.5 rounded-full ${
-              idx < currentStep
-                ? 'bg-red/50'
-                : idx === currentStep
-                ? 'bg-red'
-                : 'bg-black/40'
-            }`}
-          />
+        <div className="flex flex-col items-center space-y-1.5" key={idx}>
+          <StepLabel step={idx} state={completionState(idx, currentStep)} />
+          <StepBar state={completionState(idx, currentStep)} />
         </div>
       ))}
     </div>

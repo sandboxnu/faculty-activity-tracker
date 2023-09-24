@@ -25,13 +25,15 @@ const RoleSetup: React.FC<RoleSetupProps> = ({ confirmRole }) => {
       else if (res === ResponseStatus.BadRequest) setError('Bad request');
       else if (res === ResponseStatus.UnknownError) setError('Unknown error');
       else {
+        // store role in redux
+        // set next step
         confirmRole(res);
       }
     });
   };
 
   return (
-    <div className="w-full h-screen flex justify-center items-center">
+    <div className="w-full flex flex-grow justify-center items-center">
       <StepWrapper
         title="Welcome!"
         subtitle="Please enter your access code."
@@ -44,6 +46,7 @@ const RoleSetup: React.FC<RoleSetupProps> = ({ confirmRole }) => {
             label="Provided Access Code"
             incomplete={codeInput === ''}
             incompleteMessage="Enter an access code."
+            withMarginY={false}
           >
             <TextInput
               value={codeInput || ''}
@@ -56,33 +59,6 @@ const RoleSetup: React.FC<RoleSetupProps> = ({ confirmRole }) => {
       </StepWrapper>
     </div>
   );
-  // return (
-  //   <div className="center">
-  //     <div className="flex items-center space-x-2">
-  //       <p>Enter your provided access code:</p>
-  // <input
-  //   className={inputBox}
-  //   value={codeInput}
-  //   onChange={(e) => {
-  //     setCodeInput(e.target.value);
-  //     if (error) setError(null);
-  //   }}
-  //   placeholder="access code"
-  // />
-  //       {error && <p className="text-red">{error}</p>}
-  //     </div>
-  //     <div className="flex justify-between items-center my-3">
-  //       <div />
-  //       <button
-  //         className="bg-ruby disabled:bg-ruby-disabled text-white px-3 py-2 rounded-xl"
-  //         onClick={submitCode}
-  //         disabled={codeInput === ''}
-  //       >
-  //         Submit
-  //       </button>
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default RoleSetup;

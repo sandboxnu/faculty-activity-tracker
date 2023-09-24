@@ -12,6 +12,7 @@ import { createUser } from '@/client/users.client';
 import { ResponseStatus } from '@/client/activities.client';
 import ProfessorInfoForm from '@/components/AccountSetup/ProfessorInfoForm';
 import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
+import AppLayout from '@/shared/components/AppLayout';
 
 interface AccountSetupPageProps {
   name?: string;
@@ -150,7 +151,9 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
       <Head>
         <title>Account Setup</title>
       </Head>
-      <div className="flex flex-col w-full">{SetupStepComponent[step]}</div>
+      <AppLayout hideSidebars>
+        <div className="flex flex-col w-full">{SetupStepComponent[step]}</div>
+      </AppLayout>
     </div>
   );
 };

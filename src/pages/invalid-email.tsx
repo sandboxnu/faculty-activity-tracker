@@ -1,11 +1,14 @@
-import React from "react";
+import AppLayout from '@/shared/components/AppLayout';
+import React from 'react';
 
 const InvalidEmailPage: React.FC = () => {
-    return (
-        <div>
-            <p>Invalid Email.</p>
-        </div>
-    );
-}
+  return (
+    <AppLayout>
+      <div>
+        <p>Invalid Email.</p>
+      </div>
+    </AppLayout>
+  );
+};
 
 export default InvalidEmailPage;
