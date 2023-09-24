@@ -4,17 +4,24 @@ import TextAreaInput from '@/shared/components/TextAreaInput';
 import { SabbaticalOption } from '@prisma/client';
 import React, { useState } from 'react';
 import PercentageInfo from '../Profile/PercentageInfo';
+import { ResponseStatus } from '@/client/activities.client';
+import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
+import { createUser } from '@/client/users.client';
+import { CreateProfessorInfoDto } from '@/models/professorInfo.model';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { selectUserInfo } from '@/store/accountsetup.store';
 
 interface ProfessorInfoFormProps {
-  submit: (
-    position: string,
-    teachingPercent: number,
-    researchPercent: number,
-    servicePercent: number,
-    sabbatical: SabbaticalOption,
-    teachingReleaseExplanation?: string,
-  ) => void;
-  back: () => void;
+  // submit: (
+  //   position: string,
+  //   teachingPercent: number,
+  //   researchPercent: number,
+  //   servicePercent: number,
+  //   sabbatical: SabbaticalOption,
+  //   teachingReleaseExplanation?: string,
+  // ) => void;
+  // back: () => void;
 }
 
 const positionOptions: Option[] = [
@@ -29,9 +36,10 @@ const sabbaticalOptions: Option<SabbaticalOption>[] = [
 ];
 
 const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
-  submit,
-  back,
+  // submit,
+  // back,
 }) => {
+  const userInfo = useSelector(selectUserInfo);
   const [position, setPosition] = useState('');
   const [teachingPercent, setTeachingPercent] = useState(0);
   const [researchPercent, setResearchPercent] = useState(0);
@@ -40,6 +48,8 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
     SabbaticalOption.NO,
   );
   const [teachingReleaseExplanation, setExplanation] = useState('');
+  const [pageError, setPageError] = useState<string | null>(null);
+  const router = useRouter();
 
   const percentSetters: Record<string, (percent: number) => void> = {
     teaching: (percent) => setTeachingPercent(percent),
@@ -72,7 +82,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
     )
       return;
 
-    submit(
+    createProfessorInfo(
       position,
       teachingPercent,
       researchPercent,
@@ -81,6 +91,41 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
       teachingReleaseExplanation,
     );
   };
+
+  const createProfessorInfo = async (
+    position: string,
+    teachingPercent: number,
+    researchPercent: number,
+    servicePercent: number,
+    sabbatical: SabbaticalOption,
+    teachingReleaseExplanation?: string,
+  ) => {
+    if (!userInfo) return;
+
+    const newUser = await createUser(userInfo);
+
+    if (newUser === ResponseStatus.UnknownError) setPageError('Unknown Error');
+    else {
+      let newProfessorInfo: CreateProfessorInfoDto = {
+        userId: newUser.id,
+        position,
+        teachingPercent,
+        researchPercent,
+        servicePercent,
+        sabbatical,
+        teachingReleaseExplanation: teachingReleaseExplanation || null,
+      };
+
+      const res = await updateProfessorInfoForUser(newProfessorInfo);
+      if (res === ResponseStatus.Unauthorized) setPageError('Unauthorized');
+      else if (res === ResponseStatus.BadRequest) setPageError('Bad request');
+      else if (res === ResponseStatus.UnknownError)
+        setPageError('Unknown error');
+      else {
+        router.push('/profile');
+      }
+    }
+};
 
   return (
     <div className="flex flex-col">
@@ -132,25 +177,6 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
           addOnClass="w-full"
         />
       </InputContainer>
-      <div className="flex justify-between items-center my-3">
-        <button
-          className="bg-gray-100 border border-gray-500 text-gray-500 px-3 py-2 rounded-xl"
-          onClick={back}
-        >
-          Back
-        </button>
-        <button
-          className="bg-red-500 disabled:bg-red-300 text-white px-3 py-2 rounded-xl"
-          onClick={submitInfo}
-          disabled={
-            !position ||
-            !sabbatical ||
-            teachingPercent + researchPercent + servicePercent !== 1
-          }
-        >
-          Submit
-        </button>
-      </div>
     </div>
   );
 };

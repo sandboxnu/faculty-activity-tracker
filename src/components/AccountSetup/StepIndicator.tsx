@@ -11,14 +11,14 @@ const completionState = (idx: number, currStep: number): CompletionState =>
   idx < currStep ? 'complete' : idx === currStep ? 'in progress' : 'incomplete';
 
 const textCompletionClass: Record<CompletionState, string> = {
-  complete: `text-red/50`,
-  'in progress': `text-red`,
+  complete: `text-red-500/50`,
+  'in progress': `text-red-500`,
   incomplete: `text-black/40`,
 };
 
 const bgCompletionClass: Record<CompletionState, string> = {
-  complete: 'bg-red/50',
-  'in progress': 'bg-red',
+  complete: 'bg-red-500/50',
+  'in progress': 'bg-red-500',
   incomplete: 'bg-[#C6C6C6]',
 };
 

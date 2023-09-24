@@ -13,6 +13,8 @@ import { ResponseStatus } from '@/client/activities.client';
 import ProfessorInfoForm from '@/components/AccountSetup/ProfessorInfoForm';
 import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
 import AppLayout from '@/shared/components/AppLayout';
+import { useSelector } from 'react-redux';
+import { selectStep } from '@/store/accountsetup.store';
 
 interface AccountSetupPageProps {
   name?: string;
@@ -53,90 +55,13 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
   error,
 }) => {
   const [pageError, setPageError] = useState<string | null>(error || null);
-  const [userRole, setUserRole] = useState<Role | null>(null);
-  const [userInfo, setUserInfo] = useState<CreateUserDto | null>(null);
-  const [step, setStep] = useState<AccountSetupStep>('role');
+  const step = useSelector(selectStep);
   const router = useRouter();
 
-  const confirmRole = (role: Role) => {
-    setUserRole(role);
-    setStep('user info');
-  };
-
-  const createNewUser = (
-    firstName: string,
-    lastName: string,
-    preferredName?: string,
-  ) => {
-    if (!email || !userRole) return;
-
-    let newUser: CreateUserDto = {
-      email,
-      firstName,
-      lastName,
-      preferredName: preferredName || null,
-      role: userRole,
-      dateModified: BigInt(Date.now()),
-    };
-    setStep('professor info');
-    setUserInfo(newUser);
-  };
-
-  const createProfessorInfo = async (
-    position: string,
-    teachingPercent: number,
-    researchPercent: number,
-    servicePercent: number,
-    sabbatical: SabbaticalOption,
-    teachingReleaseExplanation?: string,
-  ) => {
-    if (!userInfo) return;
-
-    const newUser = await createUser(userInfo);
-
-    if (newUser === ResponseStatus.UnknownError) setPageError('Unknown Error');
-    else {
-      let newProfessorInfo: CreateProfessorInfoDto = {
-        userId: newUser.id,
-        position,
-        teachingPercent,
-        researchPercent,
-        servicePercent,
-        sabbatical,
-        teachingReleaseExplanation: teachingReleaseExplanation || null,
-      };
-
-      const res = await updateProfessorInfoForUser(newProfessorInfo);
-      if (res === ResponseStatus.Unauthorized) setPageError('Unauthorized');
-      else if (res === ResponseStatus.BadRequest) setPageError('Bad request');
-      else if (res === ResponseStatus.UnknownError)
-        setPageError('Unknown error');
-      else {
-        router.push('/profile');
-      }
-    }
-  };
-
   const SetupStepComponent: Record<AccountSetupStep, JSX.Element> = {
-    role: <RoleSetup confirmRole={confirmRole} />,
-    'user info': (
-      <UserInfoForm
-        initialName={name || ''}
-        submit={createNewUser}
-        back={() => {
-          setStep('role');
-          setUserRole(null);
-        }}
-      />
-    ),
-    'professor info': (
-      <ProfessorInfoForm
-        submit={createProfessorInfo}
-        back={() => {
-          setStep('user info');
-        }}
-      />
-    ),
+    role: <RoleSetup />,
+    'user info': <UserInfoForm />,
+    'professor info': <ProfessorInfoForm />,
   };
 
   if (pageError || !email || !name)

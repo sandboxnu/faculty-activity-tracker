@@ -6,14 +6,16 @@ import React, { useState } from 'react';
 import InputContainer from '@/shared/components/InputContainer';
 import TextInput from '@/shared/components/TextInput';
 import StepWrapper from './StepWrapper';
+import { useDispatch } from 'react-redux';
+import { setRole, setStep } from '@/store/accountsetup.store';
 
 interface RoleSetupProps {
-  confirmRole: (role: Role) => void;
 }
 
-const RoleSetup: React.FC<RoleSetupProps> = ({ confirmRole }) => {
+const RoleSetup: React.FC<RoleSetupProps> = () => {
   const [codeInput, setCodeInput] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch();
 
   const submitCode = () => {
     console.log(codeInput);
@@ -25,9 +27,8 @@ const RoleSetup: React.FC<RoleSetupProps> = ({ confirmRole }) => {
       else if (res === ResponseStatus.BadRequest) setError('Bad request');
       else if (res === ResponseStatus.UnknownError) setError('Unknown error');
       else {
-        // store role in redux
-        // set next step
-        confirmRole(res);
+        dispatch(setRole(res));
+        dispatch(setStep('user info'));
       }
     });
   };
