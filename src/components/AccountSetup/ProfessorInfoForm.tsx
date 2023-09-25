@@ -9,8 +9,9 @@ import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
 import { createUser } from '@/client/users.client';
 import { CreateProfessorInfoDto } from '@/models/professorInfo.model';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { selectUserInfo } from '@/store/accountsetup.store';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUserInfo, setStep } from '@/store/accountSetup.store';
+import StepWrapper from './StepWrapper';
 
 interface ProfessorInfoFormProps {
   // submit: (
@@ -35,10 +36,12 @@ const sabbaticalOptions: Option<SabbaticalOption>[] = [
   { label: 'Semester', value: SabbaticalOption.SEMESTER },
 ];
 
-const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
-  // submit,
-  // back,
-}) => {
+const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
+  {
+    // submit,
+    // back,
+  },
+) => {
   const userInfo = useSelector(selectUserInfo);
   const [position, setPosition] = useState('');
   const [teachingPercent, setTeachingPercent] = useState(0);
@@ -50,6 +53,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
   const [teachingReleaseExplanation, setExplanation] = useState('');
   const [pageError, setPageError] = useState<string | null>(null);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const percentSetters: Record<string, (percent: number) => void> = {
     teaching: (percent) => setTeachingPercent(percent),
@@ -125,59 +129,69 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
         router.push('/profile');
       }
     }
-};
+  };
 
   return (
-    <div className="flex flex-col">
-      <InputContainer
-        label="Position: "
-        incomplete={!position}
-        incompleteMessage="Select a position."
-      >
-        <DropdownInput
-          options={positionOptions}
-          placeholder="Select a Position"
-          selectValue={(value) => selectPosition(value?.toString() || '')}
-        />
-      </InputContainer>
-      <InputContainer
-        label="Activity Distribution: "
-        incomplete={teachingPercent + researchPercent + servicePercent !== 1}
-        incompleteMessage="Percentages must sum to 100."
-      >
-        <PercentageInfo
-          editing={true}
-          teaching={teachingPercent}
-          research={researchPercent}
-          service={servicePercent}
-          setPercent={setPercent}
-        />
-      </InputContainer>
-      <InputContainer
-        label="Sabbatical: "
-        incomplete={!sabbatical}
-        incompleteMessage="Select a sabbatical option."
-      >
-        <DropdownInput<SabbaticalOption>
-          options={sabbaticalOptions}
-          initialValue={sabbaticalOptions.find((o) => o.value === sabbatical)}
-          placeholder="Select a Sabbatical"
-          selectValue={(value) => setSabbatical(value as SabbaticalOption)}
-        />
-      </InputContainer>
-      <InputContainer
-        label="Teaching Release Explanation: "
-        incomplete={false}
-        incompleteMessage=""
-      >
-        <TextAreaInput
-          value={teachingReleaseExplanation}
-          change={(val) => setExplanation(val)}
-          placeholder="Teaching release explanation (optional)."
-          addOnClass="w-full"
-        />
-      </InputContainer>
-    </div>
+    <StepWrapper
+      title="Basic Information"
+      subtitle="Please provide the following information."
+      currentStep={2}
+      next={submitInfo}
+      back={() => dispatch(setStep('user info'))}
+    >
+      <div className="flex flex-col w-full">
+        <InputContainer
+          label="Position"
+          incomplete={!position}
+          incompleteMessage="Select a position."
+        >
+          <DropdownInput
+            options={positionOptions}
+            placeholder="Select a Position"
+            selectValue={(value) => selectPosition(value?.toString() || '')}
+            fillContainer
+          />
+        </InputContainer>
+        <InputContainer
+          label="Activity Distribution"
+          incomplete={teachingPercent + researchPercent + servicePercent !== 1}
+          incompleteMessage="Must sum to 100."
+        >
+          <PercentageInfo
+            editing={true}
+            teaching={teachingPercent}
+            research={researchPercent}
+            service={servicePercent}
+            setPercent={setPercent}
+          />
+        </InputContainer>
+        <InputContainer
+          label="Sabbatical"
+          incomplete={!sabbatical}
+          incompleteMessage="Select a sabbatical option."
+        >
+          <DropdownInput<SabbaticalOption>
+            options={sabbaticalOptions}
+            initialValue={sabbaticalOptions.find((o) => o.value === sabbatical)}
+            placeholder="Select a Sabbatical"
+            selectValue={(value) => setSabbatical(value as SabbaticalOption)}
+            fillContainer
+          />
+        </InputContainer>
+        <InputContainer
+          label="Teaching Release Explanation"
+          incomplete={false}
+          incompleteMessage=""
+        >
+          <TextAreaInput
+            value={teachingReleaseExplanation}
+            change={(val) => setExplanation(val)}
+            placeholder="Teaching release explanation (optional)."
+            addOnClass="w-full"
+          />
+        </InputContainer>
+      </div>
+    </StepWrapper>
   );
 };
 

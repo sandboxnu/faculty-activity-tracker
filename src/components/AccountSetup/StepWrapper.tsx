@@ -21,14 +21,14 @@ const StepWrapper: React.FC<StepWrapperProps> = ({
   children,
 }) => {
   return (
-    <div className="flex flex-col items-center rounded-lg bg-gray-100 shadow-lg pt-6 px-20 pb-11">
+    <div className="flex flex-col w-full items-center rounded-lg bg-gray-100 shadow-lg pt-6 px-20 pb-11">
       <StepIndicator currentStep={currentStep} numSteps={numSteps} />
       <div className="my-8 flex flex-col items-center">
         <p className="text-2xl font-bold">{title}</p>
         <p className="text-sm font-medium">{subtitle}</p>
       </div>
       {children}
-      <div className="flex justify-around mt-12" id="buttons">
+      <div className="flex justify-between mt-12 w-full" id="buttons">
         {currentStep > 0 && (
           <div
             className="flex justify-center rounded-lg bg-white border border-gray-400 cursor-pointer px-6 py-3"

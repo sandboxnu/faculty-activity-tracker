@@ -7,10 +7,9 @@ import InputContainer from '@/shared/components/InputContainer';
 import TextInput from '@/shared/components/TextInput';
 import StepWrapper from './StepWrapper';
 import { useDispatch } from 'react-redux';
-import { setRole, setStep } from '@/store/accountsetup.store';
+import { setRole, setStep } from '@/store/accountSetup.store';
 
-interface RoleSetupProps {
-}
+interface RoleSetupProps {}
 
 const RoleSetup: React.FC<RoleSetupProps> = () => {
   const [codeInput, setCodeInput] = useState<string | null>(null);
@@ -42,7 +41,7 @@ const RoleSetup: React.FC<RoleSetupProps> = () => {
         next={submitCode}
         back={() => {}}
       >
-        <div className="w-[330px]">
+        <div className="w-full">
           <InputContainer
             label="Provided Access Code"
             incomplete={codeInput === ''}

@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { CreateUserDto } from '@/models/user.model';
 import { CreateProfessorInfoDto } from '@/models/professorInfo.model';
@@ -13,8 +13,8 @@ import { ResponseStatus } from '@/client/activities.client';
 import ProfessorInfoForm from '@/components/AccountSetup/ProfessorInfoForm';
 import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
 import AppLayout from '@/shared/components/AppLayout';
-import { useSelector } from 'react-redux';
-import { selectStep } from '@/store/accountsetup.store';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectStep, setName, setEmail } from '@/store/accountSetup.store';
 
 interface AccountSetupPageProps {
   name?: string;
@@ -57,6 +57,12 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
   const [pageError, setPageError] = useState<string | null>(error || null);
   const step = useSelector(selectStep);
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (name) dispatch(setName(name));
+    if (email) dispatch(setEmail(email));
+  }, [name, email, dispatch]);
 
   const SetupStepComponent: Record<AccountSetupStep, JSX.Element> = {
     role: <RoleSetup />,
@@ -77,7 +83,9 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
         <title>Account Setup</title>
       </Head>
       <AppLayout hideSidebars>
-        <div className="flex flex-col w-full">{SetupStepComponent[step]}</div>
+        <div className="flex flex-col w-full max-w-[480px] mx-auto">
+          {SetupStepComponent[step]}
+        </div>
       </AppLayout>
     </div>
   );
