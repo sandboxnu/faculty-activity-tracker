@@ -89,6 +89,10 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
     router.push(`/submissions/edit`);
   };
 
+  if (currPage + 1 > numPages) {
+    setCardIdx((numPages - 1) * cardsPerPage);
+  }
+
   return (
     <div className="flex flex-col w-full">
       <div className="flex w-full items-center mt-3 pr-12 font-light">
