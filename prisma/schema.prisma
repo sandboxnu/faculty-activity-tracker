@@ -25,12 +25,14 @@ model ProfessorInfo {
   id                         Int              @id @default(autoincrement())
   user                       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                     Int              @unique
-  position                   String
+  position                   ProfessorPosition
   teachingPercent            Float
   researchPercent            Float
   servicePercent             Float
   sabbatical                 SabbaticalOption
   teachingReleaseExplanation String?
+  phoneNumber                String?
+  officeLocation             String?
 }
 
 model ProfessorScore {
@@ -118,4 +120,9 @@ enum Semester {
 enum ActivityMeritStatus {
   ACCEPTED
   REJECTED
+}
+
+enum ProfessorPosition {
+  TENURE
+  NONTENURE
 }

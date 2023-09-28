@@ -1,16 +1,23 @@
 import { createSlice, Selector, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './app.store';
+import { ProfessorPosition } from '@prisma/client';
 
 export interface ProfileState {
   teachingPercent: number;
   researchPercent: number;
   servicePercent: number;
+  position: ProfessorPosition | null;
+  phoneNumber: string;
+  officeLocation: string;
 }
 
 const initialState: ProfileState = {
   teachingPercent: 0,
   researchPercent: 0,
   servicePercent: 0,
+  position: null,
+  phoneNumber: '',
+  officeLocation: '',
 };
 
 export const profileSlice = createSlice({
@@ -44,10 +51,22 @@ export const profileSlice = createSlice({
           break;
       }
     },
+    setPosition: (state, action: PayloadAction<ProfessorPosition>) => {
+      state.position = action.payload;
+    },
+    setPhoneNumber: (state, action: PayloadAction<string>) => {
+      state.phoneNumber = action.payload;
+    },
+    setOfficeLocation: (state, action: PayloadAction<string>) => {
+      state.officeLocation = action.payload;
+    },
     reset: (state) => {
       state.teachingPercent = 0;
       state.researchPercent = 0;
       state.servicePercent = 0;
+      state.position = null;
+      state.phoneNumber = '';
+      state.officeLocation = '';
     },
   },
 });
@@ -57,6 +76,9 @@ export const {
   setResearchPercent,
   setServicePercent,
   setPercent,
+  setPosition,
+  setPhoneNumber,
+  setOfficeLocation,
   reset,
 } = profileSlice.actions;
 
@@ -68,5 +90,15 @@ export const selectResearchPercent: Selector<RootState, number> = (state) =>
 
 export const selectServicePercent: Selector<RootState, number> = (state) =>
   state.profile.servicePercent;
+
+export const selectPosition: Selector<RootState, ProfessorPosition | null> = (
+  state,
+) => state.profile.position;
+
+export const selectPhoneNumber: Selector<RootState, string> = (state) =>
+  state.profile.phoneNumber;
+
+export const selectOfficeLocation: Selector<RootState, string> = (state) =>
+  state.profile.officeLocation;
 
 export default profileSlice.reducer;

@@ -31,16 +31,26 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
   const user = await getUserWithInfo(userId);
   if (!user) return { props: { error: 'User not found.' } };
 
+  if (!user.professorInfo)
+    return {
+      redirect: {
+        destination: '/account-setup',
+        permanent: false,
+      },
+    };
+
   return {
     props: {
       info: {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        position: user.professorInfo?.position || toTitleCase(user.role || ''),
-        teachingPercent: user.professorInfo?.teachingPercent || 0,
-        researchPercent: user.professorInfo?.researchPercent || 0,
-        servicePercent: user.professorInfo?.servicePercent || 0,
+        position: user.professorInfo.position,
+        teachingPercent: user.professorInfo.teachingPercent,
+        researchPercent: user.professorInfo.researchPercent,
+        servicePercent: user.professorInfo.servicePercent,
+        phoneNumber: user.professorInfo.phoneNumber,
+        officeLocation: user.professorInfo.officeLocation,
       },
     },
   };

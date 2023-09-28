@@ -9,6 +9,7 @@ interface PercentageInfoProps {
   service: number;
   setPercent: (type: string, percent: number) => void;
   fillContainer?: boolean;
+  hideSteppers?: boolean;
 }
 
 const PercentageInfo: React.FC<PercentageInfoProps> = ({
@@ -18,6 +19,7 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
   service,
   setPercent,
   fillContainer = false,
+  hideSteppers = false,
 }) => {
   const labels: Record<string, number> = {
     Teaching: teaching,

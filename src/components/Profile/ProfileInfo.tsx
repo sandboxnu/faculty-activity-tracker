@@ -10,24 +10,37 @@ import {
   selectResearchPercent,
   selectServicePercent,
   setPercent,
+  selectPosition,
+  selectPhoneNumber,
+  selectOfficeLocation,
+  setPosition,
 } from '@/store/profile.store';
 import PercentageInfo from './PercentageInfo';
-import { UpdateProfessorInfoDto } from '@/models/professorInfo.model';
+import {
+  UpdateProfessorInfoDto,
+  professorPositionLabel,
+  professorPositionOptions,
+} from '@/models/professorInfo.model';
 import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
 import { ResponseStatus } from '@/client/activities.client';
 import { useRouter } from 'next/router';
 import Avatar from './Avatar';
 import InputContainer from '@/shared/components/InputContainer';
 import Button from '@/shared/components/Button';
+import { ProfessorPosition } from '@prisma/client';
+import ProfileInfoSection from './ProfileInfoSection';
+import DropdownInput from '@/shared/components/DropdownInput';
 
 export interface ProfileInformation {
   firstName: string;
   lastName: string;
   email: string;
-  position: string;
+  position: ProfessorPosition;
   teachingPercent: number;
   researchPercent: number;
   servicePercent: number;
+  phoneNumber: string | null;
+  officeLocation: string | null;
 }
 
 type ProfileInfoProps = ProfileInformation;
@@ -40,6 +53,8 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
   teachingPercent,
   researchPercent,
   servicePercent,
+  phoneNumber,
+  officeLocation,
 }) => {
   const defaultIcon = true;
   const [editing, setEditing] = useState(false);
@@ -47,6 +62,9 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
   const teachingInput = useSelector(selectTeachingPercent);
   const researchInput = useSelector(selectResearchPercent);
   const serviceInput = useSelector(selectServicePercent);
+  const positionInput = useSelector(selectPosition);
+  const phoneNumberInput = useSelector(selectPhoneNumber);
+  const officeLocationInput = useSelector(selectOfficeLocation);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -108,39 +126,63 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
         )}
         <div className="ml-9">
           <h2>{`${firstName} ${lastName}`}</h2>
-          <p>{position}</p>
+          <p>{professorPositionLabel[position]}</p>
         </div>
       </div>
-      <div key="activity-info">
-        <div className="mb-6 flex w-full items-center pr-5">
-          <p className="mr-2 text-base font-bold">Activity Distribution</p>
-          <div className="h-[1.5px] flex-grow bg-gray-200" />
-        </div>
-        <InputContainer
-          label=""
-          incomplete={
-            editing && teachingInput + researchInput + serviceInput !== 1
-          }
-          incompleteMessage="Percentages must sum to 100."
-        >
-          <div className="mb-6">
-            <PercentageInfo
-              editing={editing}
-              teaching={editing ? teachingInput : teachingPercent}
-              research={editing ? researchInput : researchPercent}
-              service={editing ? serviceInput : servicePercent}
-              setPercent={(type, percent) =>
-                dispatch(setPercent({ type, percent }))
-              }
-            />
+      <ProfileInfoSection
+        label="Academic Information"
+        key="academic-profile-info"
+      >
+        <div className="flex flex-col">
+          <div className="flex">
+            <InputContainer
+              label="Track"
+              labelClass="text-sm font-normal"
+              incomplete={editing && positionInput === null}
+              incompleteMessage="Must specify track."
+              hideIcon={!editing}
+            >
+              <div className="w-[256px]">
+                <DropdownInput<ProfessorPosition>
+                  options={professorPositionOptions}
+                  placeholder={'Select a Track'}
+                  initialValue={professorPositionOptions.find(
+                    (p) => p.value === position,
+                  )}
+                  selectValue={(p) => p && dispatch(setPosition(p))}
+                  fillContainer
+                />
+              </div>
+            </InputContainer>
           </div>
-        </InputContainer>
-      </div>
-      <div key="contact-info">
-        <div className="mt-10 flex w-full items-center pr-5">
-          <p className="mr-2 text-base font-bold">Contact Information</p>
-          <div className="h-[1.5px] flex-grow bg-gray-200" />
+          <InputContainer
+            label="Activity Distribution"
+            labelClass="text-sm font-normal"
+            incomplete={
+              editing && teachingInput + researchInput + serviceInput !== 1
+            }
+            incompleteMessage="Percentages must sum to 100."
+            statusPosition="top"
+            hideIcon={!editing}
+          >
+            <div className="mt-">
+              <PercentageInfo
+                editing={editing}
+                teaching={editing ? teachingInput : teachingPercent}
+                research={editing ? researchInput : researchPercent}
+                service={editing ? serviceInput : servicePercent}
+                setPercent={(type, percent) =>
+                  dispatch(setPercent({ type, percent }))
+                }
+              />
+            </div>
+          </InputContainer>
         </div>
+      </ProfileInfoSection>
+      <ProfileInfoSection
+        label="Contact Information"
+        key="contact-profile-info"
+      >
         <div className="mb-6 mt-5">
           <div className="flex flex-col">
             <p className="mb-2">Email</p>
@@ -149,7 +191,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
             </p>
           </div>
         </div>
-      </div>
+      </ProfileInfoSection>
       <div className="absolute right-0 top-0 flex items-center space-x-4">
         {editing && (
           <Button onClick={cancel} variant="secondary">

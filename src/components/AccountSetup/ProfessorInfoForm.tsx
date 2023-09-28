@@ -1,7 +1,7 @@
 import DropdownInput, { Option } from '@/shared/components/DropdownInput';
 import InputContainer from '@/shared/components/InputContainer';
 import TextAreaInput from '@/shared/components/TextAreaInput';
-import { SabbaticalOption } from '@prisma/client';
+import { ProfessorPosition, SabbaticalOption } from '@prisma/client';
 import React, { useState } from 'react';
 import PercentageInfo from '../Profile/PercentageInfo';
 import { ResponseStatus } from '@/client/activities.client';
@@ -25,9 +25,9 @@ interface ProfessorInfoFormProps {
   // back: () => void;
 }
 
-const positionOptions: Option[] = [
-  { label: 'Non-Tenure Track', value: 'Non-Tenure Track' },
-  { label: 'Tenure Track / Tenured', value: 'Tenure Track / Tenured' },
+const positionOptions: Option<ProfessorPosition>[] = [
+  { label: 'Non-Tenure Track', value: ProfessorPosition.NONTENURE },
+  { label: 'Tenure Track / Tenured', value: ProfessorPosition.TENURE },
 ];
 
 const sabbaticalOptions: Option<SabbaticalOption>[] = [
@@ -43,7 +43,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
   },
 ) => {
   const userInfo = useSelector(selectUserInfo);
-  const [position, setPosition] = useState('');
+  const [position, setPosition] = useState<ProfessorPosition | null>(null);
   const [teachingPercent, setTeachingPercent] = useState(0);
   const [researchPercent, setResearchPercent] = useState(0);
   const [servicePercent, setServicePercent] = useState(0);
@@ -71,9 +71,9 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
     default: (_) => {},
   };
 
-  const selectPosition = (position: string) => {
+  const selectPosition = (position: ProfessorPosition) => {
     setPosition(position);
-    if (position === 'Non-Tenure Track') {
+    if (position === ProfessorPosition.NONTENURE) {
       setTeachingPercent(0.8);
       setResearchPercent(0.1);
       setServicePercent(0.1);
