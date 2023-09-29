@@ -71,7 +71,7 @@ const AdminTableRow: React.FC<AdminTableRowProps> = ({
   return (
     <div
       key={`user-${user.id}`}
-      className="flex w-full items-center rounded-xl border border-er px-4 py-3 shadow"
+      className="flex w-full items-center rounded-xl border border-gray-300 px-4 py-3 shadow"
     >
       <div className="basis-15">
         <TextOrInput
@@ -97,7 +97,7 @@ const AdminTableRow: React.FC<AdminTableRowProps> = ({
       <div className="basis-30">
         {isEditing ? (
           <select
-            className="rounded border-[0.5px] border-g outline-none"
+            className="rounded border-[0.5px] border-gray-500 outline-none"
             onChange={(e) => setRole(e.target.value as Role)}
             value={role}
           >

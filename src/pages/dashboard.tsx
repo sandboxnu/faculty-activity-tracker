@@ -22,7 +22,7 @@ const Dashboard: React.FC = () => {
         <title>Dashboard</title>
       </Head>
       <h1>Dashboard</h1>
-      <p className="text-lg text-ruby my-4">Welcome, {name || 'User'}! </p>
+      <p className="text-lg text-red-500 my-4">Welcome, {name || 'User'}! </p>
     </div>
   );
 };

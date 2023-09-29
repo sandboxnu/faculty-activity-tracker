@@ -27,7 +27,7 @@ function MyApp({
         <Header />
         <div className="flex w-screen min-h-screen">
           <SideNavbar />
-          <div className="flex-1 overflow-x-hidden flex self-stretch border-x border-light-grey px-10 py-6">
+          <div className="flex-1 overflow-x-hidden flex self-stretch border-x border-gray-200 px-10 py-6">
             <Component {...pageProps} />
           </div>
           <InfoSidebar />

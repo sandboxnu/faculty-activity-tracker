@@ -53,7 +53,7 @@ const CategorySelector: React.FC = () => {
         addOnClass="min-w-[250px]"
       />
       <button
-        className="bg-ruby border-ruby-dark text-white disabled:bg-ruby-disabled float-right mt-4"
+        className="bg-red-500 text-white disabled:bg-red-300 float-right mt-4"
         onClick={submit}
         disabled={category === null}
       >

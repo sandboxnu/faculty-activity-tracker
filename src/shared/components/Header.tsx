@@ -13,7 +13,7 @@ const Header: React.FC = () => {
       {signedIn && (
         <Link
           href="/api/auth/signout"
-          className="px-3 py-2 bg-red text-white rounded-xl my-auto ml-auto mr-5"
+          className="px-3 py-2 bg-red-500 text-white rounded-xl my-auto ml-auto mr-5"
         >
           Sign Out
         </Link>

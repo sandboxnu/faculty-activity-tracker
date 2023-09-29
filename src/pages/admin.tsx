@@ -120,7 +120,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
 
   if (error || !users) {
     return (
-      <p className="text-red w-full text-center mt-20">
+      <p className="text-red-500 w-full text-center mt-20">
         Error: {error || 'unknown error'}
       </p>
     );
@@ -239,7 +239,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={() => toggleAddingUser((b) => !b)}
-              className="bg-ruby bg-opacity-80 hover:bg-opacity-100 text-white"
+              className="bg-red-500 bg-opacity-80 hover:bg-opacity-100 text-white"
             >
               {isAddingUser ? 'Cancel' : 'Add User'}
             </button>

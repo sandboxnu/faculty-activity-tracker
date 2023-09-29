@@ -21,7 +21,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
       onChange={(e) => change(e.target.value)}
       rows={rows}
       placeholder={placeholder || ''}
-      className={`border-[0.5px] border-g rounded-lg px-3 py-2 outline-none min-w-[175px] ${addOnClass}`}
+      className={`border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none min-w-[175px] ${addOnClass}`}
     />
   );
 };
