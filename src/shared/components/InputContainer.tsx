@@ -3,21 +3,29 @@ import React from 'react';
 
 type InputContainerProps = {
   label: string;
+  labelClass?: string; // overriding label style
+  required?: boolean; // whether the field is required
   incomplete: boolean;
-  incompleteMessage: string;
+  incompleteMessage: string; // message to display when incomplete
+  statusPosition?: 'top' | 'right'; // whether to display the status on top (next to label) or on the right (next to input)
+  hideValidation?: boolean; // whether to display the validation/incomplete status
+  withMarginY?: boolean; // whether to include vertical margin
   children: JSX.Element;
-  statusPosition?: 'top' | 'right';
 };
 
 const InputContainer: React.FC<InputContainerProps> = ({
   label,
+  labelClass = 'text-base font-bold',
+  required = false,
   incomplete,
   incompleteMessage,
-  children,
+  hideValidation = false,
   statusPosition = 'top',
+  withMarginY = false,
+  children,
 }) => {
   const Status = () => (
-    <div className="flex items-center py-2">
+    <div className={`flex items-center ${withMarginY ? 'py-2' : ''}`}>
       <Image
         src={`/media/${incomplete ? 'failureWarning' : 'successCheckmark'}.svg`}
         alt="Icon"
@@ -30,14 +38,15 @@ const InputContainer: React.FC<InputContainerProps> = ({
   );
 
   return (
-    <div className="flex flex-col my-2 space-y-1">
+    <div className={`flex flex-col ${withMarginY ? 'my-2' : ''} space-y-1`}>
       <div className="flex items-center">
-        <p className="text-base font-bold">{label}</p>
-        {statusPosition === 'top' && <Status />}
+        <p className={labelClass}>{label}</p>
+        {required && <p className="text-red-500 ml-1 text-lg">*</p>}
+        {statusPosition === 'top' && !hideValidation && <Status />}
       </div>
       <div className="flex items-center space-x-2">
         {children}
-        {statusPosition === 'right' && <Status />}
+        {statusPosition === 'right' && !hideValidation && <Status />}
       </div>
     </div>
   );

@@ -25,7 +25,6 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
     <div className="flex items-center space-x-6">
       {Object.entries(labels).map(([field, percent]) => (
         <div className="flex flex-col" key={`percentage-${field}`}>
-          <p className="mb-2">{field}</p>
           <div className="flex items-center">
             {editing ? (
               <input
@@ -40,15 +39,16 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
                     parseFloat(e.target.value) / 100,
                   )
                 }
-                className="px-4 py-1.5 border-[0.5px] border-gray-500 rounded-xl mr-2"
+                className="w-12 py-2 border-[0.5px] border-gray-500 rounded-xl mr-1 text-center hide-steppers"
               />
             ) : (
-              <p className="px-4 py-1.5 border-[0.5px] border-gray-500 rounded-xl mr-2">
+              <p className="w-12 py-2 border-[0.5px] border-gray-500 rounded-xl mr-1 text-center">
                 {percent * 100}
               </p>
             )}
             <p>%</p>
           </div>
+          <p className="my-2">{field}</p>
         </div>
       ))}
     </div>

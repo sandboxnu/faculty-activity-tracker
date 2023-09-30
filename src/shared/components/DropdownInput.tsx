@@ -12,6 +12,7 @@ interface DropdownInputProps<T> {
   selectValue: (value: T | undefined) => void;
   addOnClass?: string;
   absoluteDropdown?: boolean;
+  fillContainer?: boolean;
 }
 
 const DropdownInput = <T extends unknown>({
@@ -21,6 +22,7 @@ const DropdownInput = <T extends unknown>({
   selectValue,
   addOnClass = '',
   absoluteDropdown = true,
+  fillContainer = false,
 }: DropdownInputProps<T>): JSX.Element => {
   const emptyOption: Option<T> = { label: placeholder, value: undefined };
   const [selectedOption, setSelectedOption] = useState<Option<T> | null>(
@@ -30,11 +32,11 @@ const DropdownInput = <T extends unknown>({
   const allOptions = [emptyOption, ...options];
 
   return (
-    <div className="relative min-h-[40px]">
+    <div className="relative w-full min-h-[40px]">
       <div
-        className={`${
-          absoluteDropdown ? 'absolute' : 'relative'
-        } w-[175px] flex flex-col bg-white border-[0.5px] border-gray-500 rounded-lg cursor-pointer ${addOnClass}`}
+        className={`${absoluteDropdown ? 'absolute' : 'relative'} ${
+          fillContainer ? 'w-full' : 'w-[175px]'
+        } flex flex-col bg-white border-[0.5px] border-gray-500 rounded-lg cursor-pointer ${addOnClass}`}
       >
         <div
           className="flex items-center justify-between px-3 py-2"

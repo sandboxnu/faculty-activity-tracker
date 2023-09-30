@@ -7,16 +7,14 @@ const nextConfig = {
       {
         source: '/',
         destination: '/dashboard',
-        permanent: true,
+        permanent: false,
       },
     ];
-
   },
 
-  'experimental': {
+  experimental: {
     appDir: true,
     serverComponentsExternalPackages: ['@prisma/client'],
-
   },
 
   sassOptions: {

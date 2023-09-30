@@ -37,7 +37,7 @@ import {
 } from '@/client/activities.client';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { Checkbox } from '../Checkbox';
+import { Checkbox } from '@/shared/components/Checkbox';
 import { ErrorBanner } from '../ErrorBanner';
 import { useRouter } from 'next/router';
 import DropdownInput from '@/shared/components/DropdownInput';
@@ -274,6 +274,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         label="Name: "
         incomplete={!name}
         incompleteMessage="Enter an activity name."
+        withMarginY
       >
         <TextInput
           value={name || ''}
@@ -286,6 +287,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         label="Weight: "
         incomplete={!weight}
         incompleteMessage="Select a weight."
+        withMarginY
       >
         <DropdownInput
           options={weightOptions}
@@ -299,6 +301,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         label="Year: "
         incomplete={!year}
         incompleteMessage="Enter a year."
+        withMarginY
       >
         <TextInput
           value={year || ''}
@@ -310,6 +313,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         label="Semester: "
         incomplete={!checkFall && !checkSpring && !checkOther && !checkSummer}
         incompleteMessage="Select semesters."
+        withMarginY
       >
         <div className="flex flex-col space-y-2">
           <Checkbox
@@ -359,6 +363,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         label="Description: "
         incomplete={!description}
         incompleteMessage="Enter a description."
+        withMarginY
       >
         <TextAreaInput
           value={description || ''}
