@@ -18,6 +18,7 @@ import { ResponseStatus } from '@/client/activities.client';
 import { useRouter } from 'next/router';
 import Avatar from './Avatar';
 import InputContainer from '@/shared/components/InputContainer';
+import Button from '@/shared/components/Button';
 
 export interface ProfileInformation {
   firstName: string;
@@ -150,24 +151,20 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
           </div>
         </div>
       </div>
-      <div className="absolute top-0 right-0 space-x-4">
+      <div className="absolute top-0 right-0 flex items-center space-x-4">
         {editing && (
-          <button
-            onClick={cancel}
-            className="px-3 py-2 bg-gray-100 border border-gray-500 text-gray-500 rounded-xl"
-          >
+          <Button onClick={cancel} variant="secondary">
             Cancel
-          </button>
+          </Button>
         )}
-        <button
-          className="px-3 py-2 bg-red-500 text-white rounded-xl disabled:bg-red-300"
+        <Button
           onClick={editing ? submit : startEditing}
           disabled={
             editing && teachingInput + researchInput + serviceInput !== 1
           }
         >
           {editing ? 'Save' : 'Edit'} Profile
-        </button>
+        </Button>
       </div>
     </div>
   );

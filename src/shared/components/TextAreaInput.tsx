@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 
 export interface TextAreaInputProps {
   value: string | number;
@@ -23,9 +24,11 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
       onChange={(e) => change(e.target.value)}
       rows={numRows}
       placeholder={placeholder || ''}
-      className={`border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none ${
-        fillContainer ? 'flex flex-grow' : 'min-w-[175px]'
-      } ${addOnClass}`}
+      className={clsx([
+        'border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none',
+        fillContainer ? 'flex flex-grow' : 'min-w-[175px]',
+        addOnClass,
+      ])}
     />
   );
 };

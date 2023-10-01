@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
+import clsx from 'clsx';
 
 type OptionType = string | number;
 
@@ -7,7 +8,7 @@ export type Option<T = OptionType> = { label: string; value?: T };
 
 interface DropdownInputProps<T> {
   options: Option<T>[];
-  placeholder: string;
+  placeholder?: string;
   initialValue?: Option<T> | undefined;
   selectValue: (value: T | undefined) => void;
   addOnClass?: string;
@@ -24,19 +25,23 @@ const DropdownInput = <T extends unknown>({
   absoluteDropdown = true,
   fillContainer = false,
 }: DropdownInputProps<T>): JSX.Element => {
-  const emptyOption: Option<T> = { label: placeholder, value: undefined };
   const [selectedOption, setSelectedOption] = useState<Option<T> | null>(
     initialValue || null,
   );
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const allOptions = [emptyOption, ...options];
+  const allOptions = placeholder
+    ? [{ label: placeholder, value: undefined }, ...options]
+    : options;
 
   return (
     <div className="relative w-full min-h-[40px]">
       <div
-        className={`${absoluteDropdown ? 'absolute' : 'relative'} ${
-          fillContainer ? 'w-full' : 'w-[175px]'
-        } flex flex-col bg-white border-[0.5px] border-gray-500 rounded-lg cursor-pointer ${addOnClass}`}
+        className={clsx([
+          'flex flex-col bg-white border-[0.5px] border-gray-500 rounded-lg cursor-pointer',
+          absoluteDropdown ? 'absolute' : 'relative',
+          fillContainer ? 'w-full' : 'w-[175px]',
+          addOnClass,
+        ])}
       >
         <div
           className="flex items-center justify-between px-3 py-2"
@@ -59,7 +64,7 @@ const DropdownInput = <T extends unknown>({
                 <div
                   className={`w-full px-3 py-2.5 cursor-pointer hover:bg-gray-100 ${
                     !o.value && 'text-neutral-400'
-                  }`}
+                  } ${idx === allOptions.length}`}
                   key={o.value?.toString() || ''}
                   onClick={() => {
                     setSelectedOption(o);

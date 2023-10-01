@@ -157,7 +157,7 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
             style={{ transform: `translate(-${startCardIdx * 100}%)` }}
           >
             <div
-              className="rounded-lg bg-medium-grey shadow-sm hover:shadow-lg px-3.5 py-3.5 card h-39 cursor-pointer"
+              className="rounded-lg bg-gray-100 shadow-sm hover:shadow-lg px-3.5 py-3.5 card h-39 cursor-pointer"
               onClick={newActivity}
             >
               <div className="flex flex-col items-center justify-center h-full">
@@ -172,13 +172,13 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
               </div>
             </div>
           </div>
-        
         )}
         <div
           className={`absolute right-0 top-1/2 -translate-y-1/2 ${
-            startCardIdx + cardsPerPage < activities.length + (displayNewActivity ? 1 : 0)
+            startCardIdx + cardsPerPage <
+            activities.length + (displayNewActivity ? 1 : 0)
               ? 'cursor-pointer'
-              : 'opacity-25 pointer-events-none'
+              : 'opacity-15 pointer-events-none'
           }`}
           onClick={() => setCardIdx((prev) => prev + numShift)}
         >
@@ -193,7 +193,7 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
           className={`absolute left-0 top-1/2 -translate-y-1/2 ${
             startCardIdx > 0
               ? 'cursor-pointer'
-              : 'opacity-25 pointer-events-none'
+              : 'opacity-15 pointer-events-none'
           }`}
           onClick={() => setCardIdx((prev) => prev - numShift)}
         >

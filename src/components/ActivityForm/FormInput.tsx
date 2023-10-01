@@ -44,6 +44,7 @@ import DropdownInput from '@/shared/components/DropdownInput';
 import InputContainer from '@/shared/components/InputContainer';
 import TextInput from '@/shared/components/TextInput';
 import TextAreaInput from '@/shared/components/TextAreaInput';
+import Button from '@/shared/components/Button';
 
 const weightOptions = [
   { label: 'Major', value: 'MAJOR' },
@@ -373,16 +374,15 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         />
       </InputContainer>
       <div className="flex justify-between items-center cursor-pointer my-9">
-        <button
+        <Button
           onClick={() =>
             isEditing ? router.back() : dispatch(setStep('selection'))
           }
+          variant="secondary"
         >
           Back
-        </button>
-
-        <button
-          className="bg-red-500 text-white disabled:bg-red-300"
+        </Button>
+        <Button
           disabled={
             weight === null ||
             date === null ||
@@ -394,7 +394,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
           onClick={isEditing ? updateActivity : submitActivity}
         >
           Submit
-        </button>
+        </Button>
       </div>
     </div>
   );

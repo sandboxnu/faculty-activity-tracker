@@ -8,6 +8,7 @@ import {
 } from '@/models/narrative.model';
 import { getActivitiesByQuery } from '@/services/activity';
 import { getNarrativeForUserForCategory } from '@/services/narrative';
+import Button from '@/shared/components/Button';
 import { bigintToJSON, toTitleCase } from '@/shared/utils/misc.util';
 import { Activity, ActivityCategory, NarrativeCategory } from '@prisma/client';
 import moment from 'moment';
@@ -38,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<
 
   if (userId) {
     const narrative = await getNarrativeForUserForCategory(
-      userId, 
+      userId,
       category.toString().toUpperCase() as NarrativeCategory,
     );
 
@@ -184,20 +185,12 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
         onChange={(e) => setNarrativeInput(e.target.value)}
       />
       <div className="flex justify-between my-9">
-        <button
-          onClick={() => router.back()}
-          className="bg-white text-black font-bold rounded-xl px-8 py-3"
-        >
-          {' '}
-          Back{' '}
-        </button>
-        <button
-          onClick={submit}
-          className="bg-red-500 text-white font-bold rounded-xl px-8 py-3"
-        >
-          {' '}
-          Submit{' '}
-        </button>
+        <Button onClick={() => router.back()} variant="secondary" size="lg">
+          Back
+        </Button>
+        <Button onClick={submit} size="lg">
+          Submit
+        </Button>
       </div>
     </div>
   );

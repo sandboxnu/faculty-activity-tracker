@@ -12,7 +12,7 @@ module.exports = {
         lg: '0px 3.5px 3.5px rgba(0,0,0,0.25)',
       },
       borderRadius: {
-        lg: '10px',
+        lg: '11px',
       },
       colors: {
         red: {
@@ -30,6 +30,9 @@ module.exports = {
           400: '#8C8C8C',
           500: '#585858',
         },
+      },
+      opacity: {
+        15: '15%',
       },
       top: {
         8: '8%',

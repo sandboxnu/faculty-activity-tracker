@@ -1,8 +1,10 @@
+import Button, { ButtonVariant } from '@/shared/components/Button';
 import { Checkbox } from '@/shared/components/Checkbox';
 import DropdownInput, { Option } from '@/shared/components/DropdownInput';
 import InputContainer from '@/shared/components/InputContainer';
 import TextAreaInput from '@/shared/components/TextAreaInput';
 import TextInput from '@/shared/components/TextInput';
+import Head from 'next/head';
 import React, { useState } from 'react';
 
 const TextInputPlayground: React.FC = () => {
@@ -266,15 +268,71 @@ const DropdownInputPlayground: React.FC = () => {
   );
 };
 
+const ButtonPlayground: React.FC = () => {
+  const variantOptions: Option<ButtonVariant>[] = [
+    { label: 'Primary Variant', value: 'primary' },
+    { label: 'Secondary Variant', value: 'secondary' },
+  ];
+  const [open, setOpen] = useState(false);
+  const [variant, setVariant] = useState<ButtonVariant>('primary');
+  const [disabled, setDisabled] = useState(false);
+  const [fillContainer, setFillContainer] = useState(false);
+
+  return (
+    <div className="flex flex-col w-full mb-4">
+      <p
+        className="text-lg font-medium text-red-500 cursor-pointer"
+        onClick={() => setOpen((b) => !b)}
+      >
+        Button
+      </p>
+      {open && (
+        <div className="flex flex-col pl-4 pt-2">
+          <DropdownInput<ButtonVariant>
+            options={variantOptions}
+            initialValue={variantOptions[0]}
+            selectValue={(val) => val && setVariant(val)}
+          />
+          <Checkbox
+            label="Disabled"
+            value={disabled}
+            onChange={() => setDisabled((b) => !b)}
+          />
+          <Checkbox
+            label="Full Width"
+            value={fillContainer}
+            onChange={() => setFillContainer((b) => !b)}
+          />
+          <p className="text-lg text-gray-500 my-2">Result:</p>
+          <div className="w-full border border-gray-200">
+            <Button
+              variant={variant}
+              onClick={() => {}}
+              fillContainer={fillContainer}
+              disabled={disabled}
+            >
+              Label
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const InputsPlayground: React.FC = () => {
   if (process.env.NODE_ENV !== 'development')
     return <p>You can only view this page in dev mode!</p>;
 
   return (
     <div className="flex flex-col w-full">
+      <Head>
+        <title>Playground - Inputs</title>
+      </Head>
       <TextInputPlayground />
       <TextAreaInputPlayground />
       <DropdownInputPlayground />
+      <ButtonPlayground />
     </div>
   );
 };
