@@ -1,27 +1,34 @@
 import React from 'react';
+import clsx from 'clsx';
 
 export interface TextAreaInputProps {
   value: string | number;
   change: (val: string) => void;
-  rows?: number;
+  numRows?: number;
   placeholder?: string;
+  fillContainer?: boolean;
   addOnClass?: string;
 }
 
 const TextAreaInput: React.FC<TextAreaInputProps> = ({
   value,
   change,
-  rows = 3,
+  numRows = 3,
   placeholder,
+  fillContainer = false,
   addOnClass = '',
 }) => {
   return (
     <textarea
       value={value}
       onChange={(e) => change(e.target.value)}
-      rows={rows}
+      rows={numRows}
       placeholder={placeholder || ''}
-      className={`border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none min-w-[175px] ${addOnClass}`}
+      className={clsx([
+        'border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none',
+        fillContainer ? 'flex flex-grow' : 'min-w-[175px]',
+        addOnClass,
+      ])}
     />
   );
 };

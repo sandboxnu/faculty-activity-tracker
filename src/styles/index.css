@@ -118,3 +118,13 @@ button,
 .basis-60 {
   flex: 0 0 60%;
 }
+
+input.hide-steppers::-webkit-outer-spin-button,
+input.hide-steppers::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'].hide-steppers {
+  -moz-appearance: textfield;
+}

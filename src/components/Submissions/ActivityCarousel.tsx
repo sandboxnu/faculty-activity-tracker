@@ -19,10 +19,11 @@ import {
 
 interface ActivityCarouselProps {
   activities: ActivityDto[];
-  newActivity: () => void;
+  newActivity?: () => void;
   leftPadding?: boolean;
-  sigLevel: string;
+  label: string;
   favoriteActivity: (activityId: number, isFavorite: boolean) => void;
+  displayNewActivity?: boolean;
 }
 
 const StarIcon: React.FC<{
@@ -53,16 +54,21 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
   activities,
   newActivity,
   leftPadding,
-  sigLevel,
+  label,
   favoriteActivity,
+  displayNewActivity = true,
 }) => {
   const dispatch = useDispatch();
   const numPages = Math.max(
-    Math.ceil((activities.length + 1) / cardsPerPage),
+    Math.ceil(
+      (activities.length + (displayNewActivity ? 1 : 0)) / cardsPerPage,
+    ),
     1,
   );
   const [startCardIdx, setCardIdx] = useState(0);
   const currPage = Math.floor(startCardIdx / 3);
+
+  const numActivities = useState(activities.length);
 
   const router = useRouter();
 
@@ -83,10 +89,14 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
     router.push(`/submissions/edit`);
   };
 
+  if (currPage + 1 > numPages) {
+    setCardIdx((numPages - 1) * cardsPerPage);
+  }
+
   return (
     <div className="flex flex-col w-full">
       <div className="flex w-full items-center mt-3 pr-12 font-light">
-        <p className="mr-2 text-base">{sigLevel} Activities</p>
+        <p className="mr-2 text-base">{label} Activities</p>
         <div className="flex-grow h-[1.5px] bg-gray-200" />
         <p className="ml-2">
           Page {currPage + 1} of {numPages}
@@ -140,31 +150,35 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
             </div>
           </div>
         ))}
-        <div
-          className="w-1/3 flex-shrink-0 pr-12"
-          style={{ transform: `translate(-${startCardIdx * 100}%)` }}
-        >
+
+        {displayNewActivity && (
           <div
-            className="rounded-lg bg-gray-100 shadow-sm hover:shadow-lg px-3.5 py-3.5 card h-39 cursor-pointer"
-            onClick={newActivity}
+            className="w-1/3 flex-shrink-0 pr-12"
+            style={{ transform: `translate(-${startCardIdx * 100}%)` }}
           >
-            <div className="flex flex-col items-center justify-center h-full">
-              <Image
-                src={'/media/plusIcon.svg'}
-                alt="new activity"
-                width={46}
-                height={36}
-                className="fill-red-500"
-              />
-              <p className="font-bold mt-2">Add Activity</p>
+            <div
+              className="rounded-lg bg-gray-100 shadow-sm hover:shadow-lg px-3.5 py-3.5 card h-39 cursor-pointer"
+              onClick={newActivity}
+            >
+              <div className="flex flex-col items-center justify-center h-full">
+                <Image
+                  src={'/media/plusIcon.svg'}
+                  alt="new activity"
+                  width={46}
+                  height={36}
+                  className="fill-red-500"
+                />
+                <p className="font-bold mt-2">Add Activity</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div
-          className={`cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 ${
-            startCardIdx + cardsPerPage < activities.length + 1
+          className={`absolute right-0 top-1/2 -translate-y-1/2 ${
+            startCardIdx + cardsPerPage <
+            activities.length + (displayNewActivity ? 1 : 0)
               ? 'cursor-pointer'
-              : 'opacity-25 cursor-not-allowed'
+              : 'opacity-15 pointer-events-none'
           }`}
           onClick={() => setCardIdx((prev) => prev + numShift)}
         >
@@ -179,7 +193,7 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
           className={`absolute left-0 top-1/2 -translate-y-1/2 ${
             startCardIdx > 0
               ? 'cursor-pointer'
-              : 'opacity-25 cursor-not-allowed'
+              : 'opacity-15 pointer-events-none'
           }`}
           onClick={() => setCardIdx((prev) => prev - numShift)}
         >
@@ -191,33 +205,6 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
             className="rotate-180"
           />
         </div>
-        {/* {startCardIdx + cardsPerPage < activities.length + 1 && (
-          <div
-            className="cursor-pointer absolute right-0 top-1/2 -translate-y-1/2"
-            onClick={() => setCardIdx((prev) => prev + numShift)}
-          >
-            <Image
-              src={'/media/rightArrow.svg'}
-              alt="right arrow"
-              width={16}
-              height={16}
-            />
-          </div>
-        )}
-        {startCardIdx > 0 && (
-          <div
-            className="cursor-pointer absolute left-0 top-1/2 -translate-y-1/2"
-            onClick={() => setCardIdx((prev) => prev - numShift)}
-          >
-            <Image
-              src={'/media/rightArrow.svg'}
-              alt="left arrow"
-              width={16}
-              height={16}
-              className="rotate-180"
-            />
-          </div>
-        )} */}
       </div>
     </div>
   );

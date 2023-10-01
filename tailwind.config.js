@@ -12,7 +12,7 @@ module.exports = {
         lg: '0px 3.5px 3.5px rgba(0,0,0,0.25)',
       },
       borderRadius: {
-        lg: '10px',
+        lg: '11px',
       },
       colors: {
         red: {
@@ -31,6 +31,9 @@ module.exports = {
           500: '#585858',
         },
       },
+      opacity: {
+        15: '15%',
+      },
       top: {
         8: '8%',
         42: '42%',
@@ -39,12 +42,13 @@ module.exports = {
         8: '8%',
         42: '42%',
       },
-
-fontSize: {
+      
+      fontSize: {
         'heading-1': ['1.5rem', { fontWeight: 700 }],
         'heading-2': ['1.375rem', { fontWeight: 700 }],
         'heading-3': ['1.125rem', { fontWeight: 700 }],
-        'bold-body': ['1rem', { fontWeight: 700 }],
+        'body-bold': ['1rem', { fontWeight: 700 }],
+        
         body: ['1rem', { fontWeight: 400 }],
         small: ['0.875rem', { fontWeight: 400 }],
         'small-italicized': ['0.875rem', { fontWeight: 400 }],

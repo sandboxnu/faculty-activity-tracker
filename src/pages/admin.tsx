@@ -19,6 +19,7 @@ import Head from 'next/head';
 import NewUserRow from '@/components/AdminPage/NewUserRow';
 import { bigintToJSON } from '@/shared/utils/misc.util';
 import Image from 'next/image';
+import Button from '@/shared/components/Button';
 
 interface AdminPageProps {
   users?: UserDto[];
@@ -237,12 +238,9 @@ const AdminPage: React.FC<AdminPageProps> = ({
         <div className="w-full flex justify-between">
           <h2>Users</h2>
           <div className="flex items-center space-x-2">
-            <button
-              onClick={() => toggleAddingUser((b) => !b)}
-              className="bg-red-500 bg-opacity-80 hover:bg-opacity-100 text-white"
-            >
+            <Button onClick={() => toggleAddingUser((b) => !b)}>
               {isAddingUser ? 'Cancel' : 'Add User'}
-            </button>
+            </Button>
           </div>
         </div>
         <div className="flex flex-col w-full space-y-3 my-4">

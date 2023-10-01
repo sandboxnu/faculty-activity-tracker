@@ -1,10 +1,12 @@
 import { ActivityDto } from '@/models/activity.model';
 import { NarrativeDto } from '@/models/narrative.model';
+import Button from '@/shared/components/Button';
 import SideBarBubble from '@/shared/components/SideBarBubble';
 import SideNavbar from '@/shared/components/SideNavbar';
 import { toTitleCase } from '@/shared/utils/misc.util';
 import { SignificanceLevel, Semester, ActivityCategory } from '@prisma/client';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 interface SubmissionsInfoProps {
@@ -20,6 +22,8 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
   category,
   narrative,
 }) => {
+  const router = useRouter();
+
   if (!activitiesBySigLevel || !activitiesBySemester)
     return <p> No activities found. </p>;
   const totalCount =
@@ -83,13 +87,15 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
           {narrative?.text || 'No narrative submitted yet.'}{' '}
         </p>
       </SideBarBubble>
-      <Link
-        href={`/narratives/${category}`}
-        className="bg-red-500 text-white font-bold rounded-xl px-3 py-2 mx-auto shadow-sm"
-      >
-        {' '}
-        {!narrative ? 'Submit' : 'Edit'} Narrative{' '}
-      </Link>
+      <div className="w-3/4 mx-auto">
+        <Button
+          onClick={() => router.push(`/narratives/${category}`)}
+          addOnClass="mx-auto shadow-sm"
+          fillContainer
+        >
+          {!narrative ? 'Submit' : 'Edit'} Narrative
+        </Button>
+      </div>
     </>
   );
 };

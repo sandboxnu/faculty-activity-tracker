@@ -37,13 +37,14 @@ import {
 } from '@/client/activities.client';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { Checkbox } from '../Checkbox';
+import { Checkbox } from '@/shared/components/Checkbox';
 import { ErrorBanner } from '../ErrorBanner';
 import { useRouter } from 'next/router';
 import DropdownInput from '@/shared/components/DropdownInput';
 import InputContainer from '@/shared/components/InputContainer';
 import TextInput from '@/shared/components/TextInput';
 import TextAreaInput from '@/shared/components/TextAreaInput';
+import Button from '@/shared/components/Button';
 
 const weightOptions = [
   { label: 'Major', value: 'MAJOR' },
@@ -274,6 +275,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         label="Name: "
         incomplete={!name}
         incompleteMessage="Enter an activity name."
+        withMarginY
       >
         <TextInput
           value={name || ''}
@@ -286,6 +288,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         label="Weight: "
         incomplete={!weight}
         incompleteMessage="Select a weight."
+        withMarginY
       >
         <DropdownInput
           options={weightOptions}
@@ -299,6 +302,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         label="Year: "
         incomplete={!year}
         incompleteMessage="Enter a year."
+        withMarginY
       >
         <TextInput
           value={year || ''}
@@ -310,6 +314,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         label="Semester: "
         incomplete={!checkFall && !checkSpring && !checkOther && !checkSummer}
         incompleteMessage="Select semesters."
+        withMarginY
       >
         <div className="flex flex-col space-y-2">
           <Checkbox
@@ -359,6 +364,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         label="Description: "
         incomplete={!description}
         incompleteMessage="Enter a description."
+        withMarginY
       >
         <TextAreaInput
           value={description || ''}
@@ -368,16 +374,15 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         />
       </InputContainer>
       <div className="flex justify-between items-center cursor-pointer my-9">
-        <button
+        <Button
           onClick={() =>
             isEditing ? router.back() : dispatch(setStep('selection'))
           }
+          variant="secondary"
         >
           Back
-        </button>
-
-        <button
-          className="bg-red-500 text-white disabled:bg-red-300"
+        </Button>
+        <Button
           disabled={
             weight === null ||
             date === null ||
@@ -389,7 +394,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
           onClick={isEditing ? updateActivity : submitActivity}
         >
           Submit
-        </button>
+        </Button>
       </div>
     </div>
   );

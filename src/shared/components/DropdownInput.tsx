@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
+import clsx from 'clsx';
 
 type OptionType = string | number;
 
@@ -7,11 +8,12 @@ export type Option<T = OptionType> = { label: string; value?: T };
 
 interface DropdownInputProps<T> {
   options: Option<T>[];
-  placeholder: string;
+  placeholder?: string;
   initialValue?: Option<T> | undefined;
   selectValue: (value: T | undefined) => void;
   addOnClass?: string;
   absoluteDropdown?: boolean;
+  fillContainer?: boolean;
 }
 
 const DropdownInput = <T extends unknown>({
@@ -21,20 +23,25 @@ const DropdownInput = <T extends unknown>({
   selectValue,
   addOnClass = '',
   absoluteDropdown = true,
+  fillContainer = false,
 }: DropdownInputProps<T>): JSX.Element => {
-  const emptyOption: Option<T> = { label: placeholder, value: undefined };
   const [selectedOption, setSelectedOption] = useState<Option<T> | null>(
     initialValue || null,
   );
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const allOptions = [emptyOption, ...options];
+  const allOptions = placeholder
+    ? [{ label: placeholder, value: undefined }, ...options]
+    : options;
 
   return (
-    <div className="relative min-h-[40px]">
+    <div className="relative w-full min-h-[40px]">
       <div
-        className={`${
-          absoluteDropdown ? 'absolute' : 'relative'
-        } w-[175px] flex flex-col bg-white border-[0.5px] border-gray-500 rounded-lg cursor-pointer ${addOnClass}`}
+        className={clsx([
+          'flex flex-col bg-white border-[0.5px] border-gray-500 rounded-lg cursor-pointer',
+          absoluteDropdown ? 'absolute' : 'relative',
+          fillContainer ? 'w-full' : 'w-[175px]',
+          addOnClass,
+        ])}
       >
         <div
           className="flex items-center justify-between px-3 py-2"
@@ -51,23 +58,25 @@ const DropdownInput = <T extends unknown>({
         </div>
         {dropdownOpen && (
           <>
-            {allOptions
-              .filter((o) => o.value !== selectedOption?.value)
-              .map((o, idx) => (
-                <div
-                  className={`w-full px-3 py-2.5 cursor-pointer hover:bg-gray-100 ${
-                    !o.value && 'text-neutral-400'
-                  }`}
-                  key={o.value?.toString() || ''}
-                  onClick={() => {
-                    setSelectedOption(o);
-                    selectValue(o.value || undefined);
-                    setDropdownOpen(false);
-                  }}
-                >
-                  {o.label}
-                </div>
-              ))}
+            {allOptions.map((o, idx) => (
+              <div
+                className={clsx([
+                  'w-full px-3 py-2.5 cursor-pointer hover:bg-gray-200',
+                  selectedOption?.value === o.value && 'bg-gray-100',
+                  o.value === undefined &&
+                    'text-neutral-400 hover:text-gray-500',
+                  idx === allOptions.length - 1 && 'rounded-b-lg',
+                ])}
+                key={o.value?.toString() || ''}
+                onClick={() => {
+                  setSelectedOption(o);
+                  selectValue(o.value || undefined);
+                  setDropdownOpen(false);
+                }}
+              >
+                {o.label}
+              </div>
+            ))}
           </>
         )}
       </div>
