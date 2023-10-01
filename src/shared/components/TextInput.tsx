@@ -5,6 +5,7 @@ export interface TextInputProps {
   change: (val: string) => void;
   placeholder?: string;
   className?: string;
+  fillContainer?: boolean;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -12,6 +13,7 @@ const TextInput: React.FC<TextInputProps> = ({
   change,
   placeholder,
   className,
+  fillContainer = false,
 }) => {
   return (
     <input
@@ -21,7 +23,9 @@ const TextInput: React.FC<TextInputProps> = ({
       value={value}
       className={
         className ||
-        'border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none max-w-[175px]'
+        `border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none ${
+          fillContainer ? 'flex flex-grow' : 'max-w-[175px]'
+        }`
       }
     />
   );

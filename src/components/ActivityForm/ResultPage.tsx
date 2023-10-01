@@ -4,6 +4,7 @@ import { selectCategory, setStep } from '../../store/form.store';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ActivityCategory } from '@/models/activity.model';
+import Button from '@/shared/components/Button';
 
 const ResultPage: React.FC<{ success: boolean }> = ({ success }) => {
   const category: ActivityCategory | null = useSelector(selectCategory);
@@ -36,12 +37,7 @@ const ResultPage: React.FC<{ success: boolean }> = ({ success }) => {
         <>
           <h1>There was an error with your submission.</h1>
           <p>Please try again.</p>
-          <button
-            className="button button-red"
-            onClick={() => dispatch(setStep('form'))}
-          >
-            Back
-          </button>
+          <Button onClick={() => dispatch(setStep('form'))}>Back</Button>
         </>
       )}
     </div>

@@ -3,6 +3,7 @@ import React, { ChangeEventHandler } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActivityCategory } from '../../models/activity.model';
 import { selectCategory, setCategory, setStep } from '../../store/form.store';
+import Button from '@/shared/components/Button';
 
 const categoryOptions = [
   { label: 'Teaching', value: 'TEACHING' },
@@ -52,13 +53,13 @@ const CategorySelector: React.FC = () => {
         }
         addOnClass="min-w-[250px]"
       />
-      <button
-        className="bg-red-500 text-white disabled:bg-red-300 float-right mt-4"
+      <Button
         onClick={submit}
         disabled={category === null}
+        addOnClass="float-right mt-4"
       >
         Next
-      </button>
+      </Button>
     </div>
   );
 };
