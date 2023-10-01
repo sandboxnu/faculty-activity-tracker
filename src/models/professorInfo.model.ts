@@ -26,8 +26,8 @@ export const professorPositionOptions: Option<ProfessorPosition>[] = [
 
 export const sabbaticalLabel: Record<SabbaticalOption, string> = {
   [SabbaticalOption.NO]: 'Not Sabbatical',
-  [SabbaticalOption.SEMESTER]: 'Semester Sabbatical',
-  [SabbaticalOption.YEAR]: 'Year Sabbatical',
+  [SabbaticalOption.SEMESTER]: 'Sabbatical: Semester',
+  [SabbaticalOption.YEAR]: 'Sabbatical: Year',
 };
 
 export const sabbaticalOptions: Option<SabbaticalOption>[] = [
