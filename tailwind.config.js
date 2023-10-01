@@ -57,7 +57,6 @@ module.exports = {
         8: '8%',
         42: '42%',
       },
-
       fontSize: {
         'heading-1': ['1.5rem', { fontWeight: 700 }],
         'heading-2': ['1.375rem', { fontWeight: 700 }],
@@ -71,6 +70,9 @@ module.exports = {
         'graph-label': ['0.75rem', { fontWeight: 500 }],
         'graph-number': ['0.625rem', { fontWeight: 400 }],
         tooltip: ['0.625rem', { fontWeight: 600 }],
+      },
+      width: {
+        'profile-field': '256px',
       },
     },
   },

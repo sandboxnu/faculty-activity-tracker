@@ -1,4 +1,6 @@
-import { UserDto } from '@/models/user.model';
+import { UpdateProfessorInfoDto } from '@/models/professorInfo.model';
+import { UpdateUserDto, UserDto } from '@/models/user.model';
+import { ProfileInformation } from '@/store/profile.store';
 import { ActivityCategory, Role } from '@prisma/client';
 
 export const isAdminUser = (user: UserDto): boolean =>
@@ -40,4 +42,46 @@ export const userSorter: Record<
     asc: (a, b) => a.role.localeCompare(b.role),
     desc: (a, b) => a.role.localeCompare(b.role) * -1,
   },
+};
+
+export const validateProfileInformation = (
+  info: Partial<ProfileInformation>,
+): ProfileInformation | string => {
+  let key: keyof ProfileInformation;
+  for (key in info) {
+    if (!info[key]) return `Missing field: ${key}`;
+  }
+  return info as ProfileInformation;
+};
+
+export const separateProfileInformation = (
+  info: ProfileInformation,
+): { userInfo: UpdateUserDto; professorInfo: UpdateProfessorInfoDto } => {
+  const userInfo: UpdateUserDto = {
+    firstName: info.firstName,
+    lastName: info.lastName,
+    email: info.email,
+  };
+  const professorInfo: UpdateProfessorInfoDto = {
+    position: info.position,
+    sabbatical: info.sabbatical,
+    teachingPercent: info.teachingPercent,
+    researchPercent: info.researchPercent,
+    servicePercent: info.servicePercent,
+    phoneNumber: info.phoneNumber,
+    officeLocation: info.officeLocation,
+  };
+  // remove any undefined fields
+  let userKey: keyof UpdateUserDto;
+  for (userKey in userInfo) {
+    if (!userInfo[userKey]) delete userInfo[userKey];
+  }
+  let profKey: keyof UpdateProfessorInfoDto;
+  for (profKey in professorInfo) {
+    if (!professorInfo[profKey]) delete professorInfo[profKey];
+  }
+  return {
+    userInfo,
+    professorInfo,
+  };
 };

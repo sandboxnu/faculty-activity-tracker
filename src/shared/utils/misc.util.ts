@@ -26,7 +26,19 @@ export const shortenDescription = (description: string): string => {
 
   if (descriptionLength < 97) {
     return description;
-  }
+  } 
 
   return description.substring(0, 99) + '...';
+}
+
+export const formatPhoneNumberWithSlashes = (number: string): string => {
+  const firstSlash = number.length > 3 ? '-' : '';
+  const secondSlash = number.length > 6 ? '-' : '';
+  return (
+    number.slice(0, 3) +
+    firstSlash +
+    number.slice(3, 6) +
+    secondSlash +
+    number.slice(6)
+  );
 };
