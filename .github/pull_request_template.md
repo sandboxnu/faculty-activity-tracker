@@ -1,4 +1,4 @@
-Ticket Link:
+Closes #(Ticket Number)
 
 ## Description
 
@@ -10,7 +10,8 @@ Ticket Link:
 
 
 ## Checklist
-- [ ] Ticket name in PR title
+- [ ] Ticket number in PR title
+- [ ] Add ticket number to ("Closes #")
 - [ ] Move status to Code Review in GH Board
 - [ ] People added to reviewers
 - [ ] Asked for Review in Slack
