@@ -58,23 +58,25 @@ const DropdownInput = <T extends unknown>({
         </div>
         {dropdownOpen && (
           <>
-            {allOptions
-              .filter((o) => o.value !== selectedOption?.value)
-              .map((o, idx) => (
-                <div
-                  className={`w-full px-3 py-2.5 cursor-pointer hover:bg-gray-100 ${
-                    !o.value && 'text-neutral-400'
-                  } ${idx === allOptions.length}`}
-                  key={o.value?.toString() || ''}
-                  onClick={() => {
-                    setSelectedOption(o);
-                    selectValue(o.value || undefined);
-                    setDropdownOpen(false);
-                  }}
-                >
-                  {o.label}
-                </div>
-              ))}
+            {allOptions.map((o, idx) => (
+              <div
+                className={clsx([
+                  'w-full px-3 py-2.5 cursor-pointer hover:bg-gray-200',
+                  selectedOption?.value === o.value && 'bg-gray-100',
+                  o.value === undefined &&
+                    'text-neutral-400 hover:text-gray-500',
+                  idx === allOptions.length - 1 && 'rounded-b-lg',
+                ])}
+                key={o.value?.toString() || ''}
+                onClick={() => {
+                  setSelectedOption(o);
+                  selectValue(o.value || undefined);
+                  setDropdownOpen(false);
+                }}
+              >
+                {o.label}
+              </div>
+            ))}
           </>
         )}
       </div>
