@@ -1,6 +1,7 @@
 import { createSlice, Selector, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './app.store';
 import { ProfessorPosition, SabbaticalOption } from '@prisma/client';
+import { validateProfileInformation } from '@/shared/utils/user.util';
 
 export interface ProfileInformation {
   // basic info
@@ -43,10 +44,16 @@ export const profileSlice = createSlice({
     setTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
-    setPosition: (state, action: PayloadAction<ProfessorPosition>) => {
+    setPosition: (
+      state,
+      action: PayloadAction<ProfessorPosition | undefined>,
+    ) => {
       state.position = action.payload;
     },
-    setSabbatical: (state, action: PayloadAction<SabbaticalOption>) => {
+    setSabbatical: (
+      state,
+      action: PayloadAction<SabbaticalOption | undefined>,
+    ) => {
       state.sabbatical = action.payload;
     },
     setTeachingPercent: (state, action: PayloadAction<number>) => {
@@ -201,7 +208,8 @@ export const selectProfileCompletionStatus: Selector<
   RootState,
   ProfileCompletionStatus
 > = (state) => {
-  return 'true';
+  const profileInfo: Partial<ProfileInformation> = { ...state.profile };
+  return validateProfileInformation(profileInfo);
 };
 
 export default profileSlice.reducer;

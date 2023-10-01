@@ -1,43 +1,22 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Image from 'next/image';
 import {
-  setResearchPercent,
-  setServicePercent,
-  setTeachingPercent,
-  reset,
-  selectTeachingPercent,
-  selectResearchPercent,
-  selectServicePercent,
-  setPercent,
-  selectPosition,
   selectPhoneNumber,
   selectOfficeLocation,
-  setPosition,
-  ProfileInformation,
   selectEditing,
   selectEmail,
   setEmail,
   setPhoneNumber,
   setOfficeLocation,
 } from '@/store/profile.store';
-import PercentageInfo from './PercentageInfo';
-import {
-  UpdateProfessorInfoDto,
-  professorPositionLabel,
-  professorPositionOptions,
-} from '@/models/professorInfo.model';
-import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
-import { ResponseStatus } from '@/client/activities.client';
-import { useRouter } from 'next/router';
-import Avatar from './Avatar';
 import InputContainer from '@/shared/components/InputContainer';
-import { ProfessorPosition, SabbaticalOption } from '@prisma/client';
 import ProfileInfoSection from './ProfileInfoSection';
-import DropdownInput from '@/shared/components/DropdownInput';
 import TextField from '@/shared/components/TextField';
 import TextInput from '@/shared/components/TextInput';
-import { formatPhoneNumberWithSlashes } from '@/shared/utils/misc.util';
+import {
+  formatPhoneNumberWithSlashes,
+  isValidEmail,
+} from '@/shared/utils/misc.util';
 
 const ContactInfo: React.FC = () => {
   const editing = useSelector(selectEditing);
@@ -54,7 +33,7 @@ const ContactInfo: React.FC = () => {
             <InputContainer
               label="Phone Number"
               labelClass="text-sm font-normal"
-              incomplete={phoneNumber?.length !== 10}
+              incomplete={!!phoneNumber && phoneNumber.length !== 10}
               incompleteMessage="Invalid number."
               hideValidation={!editing}
             >
@@ -77,7 +56,7 @@ const ContactInfo: React.FC = () => {
             <InputContainer
               label="Office Location"
               labelClass="text-sm font-normal"
-              incomplete={!officeLocation}
+              incomplete={false}
               incompleteMessage="Cannot be empty."
               hideValidation={!editing}
             >
@@ -98,8 +77,8 @@ const ContactInfo: React.FC = () => {
           <InputContainer
             label="Email"
             labelClass="text-sm font-normal"
-            incomplete={!email}
-            incompleteMessage="Must specify email."
+            incomplete={!email || !isValidEmail(email)}
+            incompleteMessage="Invalid email."
             hideValidation={!editing}
           >
             {editing ? (

@@ -38,7 +38,7 @@ const BasicInfo: React.FC = () => {
       )}
       <div className="ml-9">
         <h2>{`${firstName} ${lastName}`}</h2>
-        <p>{title}</p>
+        <p>{title || <>&nbsp;</>}</p>
       </div>
     </div>
   );

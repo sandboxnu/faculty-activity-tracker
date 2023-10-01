@@ -55,7 +55,7 @@ const AcademicInfo: React.FC = () => {
                   initialValue={professorPositionOptions.find(
                     (p) => p.value === position,
                   )}
-                  selectValue={(p) => p && dispatch(setPosition(p))}
+                  selectValue={(p) => dispatch(setPosition(p))}
                   fillContainer
                 />
               ) : (
@@ -71,7 +71,7 @@ const AcademicInfo: React.FC = () => {
               label="Sabbatical"
               labelClass="text-sm font-normal"
               incomplete={sabbatical === undefined}
-              incompleteMessage="Must specify sabbatical status."
+              incompleteMessage="Must specify status."
               hideValidation={!editing}
             >
               {editing ? (
@@ -81,7 +81,7 @@ const AcademicInfo: React.FC = () => {
                   initialValue={sabbaticalOptions.find(
                     (s) => s.value === sabbatical,
                   )}
-                  selectValue={(s) => s && dispatch(setSabbatical(s))}
+                  selectValue={(s) => dispatch(setSabbatical(s))}
                   fillContainer
                 />
               ) : (
