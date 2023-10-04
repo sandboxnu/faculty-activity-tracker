@@ -91,4 +91,7 @@ export const selectEmail: Selector<RootState, string> = (state) =>
 export const selectName: Selector<RootState, string> = (state) =>
   state.accountSetup.name;
 
+export const selectFieldsIncomplete: Selector<RootState, boolean> = (state) =>
+  false;
+
 export default accountSetupSlice.reducer;

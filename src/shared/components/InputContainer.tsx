@@ -16,7 +16,7 @@ type InputContainerProps = {
 
 const InputContainer: React.FC<InputContainerProps> = ({
   label,
-  labelClass = 'text-base font-bold',
+  labelClass = 'text-body-bold',
   required = false,
   incomplete,
   incompleteMessage,

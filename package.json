@@ -10,6 +10,7 @@
     "dev:db:up": "docker-compose up -d",
     "dev:db:down": "docker-compose down",
     "migrate": "yarn prisma migrate dev --name init",
+    "migrate:dev": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' yarn prisma migrate dev",
     "generate": "yarn prisma generate",
     "seed": "yarn prisma db seed",
     "format:check": "prettier --check --ignore-path .gitignore .",

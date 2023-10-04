@@ -6,6 +6,7 @@ export interface TextInputProps {
   placeholder?: string;
   className?: string;
   fillContainer?: boolean;
+  onSubmit?: () => void;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -14,12 +15,20 @@ const TextInput: React.FC<TextInputProps> = ({
   placeholder,
   className,
   fillContainer = false,
+  onSubmit = () => {},
 }) => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      onSubmit();
+    }
+  };
+
   return (
     <input
       type={'text'}
       placeholder={placeholder || ''}
       onChange={(e) => change(e.target.value)}
+      onKeyDown={onKeyDown}
       value={value}
       className={
         className ||

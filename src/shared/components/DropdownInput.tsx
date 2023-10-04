@@ -49,7 +49,7 @@ const DropdownInput = <T extends unknown>({
         >
           <p className="">{selectedOption?.label || placeholder}</p>
           <Image
-            className={`${dropdownOpen ? 'rotate-90' : '-rotate-90'} mr-1`}
+            className={`${dropdownOpen ? '-rotate-90' : 'rotate-90'} mr-1`}
             src={'/media/rightArrow.svg'}
             alt="down arrow"
             width={9}

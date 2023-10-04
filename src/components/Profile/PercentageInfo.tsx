@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 
 interface PercentageInfoProps {
@@ -6,6 +7,7 @@ interface PercentageInfoProps {
   research: number;
   service: number;
   setPercent: (type: string, percent: number) => void;
+  fillContainer?: boolean;
 }
 
 const PercentageInfo: React.FC<PercentageInfoProps> = ({
@@ -14,6 +16,7 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
   research,
   service,
   setPercent,
+  fillContainer = false,
 }) => {
   const labels: Record<string, number> = {
     Teaching: teaching,
@@ -22,7 +25,10 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
   };
 
   return (
-    <div className="flex items-center space-x-6">
+    <div className={clsx([
+      "flex items-center",
+      fillContainer ? "w-full justify-between" : "space-x-6"
+    ])}>
       {Object.entries(labels).map(([field, percent]) => (
         <div className="flex flex-col" key={`percentage-${field}`}>
           <div className="flex items-center">

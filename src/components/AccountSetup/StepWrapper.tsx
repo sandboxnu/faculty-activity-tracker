@@ -1,5 +1,8 @@
 import React from 'react';
 import StepIndicator from './StepIndicator';
+import Button from '@/shared/components/Button';
+import { useSelector } from 'react-redux';
+import { selectFieldsIncomplete } from '@/store/accountSetup.store';
 
 interface StepWrapperProps {
   currentStep: number;
@@ -20,6 +23,8 @@ const StepWrapper: React.FC<StepWrapperProps> = ({
   back,
   children,
 }) => {
+  const fieldsIncomplete = useSelector(selectFieldsIncomplete);
+
   return (
     <div className="flex flex-col w-full items-center rounded-lg bg-gray-100 shadow-lg pt-6 px-20 pb-11">
       <StepIndicator currentStep={currentStep} numSteps={numSteps} />
@@ -30,19 +35,20 @@ const StepWrapper: React.FC<StepWrapperProps> = ({
       {children}
       <div className="flex justify-between mt-12 w-full" id="buttons">
         {currentStep > 0 && (
-          <div
-            className="flex justify-center rounded-lg bg-white border border-gray-400 cursor-pointer px-6 py-3"
+          <Button
+            variant='secondary'
             onClick={back}
           >
             <p className="text-xs">Back</p>
-          </div>
+          </Button>
         )}
-        <div
-          className="flex justify-center rounded-lg bg-red-500 cursor-pointer px-6 py-3"
+        <Button
+          addOnClass="only:mx-auto"
           onClick={next}
+          disabled={fieldsIncomplete}
         >
           <p className="text-xs text-white font-bold">Next</p>
-        </div>
+        </Button>
       </div>
     </div>
   );

@@ -31,9 +31,9 @@ const positionOptions: Option[] = [
 ];
 
 const sabbaticalOptions: Option<SabbaticalOption>[] = [
-  { label: 'No', value: SabbaticalOption.NO },
-  { label: 'Year', value: SabbaticalOption.YEAR },
-  { label: 'Semester', value: SabbaticalOption.SEMESTER },
+  { label: 'Not Sabbatical', value: SabbaticalOption.NO },
+  { label: 'Sabbatical: Year', value: SabbaticalOption.YEAR },
+  { label: 'Sabbatical: Semester', value: SabbaticalOption.SEMESTER },
 ];
 
 const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
@@ -142,8 +142,11 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
       <div className="flex flex-col w-full">
         <InputContainer
           label="Position"
+          labelClass="text-body"
+          withMarginY
           incomplete={!position}
           incompleteMessage="Select a position."
+          required
         >
           <DropdownInput
             options={positionOptions}
@@ -154,21 +157,29 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
         </InputContainer>
         <InputContainer
           label="Activity Distribution"
+          labelClass="text-body"
+          withMarginY
           incomplete={teachingPercent + researchPercent + servicePercent !== 1}
           incompleteMessage="Must sum to 100."
+          required
         >
-          <PercentageInfo
-            editing={true}
-            teaching={teachingPercent}
-            research={researchPercent}
-            service={servicePercent}
-            setPercent={setPercent}
-          />
+          <div className='w-full px-5'>
+            <PercentageInfo
+              editing={true}
+              teaching={teachingPercent}
+              research={researchPercent}
+              service={servicePercent}
+              setPercent={setPercent}
+              fillContainer
+            />
+          </div>
         </InputContainer>
         <InputContainer
           label="Sabbatical"
+          labelClass="text-body"
           incomplete={!sabbatical}
           incompleteMessage="Select a sabbatical option."
+          required
         >
           <DropdownInput<SabbaticalOption>
             options={sabbaticalOptions}
@@ -180,6 +191,8 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
         </InputContainer>
         <InputContainer
           label="Teaching Release Explanation"
+          labelClass="text-body"
+          withMarginY
           incomplete={false}
           incompleteMessage=""
         >

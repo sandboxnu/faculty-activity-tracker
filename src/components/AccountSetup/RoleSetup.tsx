@@ -44,15 +44,19 @@ const RoleSetup: React.FC<RoleSetupProps> = () => {
         <div className="w-full">
           <InputContainer
             label="Provided Access Code"
-            incomplete={codeInput === ''}
-            incompleteMessage="Enter an access code."
+            labelClass="text-body"
+            incomplete={!codeInput}
+            incompleteMessage="Enter a code."
+            hideValidation={codeInput === null}
             withMarginY={false}
+            required
           >
             <TextInput
               value={codeInput || ''}
               change={setCodeInput}
               placeholder=""
               fillContainer
+              onSubmit={submitCode}
             />
           </InputContainer>
         </div>

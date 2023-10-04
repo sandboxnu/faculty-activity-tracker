@@ -63,8 +63,11 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
       <div className="flex flex-col w-full">
         <InputContainer
           label="First Name"
+          labelClass="text-body"
+          withMarginY
           incomplete={!firstName}
           incompleteMessage="Enter a first name."
+          required
         >
           <TextInput
             value={firstName}
@@ -75,6 +78,8 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
         </InputContainer>
         <InputContainer
           label="Preferred Name (optional)"
+          labelClass="text-body"
+          withMarginY
           incomplete={false}
           incompleteMessage=""
         >
@@ -87,8 +92,11 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
         </InputContainer>
         <InputContainer
           label="Last Name"
+          labelClass="text-body"
+          withMarginY
           incomplete={!lastName}
           incompleteMessage="Enter a last name."
+          required
         >
           <TextInput
             value={lastName}
