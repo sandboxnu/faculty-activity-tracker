@@ -69,6 +69,9 @@ const InfoSidebar: React.FC = () => {
     else if (pathname.includes('/merit/professors/')) {
       setType('scoring');
     }
+    else {
+      setType(null);
+    }
   }, [pathname, category, userId]);
 
   return (

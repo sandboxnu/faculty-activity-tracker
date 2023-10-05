@@ -32,26 +32,15 @@ const SideNavbar: React.FC = () => {
   return (
     <div className="flex flex-col items-start min-w-[207px] bg-white font-bold px-6 py-6 space-y-4">
       <Link
-        href="/merit/dashboard"
+        href= {isMerit ? '/merit/dashboard' : '/dashboard'}
         className={`${navClass} ${
-          router.pathname == '/merit/dashboard'
+            router.pathname == `${isMerit ? '/merit/dashboard' : '/dashboard'}`
             ? 'nav-underline-red'
             : 'hover:nav-underline-red'
         }`}
       >
         Dashboard
       </Link>
-      {!isMerit && (<Link
-        href="dashboard"
-        className={`${navClass} ${
-          router.pathname == 'dashboard'
-            ? 'nav-underline-red'
-            : 'hover:nav-underline-red'
-        }`}
-      >
-        Dashboard
-      </Link>
-      )}
       {!isMerit && (<Link
         href="/submissions/new"
         className={`${navClass} ${
