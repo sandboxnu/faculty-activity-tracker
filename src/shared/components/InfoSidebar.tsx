@@ -18,18 +18,30 @@ import { getNarrativeForUserForCategory } from '@/client/narratives.client';
 import { NarrativeDto } from '@/models/narrative.model';
 import ProfileInstructions from '@/components/Profile/ProfileInstructions';
 import ScoringInfo from '@/components/ProfessorScoring/ScoringInfo';
+import { getProfessorInfoForUser } from '@/client/professorInfo.client';
+import { ProfessorInfoDto } from '@/models/professorInfo.model';
 
-type SidebarType = 'submissions' | 'new' | 'edit' | 'profile' | 'narratives' | 'scoring';
+type SidebarType =
+  | 'submissions'
+  | 'new'
+  | 'edit'
+  | 'profile'
+  | 'narratives'
+  | 'scoring';
 
 const InfoSidebar: React.FC = () => {
   const router = useRouter();
   const pathname = router.pathname;
   const { category } = router.query;
+  const { professorId } = router.query;
   const { data: session, status } = useSession();
   const userId = session?.user?.id;
   const [sidebarType, setType] = useState<SidebarType | null>(null);
   const [activities, setActivities] = useState<ActivityDto[]>([]);
   const [narrative, setNarrative] = useState<NarrativeDto | null>(null);
+  const [professorInfo, setProfessorInfo] = useState<ProfessorInfoDto | null>(
+    null,
+  );
   const activitiesBySigLevel = seperateActivitiesBySignifanceLevel(activities);
   const activitiesBySemester = seperateActivitiesBySemester(activities);
 
@@ -65,11 +77,15 @@ const InfoSidebar: React.FC = () => {
       setType('profile');
     } else if (pathname.includes('narratives')) {
       setType('narratives');
-    }
-    else if (pathname.includes('/merit/professors/')) {
-      setType('scoring');
-    }
-    else {
+    } else if (pathname == '/merit/professors/[professorId]') {
+      Promise.all([
+        getProfessorInfoForUser(parseInt(professorId as string)),
+      ]).then(([professorInfo]) => {
+        if (professorInfo === ResponseStatus.UnknownError) return;
+        setType('scoring');
+        setProfessorInfo(professorInfo);
+      });
+    } else {
       setType(null);
     }
   }, [pathname, category, userId]);
@@ -89,7 +105,7 @@ const InfoSidebar: React.FC = () => {
       )}
       {sidebarType === 'narratives' && <NarrativeInstructions />}
       {sidebarType === 'profile' && <ProfileInstructions />}
-      {sidebarType === 'scoring' && <ScoringInfo />}
+      {sidebarType === 'scoring' && <ScoringInfo profInfo={professorInfo} />}
     </div>
   );
 };

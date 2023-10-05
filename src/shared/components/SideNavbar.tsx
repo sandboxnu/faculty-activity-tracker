@@ -32,35 +32,37 @@ const SideNavbar: React.FC = () => {
   return (
     <div className="flex flex-col items-start min-w-[207px] bg-white font-bold px-6 py-6 space-y-4">
       <Link
-        href= {isMerit ? '/merit/dashboard' : '/dashboard'}
+        href={isMerit ? '/merit/dashboard' : '/dashboard'}
         className={`${navClass} ${
-            router.pathname == `${isMerit ? '/merit/dashboard' : '/dashboard'}`
+          router.pathname == `${isMerit ? '/merit/dashboard' : '/dashboard'}`
             ? 'nav-underline-red'
             : 'hover:nav-underline-red'
         }`}
       >
         Dashboard
       </Link>
-      {!isMerit && (<Link
-        href="/submissions/new"
-        className={`${navClass} ${
-          router.pathname == '/submissions/new'
-            ? 'nav-underline-red'
-            : 'hover:nav-underline-red'
-        }`}
-        onClick={() => dispatch(resetForm())}
-      >
-        Submit a New Activity
-      </Link>
+      {!isMerit && (
+        <Link
+          href="/submissions/new"
+          className={`${navClass} ${
+            router.pathname == '/submissions/new'
+              ? 'nav-underline-red'
+              : 'hover:nav-underline-red'
+          }`}
+          onClick={() => dispatch(resetForm())}
+        >
+          Submit a New Activity
+        </Link>
       )}
-      {!isMerit && (<p
-        className={`${navClass} cursor-pointer hover:border-white`}
-        onClick={() =>
-          category === undefined ? setSubmissionsOpen((b) => !b) : {}
-        }
-      >
-        Submissions
-      </p>
+      {!isMerit && (
+        <p
+          className={`${navClass} cursor-pointer hover:border-white`}
+          onClick={() =>
+            category === undefined ? setSubmissionsOpen((b) => !b) : {}
+          }
+        >
+          Submissions
+        </p>
       )}
       {submissionsOpen && (
         <div className="flex flex-col items-start space-y-5 pl-4">
@@ -96,39 +98,42 @@ const SideNavbar: React.FC = () => {
           </Link>
         </div>
       )}
-     {!isMerit && (<Link
-        href="/profile"
-        className={`${navClass} ${
-          router.pathname == '/profile'
-            ? 'nav-underline-red'
-            : 'hover:nav-underline-red'
-        }`}
-      >
-        My Profile
-      </Link>
-     )}
-     {isMerit && (<Link
-        href="/merit/professors"
-        className={`${navClass} ${
-          router.pathname == '/merit/professors'
-            ? 'nav-underline-red'
-            : 'hover:nav-underline-red'
-        }`}
-      >
-        Professors
-      </Link>
-     )}
-     {isMerit && (<Link
-        href="/merit/graphs"
-        className={`${navClass} ${
-          router.pathname == '/merit/graphs'
-            ? 'nav-underline-red'
-            : 'hover:nav-underline-red'
-        }`}
-      >
-        Graphs
-      </Link>
-     )}
+      {!isMerit && (
+        <Link
+          href="/profile"
+          className={`${navClass} ${
+            router.pathname == '/profile'
+              ? 'nav-underline-red'
+              : 'hover:nav-underline-red'
+          }`}
+        >
+          My Profile
+        </Link>
+      )}
+      {isMerit && (
+        <Link
+          href="/merit/professors"
+          className={`${navClass} ${
+            router.pathname == '/merit/professors'
+              ? 'nav-underline-red'
+              : 'hover:nav-underline-red'
+          }`}
+        >
+          Professors
+        </Link>
+      )}
+      {isMerit && (
+        <Link
+          href="/merit/graphs"
+          className={`${navClass} ${
+            router.pathname == '/merit/graphs'
+              ? 'nav-underline-red'
+              : 'hover:nav-underline-red'
+          }`}
+        >
+          Graphs
+        </Link>
+      )}
       {isAdmin && (
         <Link
           href="/admin"

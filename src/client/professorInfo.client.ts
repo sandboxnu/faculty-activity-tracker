@@ -1,4 +1,7 @@
-import { UpdateProfessorInfoDto } from '@/models/professorInfo.model';
+import {
+  ProfessorInfoDto,
+  UpdateProfessorInfoDto,
+} from '@/models/professorInfo.model';
 import { ResponseStatus } from './activities.client';
 
 const apiRoot = 'http://localhost:3000/api/professor-info';
@@ -26,6 +29,32 @@ export const updateProfessorInfoForUser = async (
     else return ResponseStatus.UnknownError;
   } catch (error) {
     console.log(error);
+    return ResponseStatus.UnknownError;
+  }
+};
+
+export const getProfessorInfoForUser = async (
+  userId: number,
+): Promise<ProfessorInfoDto | ResponseStatus.UnknownError> => {
+  try {
+    const response = await fetch(`${apiRoot}/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
+    if (response.ok || response.status === 200) {
+      const data = await response.json();
+      if (data.hasOwnProperty('data')) {
+        return data.data as ProfessorInfoDto;
+      } else {
+        return ResponseStatus.UnknownError;
+      }
+    } else {
+      return ResponseStatus.UnknownError;
+    }
+  } catch {
     return ResponseStatus.UnknownError;
   }
 };

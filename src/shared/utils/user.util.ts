@@ -4,7 +4,7 @@ import { ActivityCategory, Role } from '@prisma/client';
 export const isAdminUser = (user: UserDto): boolean =>
   user.role === Role.MERIT_COMMITTEE_HEAD || user.role === Role.DEAN;
 
-export const NotFacultyUser = (user: UserDto): boolean =>  
+export const NotFacultyUser = (user: UserDto): boolean =>
   user.role !== Role.FACULTY;
 
 const roleFormats: Record<Role, string> = {
