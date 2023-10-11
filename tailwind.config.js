@@ -42,11 +42,13 @@ module.exports = {
         8: '8%',
         42: '42%',
       },
+      
       fontSize: {
         'heading-1': ['1.5rem', { fontWeight: 700 }],
         'heading-2': ['1.375rem', { fontWeight: 700 }],
         'heading-3': ['1.125rem', { fontWeight: 700 }],
         'body-bold': ['1rem', { fontWeight: 700 }],
+        
         body: ['1rem', { fontWeight: 400 }],
         small: ['0.875rem', { fontWeight: 400 }],
         'small-italicized': ['0.875rem', { fontWeight: 400 }],

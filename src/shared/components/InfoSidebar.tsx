@@ -17,8 +17,9 @@ import { NarrativeCategory } from '@prisma/client';
 import { getNarrativeForUserForCategory } from '@/client/narratives.client';
 import { NarrativeDto } from '@/models/narrative.model';
 import ProfileInstructions from '@/components/Profile/ProfileInstructions';
+import ScoringInfo from '@/components/ProfessorScoring/ScoringInfo';
 
-type SidebarType = 'submissions' | 'new' | 'edit' | 'profile' | 'narratives';
+type SidebarType = 'submissions' | 'new' | 'edit' | 'profile' | 'narratives' | 'scoring';
 
 const InfoSidebar: React.FC = () => {
   const router = useRouter();
@@ -65,6 +66,12 @@ const InfoSidebar: React.FC = () => {
     } else if (pathname.includes('narratives')) {
       setType('narratives');
     }
+    else if (pathname.includes('/merit/professors/')) {
+      setType('scoring');
+    }
+    else {
+      setType(null);
+    }
   }, [pathname, category, userId]);
 
   return (
@@ -82,6 +89,7 @@ const InfoSidebar: React.FC = () => {
       )}
       {sidebarType === 'narratives' && <NarrativeInstructions />}
       {sidebarType === 'profile' && <ProfileInstructions />}
+      {sidebarType === 'scoring' && <ScoringInfo />}
     </div>
   );
 };

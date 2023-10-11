@@ -9,6 +9,7 @@ declare module 'next-auth' {
     user: {
       id: number | undefined;
       admin?: boolean | undefined;
+      merit?: boolean | undefined;
     } & DefaultSession['user'];
   }
 }

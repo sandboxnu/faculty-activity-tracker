@@ -1,5 +1,5 @@
 import { getUsersByQuery } from '@/services/user';
-import { isAdminUser } from '@/shared/utils/user.util';
+import { NotFacultyUser, isAdminUser } from '@/shared/utils/user.util';
 import { Role } from '@prisma/client';
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
@@ -38,6 +38,7 @@ export const authOptions: AuthOptions = {
         if (users?.length > 0) {
           session.user.id = users[0].id;
           session.user.admin = isAdminUser(users[0]);
+          session.user.merit = NotFacultyUser(users[0]);
         }
       }
       return session;
