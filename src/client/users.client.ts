@@ -2,7 +2,7 @@ import { bigintStringify, bigintToJSON } from '@/shared/utils/misc.util';
 import { UserDto, CreateUserDto, UpdateUserDto } from '../models/user.model';
 import { ResponseStatus } from './activities.client';
 
-const apiRoot = 'http://localhost:3000/api/users';
+const apiRoot = '/api/users';
 
 export const createUser = async (
   body: CreateUserDto,

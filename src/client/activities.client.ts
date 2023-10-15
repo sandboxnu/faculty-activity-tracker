@@ -12,7 +12,7 @@ export enum ResponseStatus {
   BadRequest = 400,
 }
 
-const apiRoot = 'http://localhost:3000/api/activities';
+const apiRoot = '/api/activities';
 
 export const getActivitiesForUser = async (
   userId: number,
