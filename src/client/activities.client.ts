@@ -21,7 +21,6 @@ export const getActivitiesForUser = async (
     const response = await fetch(`${apiRoot}?userId=${userId}`, {
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
       },
     });
     if (response.ok || response.status === 200) {
@@ -49,7 +48,6 @@ export const getActivitiesForUserForCategory = async (
       {
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': 'http://localhost:3000',
         },
       },
     );
