@@ -6,7 +6,7 @@ import {
 } from '@/models/narrative.model';
 import { ResponseStatus } from './activities.client';
 
-const apiRoot = 'http://localhost:3000/api/narratives';
+const apiRoot = '/api/narratives';
 
 export const getNarrativeForUserForCategory = async (
   userId: number,
@@ -18,7 +18,6 @@ export const getNarrativeForUserForCategory = async (
       {
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': 'http://localhost:3000',
         },
       },
     );

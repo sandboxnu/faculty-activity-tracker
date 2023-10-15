@@ -1,7 +1,7 @@
 import { Role } from '@prisma/client';
 import { ResponseStatus } from './activities.client';
 
-const apiRoot = 'http://localhost:3000/api/access-codes';
+const apiRoot = '/api/access-codes';
 
 export const obtainRoleForAccessCode = async (
   accessCode: string,

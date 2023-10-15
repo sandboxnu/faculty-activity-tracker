@@ -4,7 +4,7 @@ import {
 } from '@/models/professorInfo.model';
 import { ResponseStatus } from './activities.client';
 
-const apiRoot = 'http://localhost:3000/api/professor-info';
+const apiRoot = '/api/professor-info';
 
 export const updateProfessorInfoForUser = async (
   body: UpdateProfessorInfoDto,
