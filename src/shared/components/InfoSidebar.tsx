@@ -19,6 +19,8 @@ import { NarrativeDto } from '@/models/narrative.model';
 import ProfileInstructions from '@/components/Profile/ProfileInstructions';
 import ScoringInfo from '@/components/ProfessorScoring/ScoringInfo';
 
+import CommentBox from '@/components/ProfessorScoring/CommentBox';
+
 type SidebarType = 'submissions' | 'new' | 'edit' | 'profile' | 'narratives' | 'scoring';
 
 const InfoSidebar: React.FC = () => {
@@ -90,6 +92,8 @@ const InfoSidebar: React.FC = () => {
       {sidebarType === 'narratives' && <NarrativeInstructions />}
       {sidebarType === 'profile' && <ProfileInstructions />}
       {sidebarType === 'scoring' && <ScoringInfo />}
+
+      <CommentBox />
     </div>
   );
 };
