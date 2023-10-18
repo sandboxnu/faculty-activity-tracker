@@ -22,9 +22,15 @@ const bgCompletionClass: Record<CompletionState, string> = {
   incomplete: 'bg-[#C6C6C6]',
 };
 
+const widthCompletionClass: Record<CompletionState, string> = {
+  complete: 'w-10',
+  'in progress': 'w-[65px]',
+  incomplete: 'w-10',
+};
+
 const StepBar: React.FC<{ state: CompletionState }> = ({ state }) => (
   <div
-    className={`flex flex-grow w-12 h-1.5 rounded-full ${bgCompletionClass[state]}`}
+    className={`flex flex-grow ${widthCompletionClass[state]} h-1.5 rounded-full ${bgCompletionClass[state]}`}
   />
 );
 

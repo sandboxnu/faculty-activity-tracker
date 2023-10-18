@@ -132,79 +132,81 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
   };
 
   return (
-    <StepWrapper
-      title="Basic Information"
-      subtitle="Please provide the following information."
-      currentStep={2}
-      next={submitInfo}
-      back={() => dispatch(setStep('user info'))}
-    >
-      <div className="flex flex-col w-full">
-        <InputContainer
-          label="Position"
-          labelClass="text-body"
-          withMarginY
-          incomplete={!position}
-          incompleteMessage="Select a position."
-          required
-        >
-          <DropdownInput
-            options={positionOptions}
-            placeholder="Select a Position"
-            selectValue={(value) => selectPosition(value?.toString() || '')}
-            fillContainer
-          />
-        </InputContainer>
-        <InputContainer
-          label="Activity Distribution"
-          labelClass="text-body"
-          withMarginY
-          incomplete={teachingPercent + researchPercent + servicePercent !== 1}
-          incompleteMessage="Must sum to 100."
-          required
-        >
-          <div className='w-full px-5'>
-            <PercentageInfo
-              editing={true}
-              teaching={teachingPercent}
-              research={researchPercent}
-              service={servicePercent}
-              setPercent={setPercent}
+    <div className="w-full flex flex-grow justify-center items-center">
+      <StepWrapper
+        title="Basic Information"
+        subtitle="Please provide the following information."
+        currentStep={2}
+        next={submitInfo}
+        back={() => dispatch(setStep('user info'))}
+      >
+        <div className="flex flex-col w-full">
+          <InputContainer
+            label="Position"
+            labelClass="text-body"
+            withMarginY
+            incomplete={!position}
+            incompleteMessage="Select a position."
+            required
+          >
+            <DropdownInput
+              options={positionOptions}
+              placeholder="Select a Position"
+              selectValue={(value) => selectPosition(value?.toString() || '')}
               fillContainer
             />
-          </div>
-        </InputContainer>
-        <InputContainer
-          label="Sabbatical"
-          labelClass="text-body"
-          incomplete={!sabbatical}
-          incompleteMessage="Select a sabbatical option."
-          required
-        >
-          <DropdownInput<SabbaticalOption>
-            options={sabbaticalOptions}
-            initialValue={sabbaticalOptions.find((o) => o.value === sabbatical)}
-            placeholder="Select a Sabbatical"
-            selectValue={(value) => setSabbatical(value as SabbaticalOption)}
-            fillContainer
-          />
-        </InputContainer>
-        <InputContainer
-          label="Teaching Release Explanation"
-          labelClass="text-body"
-          withMarginY
-          incomplete={false}
-          incompleteMessage=""
-        >
-          <TextAreaInput
-            value={teachingReleaseExplanation}
-            change={(val) => setExplanation(val)}
-            placeholder="Teaching release explanation (optional)."
-            addOnClass="w-full"
-          />
-        </InputContainer>
-      </div>
-    </StepWrapper>
+          </InputContainer>
+          <InputContainer
+            label="Activity Distribution"
+            labelClass="text-body"
+            withMarginY
+            incomplete={teachingPercent + researchPercent + servicePercent !== 1}
+            incompleteMessage="Must sum to 100."
+            required
+          >
+            <div className='w-full px-5'>
+              <PercentageInfo
+                editing={true}
+                teaching={teachingPercent}
+                research={researchPercent}
+                service={servicePercent}
+                setPercent={setPercent}
+                fillContainer
+              />
+            </div>
+          </InputContainer>
+          <InputContainer
+            label="Sabbatical"
+            labelClass="text-body"
+            incomplete={!sabbatical}
+            incompleteMessage="Select a sabbatical option."
+            required
+          >
+            <DropdownInput<SabbaticalOption>
+              options={sabbaticalOptions}
+              initialValue={sabbaticalOptions.find((o) => o.value === sabbatical)}
+              placeholder="Select a Sabbatical"
+              selectValue={(value) => setSabbatical(value as SabbaticalOption)}
+              fillContainer
+            />
+          </InputContainer>
+          <InputContainer
+            label="Teaching Release Explanation"
+            labelClass="text-body"
+            withMarginY
+            incomplete={false}
+            incompleteMessage=""
+          >
+            <TextAreaInput
+              value={teachingReleaseExplanation}
+              change={(val) => setExplanation(val)}
+              placeholder="Teaching release explanation (optional)."
+              addOnClass="w-full"
+            />
+          </InputContainer>
+        </div>
+      </StepWrapper>
+    </div>
   );
 };
 

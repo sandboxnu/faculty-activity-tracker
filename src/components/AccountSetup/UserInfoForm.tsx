@@ -34,10 +34,17 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
   const [firstName, setFirstName] = useState(parsedName[0] || '');
   const [lastName, setLastName] = useState(parsedName[1] || '');
   const [preferredName, setPreferredName] = useState('');
+  const [firstNameError, setFirstNameError] = useState<string | undefined>(undefined);
+  const [lastNameError, setLastNameError] = useState<string | undefined>(undefined);
 
   const dispatch = useDispatch();
 
   const submit = () => {
+    if (!firstName || !lastName) {
+      if (!firstName) setFirstNameError('Please enter a First Name.')
+      if (!lastName) setLastNameError('Please enter a Last Name.')
+      return;
+    }
     if (!email || !role) return;
 
     let newUser: CreateUserDto = {
@@ -52,61 +59,70 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
     dispatch(setStep('professor info'));
   };
 
+  const onFirstNameChange = (value: string) => {
+    setFirstName(value);
+    if (firstNameError) setFirstNameError(undefined)
+  }
+
+  const onLastNameChange = (value: string) => {
+    setLastName(value);
+    if (lastNameError) setFirstNameError(undefined)
+  }
+
   return (
-    <StepWrapper
-      title="Create your account"
-      subtitle="Please provide your full name."
-      currentStep={1}
-      next={submit}
-      back={() => dispatch(setStep('role'))}
-    >
-      <div className="flex flex-col w-full">
-        <InputContainer
-          label="First Name"
-          labelClass="text-body"
-          withMarginY
-          incomplete={!firstName}
-          incompleteMessage="Enter a first name."
-          required
-        >
-          <TextInput
-            value={firstName}
-            change={(val) => setFirstName(val)}
-            placeholder="First Name"
-            fillContainer
-          />
-        </InputContainer>
-        <InputContainer
-          label="Preferred Name (optional)"
-          labelClass="text-body"
-          withMarginY
-          incomplete={false}
-          incompleteMessage=""
-        >
-          <TextInput
-            value={preferredName}
-            change={(val) => setPreferredName(val)}
-            placeholder="Preferred Name"
-            fillContainer
-          />
-        </InputContainer>
-        <InputContainer
-          label="Last Name"
-          labelClass="text-body"
-          withMarginY
-          incomplete={!lastName}
-          incompleteMessage="Enter a last name."
-          required
-        >
-          <TextInput
-            value={lastName}
-            change={(val) => setLastName(val)}
-            placeholder="Last Name"
-            fillContainer
-          />
-        </InputContainer>
-      </div>
-    </StepWrapper>
+    <div className="w-full flex flex-grow justify-center items-center">
+      <StepWrapper
+        title="Create your account"
+        subtitle="Please provide your full name."
+        currentStep={1}
+        next={submit}
+        back={() => dispatch(setStep('role'))}
+      >
+        <div className="flex flex-col w-full">
+          <InputContainer
+            label="First Name"
+            labelClass="text-body"
+            withMarginY
+            incompleteMessage={firstNameError}
+            required
+          >
+            <TextInput
+              value={firstName}
+              change={onFirstNameChange}
+              placeholder="First Name"
+              fillContainer
+            />
+          </InputContainer>
+          <InputContainer
+            label="Preferred Name (optional)"
+            labelClass="text-body"
+            withMarginY
+            incompleteMessage=""
+          >
+            <TextInput
+              value={preferredName}
+              change={(val) => setPreferredName(val)}
+              placeholder="Preferred Name"
+              fillContainer
+            />
+          </InputContainer>
+          <InputContainer
+            label="Last Name"
+            labelClass="text-body"
+            withMarginY
+            incompleteMessage={lastNameError}
+            required
+          >
+            <TextInput
+              value={lastName}
+              change={onLastNameChange}
+              placeholder="Last Name"
+              fillContainer
+            />
+          </InputContainer>
+        </div>
+      </StepWrapper>
+    </div>
   );
 };
 
