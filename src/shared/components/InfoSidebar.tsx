@@ -21,7 +21,13 @@ import ScoringInfo from '@/components/ProfessorScoring/ScoringInfo';
 
 import CommentBox from '@/components/ProfessorScoring/CommentBox';
 
-type SidebarType = 'submissions' | 'new' | 'edit' | 'profile' | 'narratives' | 'scoring';
+type SidebarType =
+  | 'submissions'
+  | 'new'
+  | 'edit'
+  | 'profile'
+  | 'narratives'
+  | 'scoring';
 
 const InfoSidebar: React.FC = () => {
   const router = useRouter();
@@ -36,7 +42,6 @@ const InfoSidebar: React.FC = () => {
   const activitiesBySemester = seperateActivitiesBySemester(activities);
 
   useEffect(() => {
-    console.log(pathname);
     if (pathname === '/submissions/[category]' && category !== undefined) {
       if (userId) {
         Promise.all([
@@ -67,11 +72,9 @@ const InfoSidebar: React.FC = () => {
       setType('profile');
     } else if (pathname.includes('narratives')) {
       setType('narratives');
-    }
-    else if (pathname.includes('/merit/professors/')) {
+    } else if (pathname.includes('/merit/professors/')) {
       setType('scoring');
-    }
-    else {
+    } else {
       setType(null);
     }
   }, [pathname, category, userId]);
@@ -91,9 +94,12 @@ const InfoSidebar: React.FC = () => {
       )}
       {sidebarType === 'narratives' && <NarrativeInstructions />}
       {sidebarType === 'profile' && <ProfileInstructions />}
-      {sidebarType === 'scoring' && <ScoringInfo />}
-
-      <CommentBox />
+      {sidebarType === 'scoring' && (
+        <>
+          <ScoringInfo />
+          <CommentBox saveComment={() => {console.log("TODO")}} />
+        </>
+      )}
     </div>
   );
 };

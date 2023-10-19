@@ -1,4 +1,9 @@
+import Button from '@/shared/components/Button';
 import React, { useState } from 'react';
+
+interface CommentBoxProps {
+  saveComment: () => void;
+}
 
 const SavedButton: React.FC<{
   width?: number;
@@ -15,13 +20,17 @@ const SavedButton: React.FC<{
     className={className}
   >
     <path
-      d="M6.5 0.25C9.95187 0.25 12.75 3.04813 12.75 6.5C12.75 9.95187 9.95187 12.75 6.5 12.75C3.04813 12.75 0.25 9.95187 0.25 6.5C0.25 3.04813 3.04813 0.25 6.5 0.25ZM6.5 11.5C7.82608 11.5 9.09785 10.9732 10.0355 10.0355C11.5001 9.09785 11.5 7.82608 11.5 6.5C11.5 5.17392 10.9732 3.90215 10.0355 2.96447C9.09785 2.02678 7.82608 1.5 6.5 1.5C5.17392 1.5 3.90215 2.02678 2.96447 2.96447C2.02678 3.90215 1.5 5.17392 1.5 6.5C1.5 7.82608 2.02678 9.09785 2.96447 10.0355C3.90215 10.9732 5.17392 11.5 6.5 11.5ZM5.87687 9L4.10875 7.2325L3.225 6.34812L4.10875 5.46437L5.87687 7.2325L9.4125 3.69687L10.2962 4.58062L5.87687 9Z"
+      d="M6.5 0.25C9.95187 0.25 12.75 3.04813 12.75 6.5C12.75 9.95187 9.95187 12.75 6.5 12.75C3.04813 12.75 0.25 9.95187 0.25 6.5C0.25 
+      3.04813 3.04813 0.25 6.5 0.25ZM6.5 11.5C7.82608 11.5 9.09785 10.9732 10.0355 10.0355C11.5001 9.09785 11.5 7.82608 11.5 6.5C11.5 
+      5.17392 10.9732 3.90215 10.0355 2.96447C9.09785 2.02678 7.82608 1.5 6.5 1.5C5.17392 1.5 3.90215 2.02678 2.96447 2.96447C2.02678 
+      3.90215 1.5 5.17392 1.5 6.5C1.5 7.82608 2.02678 9.09785 2.96447 10.0355C3.90215 10.9732 5.17392 11.5 6.5 11.5ZM5.87687 9L4.10875 
+      7.2325L3.225 6.34812L4.10875 5.46437L5.87687 7.2325L9.4125 3.69687L10.2962 4.58062L5.87687 9Z"
       fill={fillColor}
     />
   </svg>
 );
 
-const CommentBox = () => {
+const CommentBox: React.FC<CommentBoxProps> = ({ saveComment }) => {
   const [comment, setComment] = useState('');
 
   return (
@@ -34,9 +43,8 @@ const CommentBox = () => {
           onChange={(e) => setComment(e.target.value)}
         />
       </div>
-      <div className="flex items-center space-x-1 p-4 pt-0 pb-2">
-        <p className="text-body-bold text-gray-400">Saved</p>
-        <SavedButton />
+      <div className='flex w-full items-center justify-center p-2'>
+        <Button onClick={saveComment} addOnClass='h-[20px]'>Save</Button>
       </div>
     </div>
   );
