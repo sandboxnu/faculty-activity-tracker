@@ -1,4 +1,4 @@
-import { updateProfessorScoreForUser } from '@/client/professorScore.client';
+import { getProfessorScoreForUser, updateProfessorScoreForUser } from '@/client/professorScore.client';
 import Button from '@/shared/components/Button';
 import React, { useState } from 'react';
 

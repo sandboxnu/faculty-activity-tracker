@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { UpdateProfessorScoreDto } from '@/models/professorScore.model';
-import { upsertProfessorScore } from '@/services/professorScore';
+import { getProfessorScore, upsertProfessorScore } from '@/services/professorScore';
 import { getUserById } from '@/services/user';
 
 export default async function handler(
@@ -15,7 +15,7 @@ export default async function handler(
     const isMerit = session?.user.merit;
 
     if (isAdmin || isMerit) {
-      if (req.method === 'PUT') {
+      if (req.method === 'PUT' || req.method === "GET") {
         if (req.body.userId) {
           const userId = req.body.userId;
           const user = await getUserById(userId)
@@ -29,8 +29,13 @@ export default async function handler(
           res.status(200).json({ error: 'userId is required' });
         }
         
+        if (req.method === 'PUT') {
         await handlePut(req, res);
-      } else {
+        } else {
+          await handleGet(req, res);
+        }
+      }
+      else {
         res.status(405).send(`Method ${req.method} Not Allowed`);
       }
     } else {
@@ -50,8 +55,22 @@ async function handlePut(
   ) as UpdateProfessorScoreDto;
   
   try {
-    const info = await upsertProfessorScore(newScoreDto);
-    res.status(200).json({ data: info });
+    const score = await upsertProfessorScore(newScoreDto);
+    res.status(200).json({ data: score });
+  } catch (e) {
+    res.status(500).json({ error: (e as Error)?.message || 'Unknown error' });
+  }
+}
+
+async function handleGet(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const userId = req.body.userId;
+
+  try {
+    const score = await getProfessorScore(userId);
+    res.status(200).json({ data: score });
   } catch (e) {
     res.status(500).json({ error: (e as Error)?.message || 'Unknown error' });
   }
