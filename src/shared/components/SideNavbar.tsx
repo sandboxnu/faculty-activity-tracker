@@ -13,7 +13,7 @@ const SideNavbar: React.FC = () => {
   const isAdmin = session?.user.admin;
   const isMerit = session?.user.merit;
 
-  const navClass = 'text-base text-black font-bold pb-2 nav-underline relative';
+  const navClass = 'text-body-bold text-black pb-2 nav-underline relative';
 
   return (
     <div className="flex flex-col items-start min-w-[207px] bg-white font-bold px-6 py-6 space-y-4">
@@ -45,10 +45,11 @@ const SideNavbar: React.FC = () => {
           Submissions
         </p>
       )}
-      <div className="flex flex-col items-start space-y-5 pl-4 border-l">
+      <div className="ml-4 pl-2 border-l">
+        <div className="flex flex-col items-start space-y-5">
           <Link
             href="/submissions/teaching"
-            className={`${navClass} ${
+            className={`text-body pb-2 nav-underline relative ${
               category == 'teaching'
                 ? 'nav-underline-red'
                 : 'hover:nav-underline-red'
@@ -58,7 +59,7 @@ const SideNavbar: React.FC = () => {
           </Link>
           <Link
             href="/submissions/research"
-            className={`${navClass} ${
+            className={`text-body pb-2 nav-underline relative ${
               category == 'research'
                 ? 'nav-underline-red'
                 : 'hover:nav-underline-red'
@@ -68,7 +69,7 @@ const SideNavbar: React.FC = () => {
           </Link>
           <Link
             href="/submissions/service"
-            className={`${navClass} ${
+            className={`text-body pb-2 nav-underline relative ${
               category == 'service'
                 ? 'nav-underline-red'
                 : 'hover:nav-underline-red'
@@ -77,6 +78,7 @@ const SideNavbar: React.FC = () => {
             Service
           </Link>
         </div>
+      </div>
       {!isMerit && (
         <Link
           href="/profile"
