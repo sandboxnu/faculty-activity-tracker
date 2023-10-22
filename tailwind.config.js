@@ -70,6 +70,7 @@ module.exports = {
         label: ['0.875rem', { fontWeight: 300 }],
         'graph-label': ['0.75rem', { fontWeight: 500 }],
         'graph-number': ['0.625rem', { fontWeight: 400 }],
+        tooltip: ['0.625rem', { fontWeight: 600 }],
       },
     },
   },
@@ -78,6 +79,10 @@ module.exports = {
       addUtilities({
         '.text-small-italicized': {
           fontStyle: 'italic',
+        },
+        '.text-tooltip': {
+          fontFamily: 'Lato, sans-serif',
+          lineHeight: '12px',
         },
       });
     }),

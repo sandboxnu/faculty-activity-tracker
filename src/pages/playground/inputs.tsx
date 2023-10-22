@@ -11,8 +11,9 @@ const TextInputPlayground: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
   const [required, setRequired] = useState(false);
+  const [incomplete, setIncomplete] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const [fillContainer, setFillContainer] = useState(false);
-  const [hideValidation, setHideValidation] = useState(false);
   const [labelBold, setLabelBold] = useState(false);
   const [withMarginY, setWithMarginY] = useState(false);
   const [withContainer, setWithContainer] = useState(true);
@@ -33,14 +34,19 @@ const TextInputPlayground: React.FC = () => {
             onChange={() => setRequired((b) => !b)}
           />
           <Checkbox
+            label="Incomplete"
+            value={incomplete}
+            onChange={() => setIncomplete((b) => !b)}
+          />
+          <Checkbox
+            label="Show Tooltip"
+            value={showTooltip}
+            onChange={() => setShowTooltip((b) => !b)}
+          />
+          <Checkbox
             label="Full Width"
             value={fillContainer}
             onChange={() => setFillContainer((b) => !b)}
-          />
-          <Checkbox
-            label="Hide Validation"
-            value={hideValidation}
-            onChange={() => setHideValidation((b) => !b)}
           />
           <Checkbox
             label="Bold Label"
@@ -64,9 +70,8 @@ const TextInputPlayground: React.FC = () => {
                 label={'Label'}
                 labelClass={!labelBold ? 'text-base font-medium' : undefined}
                 required={required}
-                incomplete={false}
-                incompleteMessage={''}
-                hideValidation={hideValidation}
+                incompleteMessage={incomplete ? 'Incomplete message' : ''}
+                infoMessage={showTooltip ? 'Tooltip message' : ''}
                 withMarginY={withMarginY}
               >
                 <TextInput
@@ -93,8 +98,8 @@ const TextAreaInputPlayground: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
   const [required, setRequired] = useState(false);
+  const [incomplete, setIncomplete] = useState(false);
   const [fillContainer, setFillContainer] = useState(false);
-  const [hideValidation, setHideValidation] = useState(false);
   const [labelBold, setLabelBold] = useState(false);
   const [withMarginY, setWithMarginY] = useState(false);
   const [withContainer, setWithContainer] = useState(true);
@@ -115,14 +120,14 @@ const TextAreaInputPlayground: React.FC = () => {
             onChange={() => setRequired((b) => !b)}
           />
           <Checkbox
+            label="Incomplete"
+            value={incomplete}
+            onChange={() => setIncomplete((b) => !b)}
+          />
+          <Checkbox
             label="Full Width"
             value={fillContainer}
             onChange={() => setFillContainer((b) => !b)}
-          />
-          <Checkbox
-            label="Hide Validation"
-            value={hideValidation}
-            onChange={() => setHideValidation((b) => !b)}
           />
           <Checkbox
             label="Bold Label"
@@ -146,9 +151,7 @@ const TextAreaInputPlayground: React.FC = () => {
                 label={'Label'}
                 labelClass={!labelBold ? 'text-base font-medium' : undefined}
                 required={required}
-                incomplete={false}
-                incompleteMessage={''}
-                hideValidation={hideValidation}
+                incompleteMessage={incomplete ? 'Incomplete message' : ''}
                 withMarginY={withMarginY}
               >
                 <TextAreaInput
@@ -180,6 +183,7 @@ const DropdownInputPlayground: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string | undefined>('');
   const [required, setRequired] = useState(false);
+  const [incomplete, setIncomplete] = useState(false);
   const [fillContainer, setFillContainer] = useState(false);
   const [hideValidation, setHideValidation] = useState(false);
   const [labelBold, setLabelBold] = useState(false);
@@ -201,6 +205,11 @@ const DropdownInputPlayground: React.FC = () => {
             label="Required"
             value={required}
             onChange={() => setRequired((b) => !b)}
+          />
+          <Checkbox
+            label="Incomplete"
+            value={incomplete}
+            onChange={() => setIncomplete((b) => !b)}
           />
           <Checkbox
             label="Full Width"
@@ -239,9 +248,7 @@ const DropdownInputPlayground: React.FC = () => {
                 label={'Label'}
                 labelClass={!labelBold ? 'text-base font-medium' : undefined}
                 required={required}
-                incomplete={false}
-                incompleteMessage={''}
-                hideValidation={hideValidation}
+                incompleteMessage={incomplete ? 'Incomplete message' : ''}
                 withMarginY={withMarginY}
               >
                 <DropdownInput<string>

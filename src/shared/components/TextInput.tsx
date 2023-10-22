@@ -1,4 +1,6 @@
+import clsx from 'clsx';
 import React from 'react';
+import { incompleteBorderClass } from './InputContainer';
 
 export interface TextInputProps {
   value: string | number;
@@ -18,7 +20,7 @@ const TextInput: React.FC<TextInputProps> = ({
   onSubmit = () => {},
 }) => {
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onSubmit();
     }
   };
@@ -32,9 +34,11 @@ const TextInput: React.FC<TextInputProps> = ({
       value={value}
       className={
         className ||
-        `border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none ${
-          fillContainer ? 'flex flex-grow' : 'max-w-[175px]'
-        }`
+        clsx(
+          'border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none',
+          incompleteBorderClass,
+          fillContainer ? 'flex flex-grow' : 'max-w-[175px]',
+        )
       }
     />
   );

@@ -48,17 +48,26 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
   const [researchPercent, setResearchPercent] = useState(0);
   const [servicePercent, setServicePercent] = useState(0);
   const [sabbatical, setSabbatical] = useState<SabbaticalOption | undefined>(
-    SabbaticalOption.NO,
+    undefined,
   );
   const [teachingReleaseExplanation, setExplanation] = useState('');
   const [pageError, setPageError] = useState<string | null>(null);
+  const [positionError, setPositionError] = useState<string | undefined>(
+    undefined,
+  );
+  const [distributionError, setDistributionError] = useState<
+    string | undefined
+  >(undefined);
+  const [sabbaticalError, setSabbaticalError] = useState<string | undefined>(
+    undefined,
+  );
   const router = useRouter();
   const dispatch = useDispatch();
 
   const percentSetters: Record<string, (percent: number) => void> = {
     teaching: (percent) => setTeachingPercent(percent),
     creative: (percent) => setResearchPercent(percent),
-    serice: (percent) => setServicePercent(percent),
+    service: (percent) => setServicePercent(percent),
     default: (_) => {},
   };
 
@@ -73,18 +82,33 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
       setResearchPercent(0.5);
       setServicePercent(0.1);
     }
+    if (positionError) setPositionError(undefined);
+    if (distributionError) setDistributionError(undefined);
   };
 
-  const setPercent = (type: string, percent: number) =>
+  const setPercent = (type: string, percent: number) => {
     percentSetters[type](percent);
+    if (distributionError) setDistributionError(undefined);
+  };
+
+  const setSabbaticalOption = (option: SabbaticalOption) => {
+    setSabbatical(option);
+    if (sabbaticalError) setSabbaticalError(undefined);
+  };
 
   const submitInfo = () => {
     if (
       !position ||
       !sabbatical ||
       teachingPercent + researchPercent + servicePercent !== 1
-    )
+    ) {
+      if (!position) setPositionError('Please select your position.');
+      if (teachingPercent + researchPercent + servicePercent !== 1)
+        setDistributionError('Percentages should add up to 100.');
+      if (!sabbatical)
+        setSabbaticalError('Please select your sabbatical status.');
       return;
+    }
 
     createProfessorInfo(
       position,
@@ -145,8 +169,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
             label="Position"
             labelClass="text-body"
             withMarginY
-            incomplete={!position}
-            incompleteMessage="Select a position."
+            incompleteMessage={positionError}
             required
           >
             <DropdownInput
@@ -160,11 +183,10 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
             label="Activity Distribution"
             labelClass="text-body"
             withMarginY
-            incomplete={teachingPercent + researchPercent + servicePercent !== 1}
-            incompleteMessage="Must sum to 100."
+            incompleteMessage={distributionError}
             required
           >
-            <div className='w-full px-5'>
+            <div className="w-full px-5">
               <PercentageInfo
                 editing={true}
                 teaching={teachingPercent}
@@ -178,15 +200,19 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
           <InputContainer
             label="Sabbatical"
             labelClass="text-body"
-            incomplete={!sabbatical}
-            incompleteMessage="Select a sabbatical option."
+            incompleteMessage={sabbaticalError}
+            withMarginY
             required
           >
             <DropdownInput<SabbaticalOption>
               options={sabbaticalOptions}
-              initialValue={sabbaticalOptions.find((o) => o.value === sabbatical)}
+              initialValue={sabbaticalOptions.find(
+                (o) => o.value === sabbatical,
+              )}
               placeholder="Select a Sabbatical"
-              selectValue={(value) => setSabbatical(value as SabbaticalOption)}
+              selectValue={(value) =>
+                setSabbaticalOption(value as SabbaticalOption)
+              }
               fillContainer
             />
           </InputContainer>
@@ -194,8 +220,6 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
             label="Teaching Release Explanation"
             labelClass="text-body"
             withMarginY
-            incomplete={false}
-            incompleteMessage=""
           >
             <TextAreaInput
               value={teachingReleaseExplanation}

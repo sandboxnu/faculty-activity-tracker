@@ -1,3 +1,4 @@
+import { incompleteBorderClass } from '@/shared/components/InputContainer';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -25,10 +26,12 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
   };
 
   return (
-    <div className={clsx([
-      "flex items-center",
-      fillContainer ? "w-full justify-between" : "space-x-6"
-    ])}>
+    <div
+      className={clsx([
+        'flex items-center',
+        fillContainer ? 'w-full justify-between' : 'space-x-6',
+      ])}
+    >
       {Object.entries(labels).map(([field, percent]) => (
         <div className="flex flex-col" key={`percentage-${field}`}>
           <div className="flex items-center">
@@ -45,7 +48,7 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
                     parseFloat(e.target.value) / 100,
                   )
                 }
-                className="w-12 py-2 border-[0.5px] border-gray-500 rounded-xl mr-1 text-center hide-steppers"
+                className={`w-12 py-2 border-[0.5px] border-gray-500 rounded-xl mr-1 text-center hide-steppers ${incompleteBorderClass}`}
               />
             ) : (
               <p className="w-12 py-2 border-[0.5px] border-gray-500 rounded-xl mr-1 text-center">
@@ -54,7 +57,7 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
             )}
             <p>%</p>
           </div>
-          <p className="my-2">{field}</p>
+          <p className="mt-1">{field}</p>
         </div>
       ))}
     </div>

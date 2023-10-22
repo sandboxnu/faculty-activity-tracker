@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import Tooltip from './Tooltip';
+import InfoTooltip from './InfoTooltip';
 
 type InputContainerProps = {
   label: string;
@@ -12,6 +12,11 @@ type InputContainerProps = {
   children: JSX.Element;
 };
 
+// use to apply error border style to child component (TextInput, PercentageInfo, etc.)
+// whenever the InputContainer is incomplete
+export const incompleteBorderClass =
+  'group-data-[input-status=error]:border-error group-data-[input-status=error]:border-[1.5px]';
+
 const InputContainer: React.FC<InputContainerProps> = ({
   label,
   labelClass = 'text-body-bold',
@@ -21,11 +26,11 @@ const InputContainer: React.FC<InputContainerProps> = ({
   withMarginY = false,
   children,
 }) => {
-  const IncompleteMessage = () => (
-    <div className={`flex items-center mt-1`}>
+  const IncompleteStatus = () => (
+    <div className={`flex items-center mt-4`}>
       <Image
-        src={`/media/exclamationTriangle.svg`}
-        alt="Icon"
+        src={'/media/exclamationTriangle.svg'}
+        alt="Error"
         width={16}
         height={16}
         className="mr-2"
@@ -36,13 +41,18 @@ const InputContainer: React.FC<InputContainerProps> = ({
 
   return (
     <div className={`flex flex-col ${withMarginY ? 'my-2' : ''} space-y-1`}>
-      <div className="flex items-center">
+      <div className="flex items-center space-x-1">
         <p className={labelClass}>{label}</p>
-        {required && <p className="text-red-500 ml-1 text-lg">*</p>}
-        {infoMessage && <Tooltip tooltipTitle="" text={[infoMessage]} />}
+        {required && <p className="text-red-500 text-lg">*</p>}
+        {infoMessage && <InfoTooltip text={[infoMessage]} />}
       </div>
-      <div className="flex items-center space-x-2">{children}</div>
-      {incompleteMessage && <IncompleteMessage />}
+      <div
+        data-input-status={incompleteMessage ? 'error' : 'success'}
+        className="flex items-center space-x-2 group"
+      >
+        {children}
+      </div>
+      {incompleteMessage && <IncompleteStatus />}
     </div>
   );
 };

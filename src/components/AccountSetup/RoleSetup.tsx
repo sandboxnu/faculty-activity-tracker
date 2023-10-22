@@ -13,7 +13,9 @@ interface RoleSetupProps {}
 
 const RoleSetup: React.FC<RoleSetupProps> = () => {
   const [codeInput, setCodeInput] = useState<string | null>(null);
-  const [accessCodeError, setAccessCodeError] = useState<string | undefined>(undefined);
+  const [accessCodeError, setAccessCodeError] = useState<string | undefined>(
+    undefined,
+  );
   const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch();
 
@@ -22,7 +24,8 @@ const RoleSetup: React.FC<RoleSetupProps> = () => {
     if (!codeInput) return setAccessCodeError('Please enter your access code.');
 
     obtainRoleForAccessCode(codeInput).then((res) => {
-      if (res === ResponseStatus.NotFound) setAccessCodeError('Incorrect access code.');
+      if (res === ResponseStatus.NotFound)
+        setAccessCodeError('Incorrect access code.');
       else if (res === ResponseStatus.Unauthorized) setError('Unauthorized');
       else if (res === ResponseStatus.BadRequest) setError('Bad request');
       else if (res === ResponseStatus.UnknownError) setError('Unknown error');
@@ -35,8 +38,8 @@ const RoleSetup: React.FC<RoleSetupProps> = () => {
 
   const onChange = (value: string) => {
     setCodeInput(value);
-    if (accessCodeError) setAccessCodeError(undefined)
-  }
+    if (accessCodeError) setAccessCodeError(undefined);
+  };
 
   return (
     <div className="w-full flex flex-grow justify-center items-center">
@@ -50,8 +53,9 @@ const RoleSetup: React.FC<RoleSetupProps> = () => {
         <div className="w-full">
           <InputContainer
             label="Provided Access Code"
-            labelClass="text-body"            
+            labelClass="text-body"
             incompleteMessage={accessCodeError}
+            infoMessage="Your access code can be found in your Northeastern email. If not, please contact Mark Sivak."
             withMarginY={false}
             required
           >
