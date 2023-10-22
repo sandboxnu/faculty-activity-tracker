@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import {
   getActivitiesForUserForCategory,
   ResponseStatus,
@@ -13,13 +14,12 @@ import {
 import SubmissionsInfo from '@/components/Submissions/SubmissionsInfo';
 import FormInstructions from '@/components/ActivityForm/FormInstructions';
 import NarrativeInstructions from '@/components/Narratives/NarrativeInstructions';
-import { NarrativeCategory } from '@prisma/client';
+import { NarrativeCategory, prisma } from '@prisma/client';
 import { getNarrativeForUserForCategory } from '@/client/narratives.client';
 import { NarrativeDto } from '@/models/narrative.model';
 import ProfileInstructions from '@/components/Profile/ProfileInstructions';
 import ScoringInfo from '@/components/ProfessorScoring/ScoringInfo';
-
-import CommentBox from '@/components/ProfessorScoring/CommentBox';
+import ProfessorCommentBox from '@/components/ProfessorScoring/ProfessorCommentBox';
 
 type SidebarType =
   | 'submissions'
@@ -32,8 +32,9 @@ type SidebarType =
 const InfoSidebar: React.FC = () => {
   const router = useRouter();
   const pathname = router.pathname;
-  const { category } = router.query;
-  const { data: session, status } = useSession();
+  const { category, professorId: professorIdString } = router.query;
+  const professorId = parseInt(professorIdString?.toString() ?? "")
+  const { data: session } = useSession();
   const userId = session?.user?.id;
   const [sidebarType, setType] = useState<SidebarType | null>(null);
   const [activities, setActivities] = useState<ActivityDto[]>([]);
@@ -97,7 +98,7 @@ const InfoSidebar: React.FC = () => {
       {sidebarType === 'scoring' && (
         <>
           <ScoringInfo />
-          <CommentBox saveComment={() => {console.log("TODO")}} />
+          <ProfessorCommentBox professorId={professorId}/>
         </>
       )}
     </div>
