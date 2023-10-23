@@ -3,12 +3,12 @@ import { NotFacultyUser, isAdminUser } from '@/shared/utils/user.util';
 import { Role } from '@prisma/client';
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from "next-auth/providers/credentials"
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 const preview_providers = [
   CredentialsProvider({
     name: 'FACULTY',
-    id: "faculty-test-provider",
+    id: 'faculty-test-provider',
     // @ts-ignore comment
     async authorize() {
       return {
@@ -21,7 +21,7 @@ const preview_providers = [
   }),
   CredentialsProvider({
     name: 'MERIT_COMMITTEE_MEMBER',
-    id: "merit-test-provider",
+    id: 'merit-test-provider',
     // @ts-ignore comment
     async authorize() {
       return {
@@ -31,25 +31,23 @@ const preview_providers = [
         image: 'https://i.pravatar.cc/150?u=jsmith@example.com',
       };
     },
-  })
-]
+  }),
+];
 
 const production_providers = [
   GoogleProvider({
     clientId: process.env.GOOGLE_CLIENT_ID || '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-  })
-]
+  }),
+];
 
 const getProvider = () => {
   if (process.env.VERCEL_ENV === 'preview') {
-    return preview_providers
+    return preview_providers;
   } else {
-    return production_providers
+    return production_providers;
   }
-}
-
-
+};
 
 export const authOptions: AuthOptions = {
   // Configure one or more authentication providers

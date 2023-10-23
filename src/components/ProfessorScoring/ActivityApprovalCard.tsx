@@ -1,16 +1,10 @@
 import {
   ActivityDto,
   UpdateActivityDto,
-  Semester,
 } from '@/models/activity.model';
 import { ActivityMeritStatus, SignificanceLevel } from '@prisma/client';
 import { useState, useEffect } from 'react';
-import { shortenDescription, toTitleCase } from '@/shared/utils/misc.util';
-import {
-  ResponseStatus,
-  updateActivityClient,
-} from '@/client/activities.client';
-import Button from '@/shared/components/Button';
+import { toTitleCase } from '@/shared/utils/misc.util';
 
 interface ActivityApprovalProp {
   activity: ActivityDto;
@@ -19,91 +13,65 @@ interface ActivityApprovalProp {
 }
 
 const ApproveButton: React.FC<{
-  height?: number;
-  width?: number;
   className?: string;
-  strokeColor?: string;
+  accepted?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}> = ({
-  width = 20,
-  height = 20,
-  className = '',
-  strokeColor = '#71B670',
-  onClick,
-}) => (
+}> = ({ className = '', accepted = false, onClick }) => (
   <button
     onClick={onClick}
-    className={`focus:outline-none p-0 border-none bg-transparent rounded-full w-${width} h-${height}`}
+    className={`inline-flex items-center justify-center p-0 border border-solid border-gray-500 relative rounded-full gap-[10px] px-[10px] py-[4px] ${className}`}
   >
     <svg
-      width={width}
-      height={height}
-      viewBox="0 0 20 20"
+      className="relative w-[13px] h-[11px] ml-[-1.00px]"
+      width="12"
+      height="10"
+      viewBox="0 0 12 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="Check Hover Button" className={className}>
-        <circle id="Ellipse 1" cx="10" cy="10" r="10" />
-        <path
-          id="Vector 3"
-          d="M5 11L8 14L14.5 6.5"
-          stroke={strokeColor}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </g>
+      <path
+        id="Vector 3"
+        d="M1 5.75L4 8.75L10.5 1.25"
+        stroke="#31BE24"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
+    <div className="relative w-fit mt-[-1.00px] font-small">
+      {accepted ? 'Accepted' : 'Accept'}
+    </div>
   </button>
 );
 
 const RejectButton: React.FC<{
-  height?: number;
-  width?: number;
   className?: string;
-  strokeColor?: string;
+  rejected?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}> = ({
-  width = 20,
-  height = 20,
-  className = '',
-  strokeColor = '#E16565',
-  onClick,
-}) => (
+}> = ({ className = '', rejected = false, onClick }) => (
   <button
     onClick={onClick}
-    className={`focus:outline-none p-0 border-none bg-transparent rounded-full w-${width} h-${height}`}
+    className={`inline-flex items-center justify-center p-0 border border-solid border-gray-500 relative rounded-full gap-[10px] px-[10px] py-[4px] ${className}`}
   >
     <svg
-      width={width}
-      height={height}
-      viewBox="0 0 20 20"
+      className="relative w-[13px] h-[11px] ml-[-1.00px]"
+      width="10"
+      height="10"
+      viewBox="0 0 10 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="X Hover Button" className={className}>
-        <circle id="Ellipse 1" cx="10" cy="10" r="10" />
-
-        <g id="Group 71">
-          <g id="Group 90">
-            <path
-              id="Line 62"
-              d="M6 6L14 14"
-              stroke={strokeColor}
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              id="Line 63"
-              d="M6 14L14 6"
-              stroke={strokeColor}
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </g>
-        </g>
-      </g>
+      <path
+        id="Vector"
+        d="M1 1.25L8.5 8.75M1 8.75L8.5 1.25"
+        stroke="#EF4800"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </svg>
+    <div className="relative w-fit mt-[-1.00px] font-small">
+      {rejected ? 'Rejected' : 'Reject'}
+    </div>
   </button>
 );
 
@@ -113,10 +81,6 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
   submit,
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const acceptedColor = 'bg-[#F2FBEA]';
-  const rejectedColor = 'bg-[#FDF2F2]';
-  const neutralColor = 'bg-gray-100';
-
   const toggleDropDown = () => {
     const newState = !expanded;
     console.log(`SET sidebar-dropdown-${cookieKey} => ${newState}`);
@@ -157,82 +121,81 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
   };
 
   return (
-    <>
-      <div
-        className={`flex flex-col rounded-lg shadow-sm hover:shadow-lg px-6 py-3.5 card h-30 cursor-pointer ${
-          activity?.meritStatus === ActivityMeritStatus.ACCEPTED
-            ? acceptedColor
-            : activity?.meritStatus === ActivityMeritStatus.REJECTED
-            ? rejectedColor
-            : neutralColor
-        }${expanded ? ' border-gray-300 border-2 border-solid' : ''}`}
-        onClick={toggleDropDown}
-      >
-        <div className="flex flex-row justify-between items-center w-full">
-          <div className="flex flex-row justify-center items-center flex-auto">
-            <div className="w-1/5 text-body-bold">{activity?.name}</div>
-            <div className="w-1/5 text-label">
-              {activity?.semester}/{activity?.year}
-            </div>
-            <div className="w-1/5 text-label">
-              {toTitleCase(activity?.significance || 'N/A')}
-            </div>
-            <div className="w-2/5 text-regular whitespace-nowrap">
-              {!expanded && shortenDescription(activity?.description || 'N/A')}
-            </div>
+    <div
+      className={`flex flex-col items-start justify-center relative rounded-lg gap-[20px] px-[20px] card py-[16px] cursor-pointer bg-gray-100 
+          ${
+            expanded
+              ? 'border-gray-300 border-[1.5px] border-solid'
+              : 'shadow-sm'
+          }`}
+      onClick={toggleDropDown}
+      style={{ userSelect: 'none' }}
+    >
+      <div className="flex items-center relative w-full">
+        <div className="flex flex-grow justify-start gap-[30px] items-center">
+          <div className="relative w-fit mt-[-1.00px] text-heading-3">
+            {activity?.name}
           </div>
-          <div className="flex flex-row justify-center items-center space-x-2">
-            <ApproveButton
-              className={`${
-                activity?.meritStatus === ActivityMeritStatus.ACCEPTED
-                  ? ' fill-green-100'
-                  : activity?.meritStatus === ActivityMeritStatus.REJECTED
-                  ? ' fill-gray-200'
-                  : 'fill-[#E1E1E1] hover:fill-green-100'
-              } cursor-pointer duration-10`}
-              strokeColor={`${
-                activity?.meritStatus === ActivityMeritStatus.REJECTED
-                  ? '#A8A8A8'
-                  : '#71B670'
-              }`}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleUpdateStatus(
-                  activity?.meritStatus == ActivityMeritStatus.ACCEPTED
-                    ? null
-                    : ActivityMeritStatus.ACCEPTED,
-                );
-              }}
-            />
-            <RejectButton
-              className={`${
-                activity?.meritStatus === ActivityMeritStatus.ACCEPTED
-                  ? ' fill-gray-200'
-                  : activity?.meritStatus === ActivityMeritStatus.REJECTED
-                  ? ' fill-[#FFDDDDBF]/75'
-                  : 'fill-[#E1E1E1] hover:fill-[#FFDDDDBF]/75'
-              } cursor-pointer duration-10`}
-              strokeColor={`${
-                activity?.meritStatus === ActivityMeritStatus.ACCEPTED
-                  ? '#A8A8A8'
-                  : '#E16565'
-              }`}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleUpdateStatus(
-                  activity?.meritStatus == ActivityMeritStatus.REJECTED
-                    ? null
-                    : ActivityMeritStatus.REJECTED,
-                );
-              }}
-            />
+          <div className="relative w-fit text-small text-gray-500">
+            {activity?.semester
+              .map((semester) => toTitleCase(semester))
+              .join(', ')}{' '}
+            / {activity?.year.toString()}
+          </div>
+          <div className="relative w-fit text-small text-gray-500">
+            {toTitleCase(activity?.significance || 'N/A')}
           </div>
         </div>
-        {expanded && (
-          <div className="mt-4 text-regular">{activity?.description}</div>
-        )}
+        <div className="flex-grow"></div>
+        <div className="flex-shrink-0 flex justify-end items-center gap-[8px]">
+          <ApproveButton
+            className={`${
+              activity?.meritStatus === ActivityMeritStatus.ACCEPTED
+                ? ' bg-success-100 border-success-500'
+                : activity?.meritStatus === ActivityMeritStatus.REJECTED
+                ? ' bg-white border-gray-500'
+                : 'bg-white border-gray-500 hover:bg-success-50'
+            } cursor-pointer duration-10`}
+            accepted={
+              activity?.meritStatus === ActivityMeritStatus.ACCEPTED
+                ? true
+                : false
+            }
+            onClick={(event) => {
+              event.stopPropagation();
+              handleUpdateStatus(
+                activity?.meritStatus == ActivityMeritStatus.ACCEPTED
+                  ? null
+                  : ActivityMeritStatus.ACCEPTED,
+              );
+            }}
+          />
+          <RejectButton
+            className={`${
+              activity?.meritStatus === ActivityMeritStatus.ACCEPTED
+                ? 'bg-white border-gray-500'
+                : activity?.meritStatus === ActivityMeritStatus.REJECTED
+                ? 'bg-error-100 border-error-500'
+                : 'bg-white border-gray-500 hover:bg-error-50'
+            } cursor-pointer duration-10`}
+            rejected={
+              activity?.meritStatus === ActivityMeritStatus.REJECTED
+                ? true
+                : false
+            }
+            onClick={(event) => {
+              event.stopPropagation();
+              handleUpdateStatus(
+                activity?.meritStatus == ActivityMeritStatus.REJECTED
+                  ? null
+                  : ActivityMeritStatus.REJECTED,
+              );
+            }}
+          />
+        </div>
       </div>
-    </>
+      {expanded && <div className="text-regular">{activity?.description}</div>}
+    </div>
   );
 };
 

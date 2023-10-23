@@ -1,16 +1,15 @@
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
 import { ActivityDto, UpdateActivityDto } from '@/models/activity.model';
+import { NarrativeDto } from '@/models/narrative.model';
 import { ProfessorInfoDto } from '@/models/professorInfo.model';
 import { getSession } from 'next-auth/react';
 import { getActivitiesByQuery, getActivityById } from '@/services/activity';
 import { bigintToJSON, toTitleCase } from '@/shared/utils/misc.util';
 import { getProfessorInfoForUser } from '@/services/professorInfo';
-import ActivityApprovalCard from '@/components/ProfessorScoring/ActivityApprovalCard';
-import { Semester } from '@/models/activity.model';
-import { ActivityMeritStatus, SignificanceLevel } from '@prisma/client';
+import { NarrativeCategory } from '@prisma/client';
 import { useState } from 'react';
-import { UpdateUserDto, UserDto } from '@/models/user.model';
+import { UserDto } from '@/models/user.model';
 import {
   ResponseStatus,
   updateActivityClient,
@@ -18,11 +17,17 @@ import {
 import { seperateActivitiesByCategory } from '@/shared/utils/activity.util';
 import ActivityGroup from '@/components/ProfessorScoring/ActivityGroup';
 import { getUserById } from '@/services/user';
+import {
+  getNarrativesForUser,
+} from '@/services/narrative';
+import { seperateNarrativesByCategory } from '@/shared/utils/narrative.util';
+import TenureBadge from '@/components/ProfessorScoring/TenureBadge';
 
 interface ProfessorScoringPageProps {
   activities?: ActivityDto[];
   professorInfo?: ProfessorInfoDto;
   user?: UserDto;
+  narratives?: NarrativeDto[];
   error?: string;
 }
 
@@ -70,12 +75,23 @@ export const getServerSideProps: GetServerSideProps<
       },
     };
   }
+
+  const narratives = await getNarrativesForUser(professorId);
+  if (!narratives) {
+    return {
+      props: {
+        error: 'Narratives not found.',
+      },
+    };
+  }
+
   if (activities) {
     return {
       props: {
         activities: bigintToJSON(activities),
         professorInfo: bigintToJSON(professorInfo),
         user: bigintToJSON(user),
+        narratives: bigintToJSON(narratives),
       },
     };
   } else {
@@ -85,17 +101,19 @@ export const getServerSideProps: GetServerSideProps<
   }
 };
 
-const desc =
-  'Preview of description goes here Preview of description goes herePreview of description goes herePreview of description goes herePreview of description goes herePreview of description goes herePreview of description goes here';
-const activityName = 'Title of Activity';
-
 const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
   activities: initialActivities,
+  narratives: initialNarratives,
+  professorInfo,
   error: initialError,
   user,
 }) => {
   const [activities, setActivities] = useState<ActivityDto[]>(
     initialActivities || [],
+  );
+
+  const [narratives, setNarratives] = useState<NarrativeDto[]>(
+    initialNarratives || [],
   );
   const [error, setError] = useState<string | null>(initialError || null);
 
@@ -113,14 +131,29 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
   };
 
   const activitiesByCategory = seperateActivitiesByCategory(activities);
+  const narrativesByCategory = seperateNarrativesByCategory(narratives);
+
+  const getNarrativeByCategory = (
+    category: NarrativeCategory,
+  ): NarrativeDto | undefined => {
+    const narratives = narrativesByCategory[category];
+    return narratives[0];
+  };
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full px-[40px]">
       <Head>
         <title>Professor Scoring Page</title>
       </Head>
-      <div className="text-heading-1">
+      <div className="items-center inline-flex text-heading-1 pt-[16px] pb-[32px]">
         Professor {user?.firstName} {user?.lastName}
+        <div className="ml-[8px]">
+          <TenureBadge
+            isTenure={
+              !!professorInfo?.position.toLowerCase().includes('tenure')
+            }
+          />
+        </div>
       </div>
       {activities && activities.length > 0 && (
         <div className="flex flex-col w-full">
@@ -130,6 +163,9 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
                 <ActivityGroup
                   activities={activities}
                   title={toTitleCase(category)}
+                  narrative={getNarrativeByCategory(
+                    category as NarrativeCategory,
+                  )}
                   cookieKey={category}
                   submit={updateActivity}
                 />

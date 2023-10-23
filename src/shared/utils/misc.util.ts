@@ -24,9 +24,9 @@ export const bigintStringify = <T>(object: T): string => {
 export const shortenDescription = (description: string): string => {
   const descriptionLength = description.length;
 
-  if (descriptionLength < 30) {
+  if (descriptionLength < 97) {
     return description;
   }
 
-  return description.substring(0, 32) + '...';
+  return description.substring(0, 99) + '...';
 };

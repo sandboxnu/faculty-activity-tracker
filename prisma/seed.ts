@@ -130,6 +130,17 @@ async function createUserData() {
       role: 'MERIT_COMMITTEE_MEMBER',
     },
   });
+
+  const user12 = await prisma.user.upsert({
+    where: { email: 'hernandez.die@husky.neu.edu' },
+    update: {},
+    create: {
+      email: 'hernandez.die@husky.neu.edu',
+      firstName: 'Diego',
+      lastName: 'Hernandez',
+      role: 'FACULTY',
+    },
+  });
 }
 
 async function createActivityData() {
@@ -277,6 +288,158 @@ async function createActivityData() {
       isFavorite: true,
     },
   });
+
+  const activity8 = await prisma.activity.upsert({
+    where: { id: activity7.id + 1 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'hernandez.die@husky.neu.edu',
+        },
+      },
+      year: 2023,
+      semester: ['FALL', 'SPRING'],
+      dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
+      name: 'Went Outside',
+      description: 'Had fun outside',
+      semesterOtherDescription: '',
+      category: 'TEACHING',
+      significance: 'MAJOR',
+      isFavorite: false,
+    },
+  });
+
+  const activity9 = await prisma.activity.upsert({
+    where: { id: activity8.id + 1 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'hernandez.die@husky.neu.edu',
+        },
+      },
+      year: 2023,
+      semester: ['SPRING'],
+      dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
+      name: 'Founded a Charity',
+      description:
+        'I created a foundation that was able to raise millions of dollars!',
+      semesterOtherDescription: '',
+      category: 'RESEARCH',
+      significance: 'MAJOR',
+      isFavorite: false,
+      meritStatus: 'ACCEPTED',
+    },
+  });
+
+  const activity10 = await prisma.activity.upsert({
+    where: { id: activity9.id + 1 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'hernandez.die@husky.neu.edu',
+        },
+      },
+      year: 2023,
+      semester: ['SPRING'],
+      dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
+      name: 'Taught CS3500',
+      description:
+        'I taught some fuckers how to code Java, Unfortunately, they all failed.',
+      semesterOtherDescription: '',
+      category: 'TEACHING',
+      significance: 'MAJOR',
+      isFavorite: true,
+      meritStatus: 'REJECTED',
+    },
+  });
+
+  const activity11 = await prisma.activity.upsert({
+    where: { id: activity10.id + 1 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'hernandez.die@husky.neu.edu',
+        },
+      },
+      year: 2023,
+      semester: ['FALL'],
+      dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
+      name: 'did stuff',
+      description: 'asdsd',
+      semesterOtherDescription: '',
+      category: 'TEACHING',
+      significance: 'SIGNIFICANT',
+      isFavorite: false,
+    },
+  });
+
+  const activity12 = await prisma.activity.upsert({
+    where: { id: activity11.id + 1 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'hernandez.die@husky.neu.edu',
+        },
+      },
+      year: 2022,
+      semester: ['FALL'],
+      dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
+      name: 'rer',
+      description: 'This was',
+      semesterOtherDescription: '',
+      category: 'RESEARCH',
+      significance: 'SIGNIFICANT',
+      isFavorite: true,
+    },
+  });
+
+  const activity13 = await prisma.activity.upsert({
+    where: { id: activity12.id + 1 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'hernandez.die@husky.neu.edu',
+        },
+      },
+      year: 2003,
+      semester: ['FALL'],
+      dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
+      name: 'aksd',
+      description: 'sdasdadad',
+      semesterOtherDescription: '',
+      category: 'TEACHING',
+      significance: 'MAJOR',
+      isFavorite: false,
+    },
+  });
+
+  const activity14 = await prisma.activity.upsert({
+    where: { id: activity13.id + 1 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'hernandez.die@husky.neu.edu',
+        },
+      },
+      year: 2023,
+      semester: ['FALL', 'SPRING'],
+      dateModified: new Date('2022-10-20T21:23:57.736Z').getTime(),
+      name: 'Held a Soup Kitchen',
+      description: 'Made soup for people who like soup',
+      semesterOtherDescription: '',
+      category: 'SERVICE',
+      significance: 'MAJOR',
+      isFavorite: true,
+      meritStatus: 'ACCEPTED',
+    },
+  });
 }
 
 async function createProfessorInfoData() {
@@ -367,6 +530,24 @@ async function createProfessorInfoData() {
         'Went on teaching release for Fall semester because of maternity leave',
     },
   });
+  const info6 = await prisma.professorInfo.upsert({
+    where: { id: 6 },
+    update: {},
+    create: {
+      user: {
+        connect: {
+          email: 'hernandez.die@husky.neu.edu',
+        },
+      },
+      position: 'Tenure Track Faculty',
+      teachingPercent: 0.4,
+      researchPercent: 0.5,
+      servicePercent: 0.1,
+      sabbatical: SabbaticalOption.NO,
+      teachingReleaseExplanation:
+        "I decided to be a monk for a year, but left because they didn't have any internet.",
+    },
+  });
 }
 
 async function createProfessorScoreData() {
@@ -446,6 +627,7 @@ async function main() {
   await createActivityData();
   await createProfessorInfoData();
   await createRoleAccessCodeData();
+  await createProfessorScoreData();
 }
 
 // execute the main function

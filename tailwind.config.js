@@ -33,6 +33,18 @@ module.exports = {
         green: {
           100: '#DDF8DD',
         },
+        success: {
+          50: '#EAFFE4',
+          100: '#C0F3B3',
+          300: '#31BE24',
+          500: '#1E8735',
+        },
+        error: {
+          50: '#FCECE9',
+          100: '#FFCBBF',
+          300: '#EF4800',
+          500: '#A02929',
+        },
       },
       opacity: {
         15: '15%',

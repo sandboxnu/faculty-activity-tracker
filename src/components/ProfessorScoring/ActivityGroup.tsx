@@ -2,18 +2,22 @@ import { ActivityDto, UpdateActivityDto } from '@/models/activity.model';
 import ActivityApprovalCard from './ActivityApprovalCard';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { NarrativeDto } from '@/models/narrative.model';
+import NarrativeCard from './NarrativeCard';
 
-interface ActivityApprovalGroup {
+interface ActivityApprovalGroupProps {
   activities: ActivityDto[];
   title: string;
   cookieKey: string;
+  narrative?: NarrativeDto;
   submit: (newActivity: UpdateActivityDto) => void;
 }
 
-const ActivityGroup: React.FC<ActivityApprovalGroup> = ({
+const ActivityGroup: React.FC<ActivityApprovalGroupProps> = ({
   activities,
   title,
   cookieKey,
+  narrative,
   submit,
 }) => {
   const sortedActivities = activities.sort((a, b) =>
@@ -43,13 +47,16 @@ const ActivityGroup: React.FC<ActivityApprovalGroup> = ({
     }
   }, []);
   return (
-    <div className="w-full flex flex-col border-box space-y-3 my-4">
+    <div
+      className="w-full flex flex-col border-box gap-[12px] mb-[30px]"
+      style={{ userSelect: 'none' }}
+    >
       <div className="flex items-center justify-between ">
         <div
           className="flex items-center space-x-4 cursor-pointer"
           onClick={toggleDropDown}
         >
-          <div className="font-light text-lg">{title}</div>
+          <div className="text-body">{title}</div>
           <Image
             className={dropDownOpen ? 'rotate-90' : ''}
             src={'/media/rightArrow.svg'}
@@ -59,6 +66,12 @@ const ActivityGroup: React.FC<ActivityApprovalGroup> = ({
           />
         </div>
       </div>
+      {dropDownOpen && (
+        <NarrativeCard
+          narrative={narrative}
+          cookieKey={narrative ? narrative?.text : 'N/A'}
+        />
+      )}
       {dropDownOpen &&
         sortedActivities.map((activity) => (
           <ActivityApprovalCard
