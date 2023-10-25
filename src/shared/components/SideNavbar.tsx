@@ -41,10 +41,11 @@ const SideNavbar: React.FC = () => {
         </Link>
       )}
       {!isMerit && (
+        <>
         <p className={`${navClass} cursor-default hover:border-white`}>
           Submissions
         </p>
-      )}
+
       <div className="ml-4 pl-2 border-l">
         <div className="flex flex-col items-start space-y-5">
           <Link
@@ -79,6 +80,8 @@ const SideNavbar: React.FC = () => {
           </Link>
         </div>
       </div>
+      </>
+            )}
       {!isMerit && (
         <Link
           href="/profile"
@@ -125,30 +128,6 @@ const SideNavbar: React.FC = () => {
           }`}
         >
           My Profile
-        </Link>
-      )}
-      {isMerit && (
-        <Link
-          href="/merit/professors"
-          className={`${navClass} ${
-            router.pathname == '/merit/professors'
-              ? 'nav-underline-red'
-              : 'hover:nav-underline-red'
-          }`}
-        >
-          Professors
-        </Link>
-      )}
-      {isMerit && (
-        <Link
-          href="/merit/graphs"
-          className={`${navClass} ${
-            router.pathname == '/merit/graphs'
-              ? 'nav-underline-red'
-              : 'hover:nav-underline-red'
-          }`}
-        >
-          Graphs
         </Link>
       )}
       {isAdmin && (
