@@ -118,18 +118,6 @@ const SideNavbar: React.FC = () => {
           Graphs
         </Link>
       )}
-      {!isMerit && (
-        <Link
-          href="/profile"
-          className={`${navClass} ${
-            router.pathname == '/profile'
-              ? 'nav-underline-red'
-              : 'hover:nav-underline-red'
-          }`}
-        >
-          My Profile
-        </Link>
-      )}
       {isAdmin && (
         <Link
           href="/admin"
