@@ -29,6 +29,7 @@ yarn dev:db:down
 ```
 
 ## Updating Prisma
+
 ```bash
 # generate types
 yarn generate

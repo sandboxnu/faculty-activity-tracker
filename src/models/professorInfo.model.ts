@@ -1,7 +1,7 @@
 import { ProfessorInfo } from '@prisma/client';
 
-export type ProfessInfoDto = ProfessorInfo;
+export type ProfessorInfoDto = ProfessorInfo;
 
-export type CreateProfessorInfoDto = Omit<ProfessInfoDto, 'id'>;
+export type CreateProfessorInfoDto = Omit<ProfessorInfoDto, 'id'>;
 
 export type UpdateProfessorInfoDto = Partial<CreateProfessorInfoDto>;

@@ -20,6 +20,8 @@ import { NarrativeDto } from '@/models/narrative.model';
 import ProfileInstructions from '@/components/Profile/ProfileInstructions';
 import ScoringInfo from '@/components/ProfessorScoring/ScoringInfo';
 import ProfessorCommentBox from '@/components/ProfessorScoring/ProfessorCommentBox';
+import { getProfessorInfoForUser } from '@/client/professorInfo.client';
+import { ProfessorInfoDto } from '@/models/professorInfo.model';
 
 type SidebarType =
   | 'submissions'
@@ -39,6 +41,9 @@ const InfoSidebar: React.FC = () => {
   const [sidebarType, setType] = useState<SidebarType | null>(null);
   const [activities, setActivities] = useState<ActivityDto[]>([]);
   const [narrative, setNarrative] = useState<NarrativeDto | null>(null);
+  const [professorInfo, setProfessorInfo] = useState<ProfessorInfoDto | null>(
+    null,
+  );
   const activitiesBySigLevel = seperateActivitiesBySignifanceLevel(activities);
   const activitiesBySemester = seperateActivitiesBySemester(activities);
 
@@ -73,8 +78,14 @@ const InfoSidebar: React.FC = () => {
       setType('profile');
     } else if (pathname.includes('narratives')) {
       setType('narratives');
-    } else if (pathname.includes('/merit/professors/')) {
-      setType('scoring');
+    } else if (pathname == '/merit/professors/[professorId]') {
+      Promise.all([
+        getProfessorInfoForUser(professorId),
+      ]).then(([professorInfo]) => {
+        if (professorInfo === ResponseStatus.UnknownError) return;
+        setType('scoring');
+        setProfessorInfo(professorInfo);
+      });
     } else {
       setType(null);
     }
@@ -97,7 +108,7 @@ const InfoSidebar: React.FC = () => {
       {sidebarType === 'profile' && <ProfileInstructions />}
       {sidebarType === 'scoring' && (
         <>
-          <ScoringInfo />
+          <ScoringInfo profInfo={professorInfo}/>
           <ProfessorCommentBox professorId={professorId}/>
         </>
       )}

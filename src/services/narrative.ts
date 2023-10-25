@@ -18,6 +18,15 @@ export const getNarrativeForUserForCategory = async (
   return narrative;
 };
 
+export const getNarrativesForUser = async (
+  userId: number,
+): Promise<Narrative[] | null> => {
+  const narratives = await prisma.narrative.findMany({
+    where: { userId },
+  });
+  return narratives;
+};
+
 export const createNarrative = async (
   narrative: CreateNarrativeDto,
 ): Promise<Narrative> => {
