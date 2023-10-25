@@ -19,7 +19,7 @@ const ApproveButton: React.FC<{
 }> = ({ className = '', accepted = false, onClick }) => (
   <button
     onClick={onClick}
-    className={`inline-flex items-center justify-center p-0 border border-solid border-gray-500 relative rounded-full gap-[10px] px-[10px] py-[4px] ${className}`}
+    className={`inline-flex items-center justify-center p-0 border border-solid border-gray-400 relative rounded-full gap-[10px] px-[10px] py-[4px] ${className}`}
   >
     <svg
       className="relative w-[13px] h-[11px] ml-[-1.00px]"
@@ -51,7 +51,7 @@ const RejectButton: React.FC<{
 }> = ({ className = '', rejected = false, onClick }) => (
   <button
     onClick={onClick}
-    className={`inline-flex items-center justify-center p-0 border border-solid border-gray-500 relative rounded-full gap-[10px] px-[10px] py-[4px] ${className}`}
+    className={`inline-flex items-center justify-center p-0 border border-solid border-gray-400 relative rounded-full gap-[10px] px-[10px] py-[4px] ${className}`}
   >
     <svg
       className="relative w-[13px] h-[11px] ml-[-1.00px]"
@@ -153,8 +153,8 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
               activity?.meritStatus === ActivityMeritStatus.ACCEPTED
                 ? ' bg-success-100 border-success-500'
                 : activity?.meritStatus === ActivityMeritStatus.REJECTED
-                ? ' bg-white border-gray-500'
-                : 'bg-white border-gray-500 hover:bg-success-50'
+                ? ' bg-white border-gray-400'
+                : 'bg-white border-gray-400 hover:bg-success-50'
             } cursor-pointer duration-10`}
             accepted={
               activity?.meritStatus === ActivityMeritStatus.ACCEPTED
@@ -173,10 +173,10 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
           <RejectButton
             className={`${
               activity?.meritStatus === ActivityMeritStatus.ACCEPTED
-                ? 'bg-white border-gray-500'
+                ? 'bg-white border-gray-400'
                 : activity?.meritStatus === ActivityMeritStatus.REJECTED
                 ? 'bg-error-100 border-error-500'
-                : 'bg-white border-gray-500 hover:bg-error-50'
+                : 'bg-white border-gray-400 hover:bg-error-50'
             } cursor-pointer duration-10`}
             rejected={
               activity?.meritStatus === ActivityMeritStatus.REJECTED
