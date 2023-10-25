@@ -30,6 +30,21 @@ module.exports = {
           400: '#8C8C8C',
           500: '#585858',
         },
+        green: {
+          100: '#DDF8DD',
+        },
+        success: {
+          50: '#EAFFE4',
+          100: '#C0F3B3',
+          300: '#31BE24',
+          500: '#1E8735',
+        },
+        error: {
+          50: '#FCECE9',
+          100: '#FFCBBF',
+          300: '#EF4800',
+          500: '#A02929',
+        },
       },
       opacity: {
         15: '15%',
@@ -42,13 +57,13 @@ module.exports = {
         8: '8%',
         42: '42%',
       },
-      
+
       fontSize: {
         'heading-1': ['1.5rem', { fontWeight: 700 }],
         'heading-2': ['1.375rem', { fontWeight: 700 }],
         'heading-3': ['1.125rem', { fontWeight: 700 }],
         'body-bold': ['1rem', { fontWeight: 700 }],
-        
+
         body: ['1rem', { fontWeight: 400 }],
         small: ['0.875rem', { fontWeight: 400 }],
         'small-italicized': ['0.875rem', { fontWeight: 400 }],

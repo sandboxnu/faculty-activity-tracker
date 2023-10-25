@@ -20,3 +20,13 @@ export const bigintStringify = <T>(object: T): string => {
     (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
   );
 };
+
+export const shortenDescription = (description: string): string => {
+  const descriptionLength = description.length;
+
+  if (descriptionLength < 97) {
+    return description;
+  }
+
+  return description.substring(0, 99) + '...';
+};
