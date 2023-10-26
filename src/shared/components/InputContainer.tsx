@@ -16,7 +16,7 @@ type InputContainerProps = {
 // use to apply error border style to child component (TextInput, PercentageInfo, etc.)
 // whenever the InputContainer is incomplete
 export const incompleteBorderClass =
-  'group-data-[input-status=error]:border-error group-data-[input-status=error]:border-[1.5px]';
+  'group-data-[input-status=error]:border-error-300 group-data-[input-status=error]:border-[1.5px]';
 
 const InputContainer: React.FC<InputContainerProps> = ({
   label,
