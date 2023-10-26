@@ -118,11 +118,10 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
         </div>
         <InputContainer
           label=""
-          incompleteMessage={
+          incomplete={
             editing && teachingInput + researchInput + serviceInput !== 1
-              ? 'Percentages must sum to 100.'
-              : ''
           }
+          incompleteMessage="Percentages must sum to 100."
         >
           <div className="mb-6">
             <PercentageInfo

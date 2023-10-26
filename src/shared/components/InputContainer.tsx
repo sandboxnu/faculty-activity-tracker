@@ -6,6 +6,7 @@ type InputContainerProps = {
   label: string;
   labelClass?: string; // overriding label style
   required?: boolean; // whether the field is required
+  incomplete?: boolean; // whether the field is currently incomplete or incorrect
   incompleteMessage?: string; // message to display when incomplete
   infoMessage?: string; // any additional info to provide on hover
   withMarginY?: boolean; // whether to include vertical margin
@@ -21,6 +22,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
   label,
   labelClass = 'text-body-bold',
   required = false,
+  incomplete = false,
   incompleteMessage,
   infoMessage,
   withMarginY = false,
@@ -47,12 +49,12 @@ const InputContainer: React.FC<InputContainerProps> = ({
         {infoMessage && <InfoTooltip text={[infoMessage]} />}
       </div>
       <div
-        data-input-status={incompleteMessage ? 'error' : 'success'}
+        data-input-status={incomplete ? 'error' : 'success'}
         className="flex items-center space-x-2 group"
       >
         {children}
       </div>
-      {incompleteMessage && <IncompleteStatus />}
+      {incomplete && incompleteMessage && <IncompleteStatus />}
     </div>
   );
 };

@@ -70,7 +70,8 @@ const TextInputPlayground: React.FC = () => {
                 label={'Label'}
                 labelClass={!labelBold ? 'text-base font-medium' : undefined}
                 required={required}
-                incompleteMessage={incomplete ? 'Incomplete message' : ''}
+                incomplete={incomplete}
+                incompleteMessage="Incomplete message"
                 infoMessage={showTooltip ? 'Tooltip message' : ''}
                 withMarginY={withMarginY}
               >
@@ -151,7 +152,8 @@ const TextAreaInputPlayground: React.FC = () => {
                 label={'Label'}
                 labelClass={!labelBold ? 'text-base font-medium' : undefined}
                 required={required}
-                incompleteMessage={incomplete ? 'Incomplete message' : ''}
+                incomplete={incomplete}
+                incompleteMessage="Incomplete message"
                 withMarginY={withMarginY}
               >
                 <TextAreaInput
@@ -248,7 +250,8 @@ const DropdownInputPlayground: React.FC = () => {
                 label={'Label'}
                 labelClass={!labelBold ? 'text-base font-medium' : undefined}
                 required={required}
-                incompleteMessage={incomplete ? 'Incomplete message' : ''}
+                incomplete={incomplete}
+                incompleteMessage="Incomplete message"
                 withMarginY={withMarginY}
               >
                 <DropdownInput<string>

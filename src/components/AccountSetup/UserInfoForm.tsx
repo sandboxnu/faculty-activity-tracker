@@ -34,15 +34,19 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
   const [firstName, setFirstName] = useState(parsedName[0] || '');
   const [lastName, setLastName] = useState(parsedName[1] || '');
   const [preferredName, setPreferredName] = useState('');
-  const [firstNameError, setFirstNameError] = useState<string | undefined>(undefined);
-  const [lastNameError, setLastNameError] = useState<string | undefined>(undefined);
+  const [firstNameError, setFirstNameError] = useState<string | undefined>(
+    undefined,
+  );
+  const [lastNameError, setLastNameError] = useState<string | undefined>(
+    undefined,
+  );
 
   const dispatch = useDispatch();
 
   const submit = () => {
     if (!firstName || !lastName) {
-      if (!firstName) setFirstNameError('Please enter a First Name.')
-      if (!lastName) setLastNameError('Please enter a Last Name.')
+      if (!firstName) setFirstNameError('Please enter a First Name.');
+      if (!lastName) setLastNameError('Please enter a Last Name.');
       return;
     }
     if (!email || !role) return;
@@ -61,13 +65,13 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
 
   const onFirstNameChange = (value: string) => {
     setFirstName(value);
-    if (firstNameError) setFirstNameError(undefined)
-  }
+    if (firstNameError) setFirstNameError(undefined);
+  };
 
   const onLastNameChange = (value: string) => {
     setLastName(value);
-    if (lastNameError) setFirstNameError(undefined)
-  }
+    if (lastNameError) setLastNameError(undefined);
+  };
 
   return (
     <div className="w-full flex flex-grow justify-center items-center">
@@ -83,6 +87,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
             label="First Name"
             labelClass="text-body"
             withMarginY
+            incomplete={!!firstNameError}
             incompleteMessage={firstNameError}
             required
           >
@@ -97,7 +102,6 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
             label="Preferred Name (optional)"
             labelClass="text-body"
             withMarginY
-            incompleteMessage=""
           >
             <TextInput
               value={preferredName}
@@ -110,6 +114,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
             label="Last Name"
             labelClass="text-body"
             withMarginY
+            incomplete={!!lastNameError}
             incompleteMessage={lastNameError}
             required
           >

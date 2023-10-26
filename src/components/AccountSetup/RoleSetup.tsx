@@ -54,6 +54,7 @@ const RoleSetup: React.FC<RoleSetupProps> = () => {
           <InputContainer
             label="Provided Access Code"
             labelClass="text-body"
+            incomplete={!!accessCodeError}
             incompleteMessage={accessCodeError}
             infoMessage="Your access code can be found in your Northeastern email. If not, please contact Mark Sivak."
             withMarginY={false}

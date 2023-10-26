@@ -169,6 +169,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
             label="Position"
             labelClass="text-body"
             withMarginY
+            incomplete={!!positionError}
             incompleteMessage={positionError}
             required
           >
@@ -183,6 +184,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
             label="Activity Distribution"
             labelClass="text-body"
             withMarginY
+            incomplete={!!distributionError}
             incompleteMessage={distributionError}
             required
           >
@@ -200,6 +202,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
           <InputContainer
             label="Sabbatical"
             labelClass="text-body"
+            incomplete={!!sabbaticalError}
             incompleteMessage={sabbaticalError}
             withMarginY
             required
