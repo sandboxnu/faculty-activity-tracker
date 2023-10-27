@@ -1,17 +1,56 @@
-import { getProfessorScoreForUser, updateProfessorScoreForUser } from '@/client/professorScore.client';
-import Button from '@/shared/components/Button';
-import React, { useState } from 'react';
+import { ResponseStatus } from '@/client/activities.client';
+import {
+  getProfessorScoreForUser,
+  updateProfessorScoreForUser,
+} from '@/client/professorScore.client';
+import { CreateProfessorScoreDto } from '@/models/professorScore.model';
+import React, { useEffect, useState } from 'react';
 
 interface ProfessorCommentBoxProps {
-  professorId: number
+  professorId: number;
 }
 
-const ProfessorCommentBox: React.FC<ProfessorCommentBoxProps> = ({ professorId }) => {
+const ProfessorCommentBox: React.FC<ProfessorCommentBoxProps> = ({
+  professorId,
+}) => {
   const [comment, setComment] = useState('');
+  const [saved, setSaved] = useState(true);
+  const [professorScore, setProfessorScore] = useState<CreateProfessorScoreDto | null>(null);
 
-  const saveComment = () => {
-    updateProfessorScoreForUser({userId: professorId, comment: comment}).then((res) => {})
-  }
+  useEffect(() => {
+    getProfessorScoreForUser(professorId).then((data) => {
+      setProfessorScore(data as CreateProfessorScoreDto)
+      setComment((data as CreateProfessorScoreDto).comment)
+    });
+  }, [professorId]);
+
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
+    setSaved(false);
+  };
+
+  const saveComment = async () => {
+    try {
+      const response = await updateProfessorScoreForUser({ userId: professorId, comment: comment });
+      if (response === ResponseStatus.Success) {
+        setSaved(true)
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const saveInterval = setInterval(() => {
+      if (!saved) {
+        saveComment();
+      }
+    }, 3000);
+
+    return () => {
+      clearInterval(saveInterval);
+    };
+  }, [comment, saved]);
 
   return (
     <div className="flex flex-col rounded-lg w-full border-2">
@@ -20,11 +59,11 @@ const ProfessorCommentBox: React.FC<ProfessorCommentBoxProps> = ({ professorId }
           className="w-full h-40 rounded-lg p-2 pb-0 outline-transparent resize-none focus:outline-none"
           placeholder="Add a comment..."
           value={comment}
-          onChange={(e) => setComment(e.target.value)}
+          onChange={handleCommentChange}
         />
       </div>
-      <div className='flex w-full items-center justify-center p-2'>
-        <Button onClick={saveComment}>Save</Button>
+      <div className="flex w-full items-center justify-center pb-2 text-body">
+        {saved ? "Saved" : "Saving..."}
       </div>
     </div>
   );
