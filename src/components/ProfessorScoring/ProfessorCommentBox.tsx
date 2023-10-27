@@ -45,18 +45,18 @@ const ProfessorCommentBox: React.FC<ProfessorCommentBoxProps> = ({
       if (!saved) {
         saveComment();
       }
-    }, 3000);
+    }, 1000);
 
     return () => {
       clearInterval(saveInterval);
     };
-  }, [comment, saved]);
+  }, [saveComment, saved]);
 
   return (
     <div className="flex flex-col rounded-lg w-full border-2">
       <div className="flex flex-col text-body p-1">
         <textarea
-          className="w-full h-40 rounded-lg p-2 pb-0 outline-transparent resize-none focus:outline-none"
+          className="w-full h-36 rounded-lg p-2 pb-0 outline-transparent resize-none focus:outline-none"
           placeholder="Add a comment..."
           value={comment}
           onChange={handleCommentChange}

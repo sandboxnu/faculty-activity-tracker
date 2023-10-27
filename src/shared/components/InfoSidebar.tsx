@@ -22,6 +22,7 @@ import ScoringInfo from '@/components/ProfessorScoring/ScoringInfo';
 import ProfessorCommentBox from '@/components/ProfessorScoring/ProfessorCommentBox';
 import { getProfessorInfoForUser } from '@/client/professorInfo.client';
 import { ProfessorInfoDto } from '@/models/professorInfo.model';
+import ProfessorScoreCard from '@/components/ProfessorScoring/ProfessorScoreCard';
 
 type SidebarType =
   | 'submissions'
@@ -110,6 +111,7 @@ const InfoSidebar: React.FC = () => {
         <>
           <ScoringInfo profInfo={professorInfo}/>
           <ProfessorCommentBox professorId={professorId}/>
+          <ProfessorScoreCard professorId={professorId} />
         </>
       )}
     </div>
