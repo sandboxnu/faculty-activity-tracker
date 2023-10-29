@@ -16,6 +16,7 @@ import ContactInfo from './ContactInfo';
 import BasicInfo from './BasicInfo';
 import { separateProfileInformation } from '@/shared/utils/user.util';
 import { updateUser } from '@/client/users.client';
+import { isErrorResponse, responseStatusMessage } from '@/shared/utils/misc.util';
 
 interface ProfileContainerProps {
   userId: number;
@@ -54,16 +55,12 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
       setError(completionStatus);
       return;
     }
-    const { userInfo, professorInfo } =
-      separateProfileInformation(completionStatus);
+    const { userInfo, professorInfo } = separateProfileInformation(completionStatus);
     setLoading(true);
     let profRes = await updateProfessorInfoForUser(professorInfo);
-    if (profRes === ResponseStatus.Unauthorized)
-      return setError('Unauthorized.');
-    else if (profRes === ResponseStatus.BadRequest)
-      return setError('Bad request.');
-    else if (profRes === ResponseStatus.UnknownError)
-      return setError('Unknown error.');
+    if (isErrorResponse(profRes)) {
+      return setError(responseStatusMessage[profRes]);
+    }
 
     let userRes = await updateUser(userId, userInfo);
     if (userRes === ResponseStatus.UnknownError)

@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
         firstName: user.firstName,
         lastName: user.lastName,
         title: user.professorInfo.title ?? '',
-        email: user.email,
+        email: user.externalEmail || user.email,
         position: user.professorInfo.position,
         sabbatical: user.professorInfo.sabbatical,
         teachingPercent: user.professorInfo.teachingPercent,

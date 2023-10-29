@@ -78,7 +78,7 @@ export const separateProfileInformation = (
   const userInfo: UpdateUserDto = {
     firstName: info.firstName,
     lastName: info.lastName,
-    email: info.email,
+    externalEmail: info.email,
   };
   const professorInfo: UpdateProfessorInfoDto = {
     position: info.position,
