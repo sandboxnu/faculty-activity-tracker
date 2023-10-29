@@ -36,7 +36,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
       <StaticSideBarBubble title="">
         <div className="w-full flex justify-between">
           {professorScores.map((item) => 
-          <div className="w-1/4">
+          <div key={item.category} className="w-1/4">
             <StaticScoreBubble
               category={item.category}
               score={item.score}
