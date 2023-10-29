@@ -16,9 +16,13 @@ interface CustomPageProps {
 
 function MyApp({
   Component,
-  pageProps: { session, hideSidebars = false, hideNavbar = false, ...pageProps },
+  pageProps: {
+    session,
+    hideSidebars = false,
+    hideNavbar = false,
+    ...pageProps
+  },
 }: AppProps<CustomPageProps>) {
-
   return (
     <Provider store={store}>
       <SessionProvider session={session}>

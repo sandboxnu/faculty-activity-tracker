@@ -28,7 +28,7 @@ const SideBarBubble: React.FC<{
       );
       setDropDownOpen(storedDropDownCookie);
     }
-  }, []);
+  }, [cookieKey]);
 
   return (
     <div className="flex flex-col px-5 py-3 bg-gray-100 w-full rounded-lg shadow-sm">

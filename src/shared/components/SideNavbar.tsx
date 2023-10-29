@@ -42,46 +42,46 @@ const SideNavbar: React.FC = () => {
       )}
       {!isMerit && (
         <>
-        <p className={`${navClass} cursor-default hover:border-white`}>
-          Submissions
-        </p>
+          <p className={`${navClass} cursor-default hover:border-white`}>
+            Submissions
+          </p>
 
-      <div className="ml-4 pl-2 border-l">
-        <div className="flex flex-col items-start space-y-5">
-          <Link
-            href="/submissions/teaching"
-            className={`text-body pb-2 nav-underline relative ${
-              category == 'teaching'
-                ? 'nav-underline-red'
-                : 'hover:nav-underline-red'
-            }`}
-          >
-            Teaching
-          </Link>
-          <Link
-            href="/submissions/research"
-            className={`text-body pb-2 nav-underline relative ${
-              category == 'research'
-                ? 'nav-underline-red'
-                : 'hover:nav-underline-red'
-            }`}
-          >
-            Research
-          </Link>
-          <Link
-            href="/submissions/service"
-            className={`text-body pb-2 nav-underline relative ${
-              category == 'service'
-                ? 'nav-underline-red'
-                : 'hover:nav-underline-red'
-            }`}
-          >
-            Service
-          </Link>
-        </div>
-      </div>
-      </>
-            )}
+          <div className="ml-4 pl-2 border-l">
+            <div className="flex flex-col items-start space-y-5">
+              <Link
+                href="/submissions/teaching"
+                className={`text-body pb-2 nav-underline relative ${
+                  category == 'teaching'
+                    ? 'nav-underline-red'
+                    : 'hover:nav-underline-red'
+                }`}
+              >
+                Teaching
+              </Link>
+              <Link
+                href="/submissions/research"
+                className={`text-body pb-2 nav-underline relative ${
+                  category == 'research'
+                    ? 'nav-underline-red'
+                    : 'hover:nav-underline-red'
+                }`}
+              >
+                Research
+              </Link>
+              <Link
+                href="/submissions/service"
+                className={`text-body pb-2 nav-underline relative ${
+                  category == 'service'
+                    ? 'nav-underline-red'
+                    : 'hover:nav-underline-red'
+                }`}
+              >
+                Service
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
       {!isMerit && (
         <Link
           href="/profile"

@@ -1,7 +1,4 @@
-import {
-  ActivityDto,
-  UpdateActivityDto,
-} from '@/models/activity.model';
+import { ActivityDto, UpdateActivityDto } from '@/models/activity.model';
 import { ActivityMeritStatus, SignificanceLevel } from '@prisma/client';
 import { useState, useEffect } from 'react';
 import { toTitleCase } from '@/shared/utils/misc.util';
@@ -101,7 +98,7 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
       );
       setExpanded(storedDropDownCookie);
     }
-  }, []);
+  }, [cookieKey]);
 
   const handleUpdateStatus = (status: ActivityMeritStatus | null) => {
     submit({

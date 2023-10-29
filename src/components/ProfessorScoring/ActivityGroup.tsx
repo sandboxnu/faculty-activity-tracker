@@ -45,7 +45,8 @@ const ActivityGroup: React.FC<ActivityApprovalGroupProps> = ({
       );
       setDropDownOpen(storedDropDownCookie);
     }
-  }, []);
+  }, [cookieKey]);
+
   return (
     <div
       className="w-full flex flex-col border-box gap-[12px] mb-[30px]"

@@ -70,7 +70,7 @@ const ProfessorCommentBox: React.FC<ProfessorCommentBoxProps> = ({
       if (!saved) {
         saveComment();
       }
-    }, 750); // CHange this value to change the time interval for saving the comment
+    }, 750); // Change this value to change the time interval for saving the comment
 
     return () => {
       clearInterval(saveInterval);

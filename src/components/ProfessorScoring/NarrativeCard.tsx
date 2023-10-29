@@ -32,7 +32,8 @@ const NarrativeCard: React.FC<NarrativeCardProps> = ({
       );
       setExpanded(storedDropDownCookie);
     }
-  }, []);
+  }, [cookieKey]);
+  
   return (
     <div
       className={`flex flex-col items-start justify-center relative rounded-lg gap-[20px] px-[20px] card py-[16px] cursor-pointer bg-gray-100 
