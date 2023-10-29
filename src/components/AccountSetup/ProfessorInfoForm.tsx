@@ -121,7 +121,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
   };
 
   const createProfessorInfo = async (
-    position: string,
+    position: ProfessorPosition,
     teachingPercent: number,
     researchPercent: number,
     servicePercent: number,
@@ -142,6 +142,9 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
         servicePercent,
         sabbatical,
         teachingReleaseExplanation: teachingReleaseExplanation || null,
+        title: null,
+        officeLocation: null,
+        phoneNumber: null,
       };
 
       const res = await updateProfessorInfoForUser(newProfessorInfo);
@@ -176,7 +179,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
             <DropdownInput
               options={positionOptions}
               placeholder="Select a Position"
-              selectValue={(value) => selectPosition(value?.toString() || '')}
+              selectValue={(value) => value && selectPosition(value)}
               fillContainer
             />
           </InputContainer>
