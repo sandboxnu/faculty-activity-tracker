@@ -6,6 +6,7 @@ import TextAreaInput from '@/shared/components/TextAreaInput';
 import TextInput from '@/shared/components/TextInput';
 import Head from 'next/head';
 import React, { useState } from 'react';
+import { AppComponent } from 'next/dist/shared/lib/router/router';
 
 const TextInputPlayground: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -104,6 +105,8 @@ const TextAreaInputPlayground: React.FC = () => {
   const [labelBold, setLabelBold] = useState(false);
   const [withMarginY, setWithMarginY] = useState(false);
   const [withContainer, setWithContainer] = useState(true);
+
+  var badChoice = 5;
 
   return (
     <div className="flex flex-col w-full mb-4">
