@@ -12,7 +12,6 @@ interface CustomPageProps {
   session: Session;
   hideSidebars?: boolean;
   hideNavbar?: boolean;
-
 }
 
 function MyApp({
