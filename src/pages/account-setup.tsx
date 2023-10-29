@@ -12,7 +12,6 @@ import { createUser } from '@/client/users.client';
 import { ResponseStatus } from '@/client/activities.client';
 import ProfessorInfoForm from '@/components/AccountSetup/ProfessorInfoForm';
 import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
-import AppLayout from '@/shared/components/AppLayout';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectStep, setName, setEmail } from '@/store/accountSetup.store';
 
@@ -38,7 +37,11 @@ export const getServerSideProps: GetServerSideProps<
   }
   if (session?.user?.email && session?.user?.name) {
     return {
-      props: { name: session.user.name, email: session.user.email },
+      props: {
+        name: session.user.name,
+        email: session.user.email,
+        hideSidebars: true,
+      },
     };
   } else {
     return {
@@ -82,11 +85,9 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
       <Head>
         <title>Account Setup</title>
       </Head>
-      <AppLayout hideSidebars>
-        <div className="flex flex-col w-full max-w-[480px] mx-auto">
-          {SetupStepComponent[step]}
-        </div>
-      </AppLayout>
+      <div className="flex flex-col w-full max-w-[480px] mx-auto">
+        {SetupStepComponent[step]}
+      </div>
     </div>
   );
 };

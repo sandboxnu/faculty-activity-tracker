@@ -15,7 +15,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ResponseStatus, updateActivity } from '@/client/activities.client';
 import Head from 'next/head';
-import AppLayout from '@/shared/components/AppLayout';
 
 interface SubmissionsPageProps {
   activities?: ActivityDto[];
@@ -111,34 +110,32 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
   const activitiesBySigLevel = seperateActivitiesBySignifanceLevel(activities);
 
   return (
-    <AppLayout>
-      <div className="flex w-full">
-        <Head>
-          <title>{`Submissions - ${toTitleCase(
-            category?.toString() || '',
-          )}`}</title>
-        </Head>
-        <div className="w-full flex flex-col border-box">
-          <h1>{toTitleCase(category?.toString() || '')}</h1>
-          {pageError && (
-            <p className="text-red-500 text-center w-full">{pageError}</p>
-          )}
-          {Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
-            <div key={sigLevel} className="flex flex-col w-full">
-              <ActivityCarousel
-                label={toTitleCase(sigLevel)}
-                activities={activities}
-                newActivity={() =>
-                  startNewActivity(sigLevel as SignificanceLevel)
-                }
-                leftPadding
-                favoriteActivity={favoriteActivity}
-              />
-            </div>
-          ))}
-        </div>
+    <div className="flex w-full">
+      <Head>
+        <title>{`Submissions - ${toTitleCase(
+          category?.toString() || '',
+        )}`}</title>
+      </Head>
+      <div className="w-full flex flex-col border-box">
+        <h1>{toTitleCase(category?.toString() || '')}</h1>
+        {pageError && (
+          <p className="text-red-500 text-center w-full">{pageError}</p>
+        )}
+        {Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
+          <div key={sigLevel} className="flex flex-col w-full">
+            <ActivityCarousel
+              label={toTitleCase(sigLevel)}
+              activities={activities}
+              newActivity={() =>
+                startNewActivity(sigLevel as SignificanceLevel)
+              }
+              leftPadding
+              favoriteActivity={favoriteActivity}
+            />
+          </div>
+        ))}
       </div>
-    </AppLayout>
+    </div>
   );
 };
 
