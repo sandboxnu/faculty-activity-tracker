@@ -2,6 +2,7 @@ import React from 'react';
 import SideNavbar from '@/shared/components/SideNavbar';
 import Header from '@/shared/components/Header';
 import InfoSidebar from '@/shared/components/InfoSidebar';
+import NextNProgress from 'nextjs-progressbar';
 
 interface AppLayoutProps {
   children: JSX.Element;
@@ -20,6 +21,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({
       <div className="flex w-full flex-grow">
         {!hideSidebars && <SideNavbar />}
         <div className="flex-1 overflow-x-hidden flex self-stretch border-x border-light-grey px-10 py-6">
+          <NextNProgress color="#CC0000" height={4} options={{ showSpinner: false }}/>
           {children}
         </div>
         {!hideSidebars && <InfoSidebar />}
