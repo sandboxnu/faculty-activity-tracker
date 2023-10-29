@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import {
   getActivitiesForUserForCategory,
   ResponseStatus,
@@ -13,13 +14,15 @@ import {
 import SubmissionsInfo from '@/components/Submissions/SubmissionsInfo';
 import FormInstructions from '@/components/ActivityForm/FormInstructions';
 import NarrativeInstructions from '@/components/Narratives/NarrativeInstructions';
-import { NarrativeCategory } from '@prisma/client';
+import { NarrativeCategory, prisma } from '@prisma/client';
 import { getNarrativeForUserForCategory } from '@/client/narratives.client';
 import { NarrativeDto } from '@/models/narrative.model';
 import ProfileInstructions from '@/components/Profile/ProfileInstructions';
 import ScoringInfo from '@/components/ProfessorScoring/ScoringInfo';
+import ProfessorCommentBox from '@/components/ProfessorScoring/ProfessorCommentBox';
 import { getProfessorInfoForUser } from '@/client/professorInfo.client';
 import { ProfessorInfoDto } from '@/models/professorInfo.model';
+import ProfessorScoreCard from '@/components/ProfessorScoring/ProfessorScoreCard';
 
 type SidebarType =
   | 'submissions'
@@ -32,9 +35,9 @@ type SidebarType =
 const InfoSidebar: React.FC = () => {
   const router = useRouter();
   const pathname = router.pathname;
-  const { category } = router.query;
-  const { professorId } = router.query;
-  const { data: session, status } = useSession();
+  const { category, professorId: professorIdString } = router.query;
+  const professorId = parseInt(professorIdString?.toString() ?? "")
+  const { data: session } = useSession();
   const userId = session?.user?.id;
   const [sidebarType, setType] = useState<SidebarType | null>(null);
   const [activities, setActivities] = useState<ActivityDto[]>([]);
@@ -46,7 +49,6 @@ const InfoSidebar: React.FC = () => {
   const activitiesBySemester = seperateActivitiesBySemester(activities);
 
   useEffect(() => {
-    console.log(pathname);
     if (pathname === '/submissions/[category]' && category !== undefined) {
       if (userId) {
         Promise.all([
@@ -79,7 +81,7 @@ const InfoSidebar: React.FC = () => {
       setType('narratives');
     } else if (pathname == '/merit/professors/[professorId]') {
       Promise.all([
-        getProfessorInfoForUser(parseInt(professorId as string)),
+        getProfessorInfoForUser(professorId),
       ]).then(([professorInfo]) => {
         if (professorInfo === ResponseStatus.UnknownError) return;
         setType('scoring');
@@ -105,7 +107,13 @@ const InfoSidebar: React.FC = () => {
       )}
       {sidebarType === 'narratives' && <NarrativeInstructions />}
       {sidebarType === 'profile' && <ProfileInstructions />}
-      {sidebarType === 'scoring' && <ScoringInfo profInfo={professorInfo} />}
+      {sidebarType === 'scoring' && (
+        <>
+          <ScoringInfo profInfo={professorInfo}/>
+          <ProfessorCommentBox professorId={professorId}/>
+          <ProfessorScoreCard professorId={professorId} />
+        </>
+      )}
     </div>
   );
 };
