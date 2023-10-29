@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import { incompleteBorderClass } from './InputContainer';
 
 type OptionType = string | number;
 
@@ -38,6 +39,7 @@ const DropdownInput = <T extends unknown>({
       <div
         className={clsx([
           'flex flex-col bg-white border-[0.5px] border-gray-500 rounded-lg cursor-pointer',
+          incompleteBorderClass,
           absoluteDropdown ? 'absolute' : 'relative',
           fillContainer ? 'w-full' : 'w-[175px]',
           addOnClass,
@@ -49,7 +51,7 @@ const DropdownInput = <T extends unknown>({
         >
           <p className="">{selectedOption?.label || placeholder}</p>
           <Image
-            className={`${dropdownOpen ? 'rotate-90' : '-rotate-90'} mr-1`}
+            className={`${dropdownOpen ? '-rotate-90' : 'rotate-90'} mr-1`}
             src={'/media/rightArrow.svg'}
             alt="down arrow"
             width={9}

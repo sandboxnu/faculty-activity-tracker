@@ -12,7 +12,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   onChange,
 }: CheckboxProps) => {
   return (
-    <label className={'flex justify-start'}>
+    <label className={'flex justify-start items-center'}>
       <input
         className={'flex mr-2'}
         type="checkbox"

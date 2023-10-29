@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { incompleteBorderClass } from './InputContainer';
 
 export interface TextAreaInputProps {
   value: string | number;
@@ -26,6 +27,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
       placeholder={placeholder || ''}
       className={clsx([
         'border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none',
+        incompleteBorderClass,
         fillContainer ? 'flex flex-grow' : 'min-w-[175px]',
         addOnClass,
       ])}

@@ -1,3 +1,4 @@
+import { CreateUserDto } from '@/models/user.model';
 import { getUsersByQuery } from '@/services/user';
 import { NotFacultyUser, isAdminUser } from '@/shared/utils/user.util';
 import { Role } from '@prisma/client';
@@ -83,6 +84,14 @@ export const authOptions: AuthOptions = {
         }
       }
       return session;
+    },
+    async signIn({ user, account, profile, email, credentials }) {
+      let emailPattern = /[(\w)+.(\w), (\w)+]@husky.neu.edu/;
+      if (user.email === 'maxpinheiro181@gmail.com') return true;
+      if (!user.email || !emailPattern.test(user.email)) {
+        return '/invalid-email';
+      }
+      return true;
     },
   },
 };

@@ -3,52 +3,73 @@ import { ResponseStatus } from '@/client/activities.client';
 import { Role } from '@prisma/client';
 import React, { useState } from 'react';
 
-interface RoleSetupProps {
-  confirmRole: (role: Role) => void;
-}
+import InputContainer from '@/shared/components/InputContainer';
+import TextInput from '@/shared/components/TextInput';
+import StepWrapper from './StepWrapper';
+import { useDispatch } from 'react-redux';
+import { setRole, setStep } from '@/store/accountSetup.store';
 
-const RoleSetup: React.FC<RoleSetupProps> = ({ confirmRole }) => {
-  const [codeInput, setCodeInput] = useState('');
-  const inputBox = 'border border-black rounded-lg px-3 py-2 outline-none';
+interface RoleSetupProps {}
+
+const RoleSetup: React.FC<RoleSetupProps> = () => {
+  const [codeInput, setCodeInput] = useState<string | null>(null);
+  const [accessCodeError, setAccessCodeError] = useState<string | undefined>(
+    undefined,
+  );
   const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch();
 
   const submitCode = () => {
+    console.log(codeInput);
+    if (!codeInput) return setAccessCodeError('Please enter your access code.');
+
     obtainRoleForAccessCode(codeInput).then((res) => {
-      if (res === ResponseStatus.NotFound) setError('Incorrect access code.');
+      if (res === ResponseStatus.NotFound)
+        setAccessCodeError('Incorrect access code.');
       else if (res === ResponseStatus.Unauthorized) setError('Unauthorized');
       else if (res === ResponseStatus.BadRequest) setError('Bad request');
       else if (res === ResponseStatus.UnknownError) setError('Unknown error');
       else {
-        confirmRole(res);
+        dispatch(setRole(res));
+        dispatch(setStep('user info'));
       }
     });
   };
 
+  const onChange = (value: string) => {
+    setCodeInput(value);
+    if (accessCodeError) setAccessCodeError(undefined);
+  };
+
   return (
-    <div className="center">
-      <div className="flex items-center space-x-2">
-        <p>Enter your provided access code:</p>
-        <input
-          className={inputBox}
-          value={codeInput}
-          onChange={(e) => {
-            setCodeInput(e.target.value);
-            if (error) setError(null);
-          }}
-          placeholder="access code"
-        />
-        {error && <p className="text-red-500">{error}</p>}
-      </div>
-      <div className="flex justify-between items-center my-3">
-        <div />
-        <button
-          className="bg-red-500 disabled:bg-red-300 text-white px-3 py-2 rounded-xl"
-          onClick={submitCode}
-          disabled={codeInput === ''}
-        >
-          Submit
-        </button>
-      </div>
+    <div className="w-full flex flex-grow justify-center items-center">
+      <StepWrapper
+        title="Welcome!"
+        subtitle="Please enter your access code."
+        currentStep={0}
+        next={submitCode}
+        back={() => {}}
+      >
+        <div className="w-full">
+          <InputContainer
+            label="Provided Access Code"
+            labelClass="text-body"
+            incomplete={!!accessCodeError}
+            incompleteMessage={accessCodeError}
+            infoMessage="Your access code can be found in your Northeastern email. If not, please contact Mark Sivak."
+            withMarginY={false}
+            required
+          >
+            <TextInput
+              value={codeInput || ''}
+              change={onChange}
+              placeholder=""
+              fillContainer
+              onSubmit={submitCode}
+            />
+          </InputContainer>
+        </div>
+      </StepWrapper>
     </div>
   );
 };

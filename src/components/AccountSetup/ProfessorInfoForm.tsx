@@ -4,17 +4,25 @@ import TextAreaInput from '@/shared/components/TextAreaInput';
 import { SabbaticalOption } from '@prisma/client';
 import React, { useState } from 'react';
 import PercentageInfo from '../Profile/PercentageInfo';
+import { ResponseStatus } from '@/client/activities.client';
+import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
+import { createUser } from '@/client/users.client';
+import { CreateProfessorInfoDto } from '@/models/professorInfo.model';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUserInfo, setStep } from '@/store/accountSetup.store';
+import StepWrapper from './StepWrapper';
 
 interface ProfessorInfoFormProps {
-  submit: (
-    position: string,
-    teachingPercent: number,
-    researchPercent: number,
-    servicePercent: number,
-    sabbatical: SabbaticalOption,
-    teachingReleaseExplanation?: string,
-  ) => void;
-  back: () => void;
+  // submit: (
+  //   position: string,
+  //   teachingPercent: number,
+  //   researchPercent: number,
+  //   servicePercent: number,
+  //   sabbatical: SabbaticalOption,
+  //   teachingReleaseExplanation?: string,
+  // ) => void;
+  // back: () => void;
 }
 
 const positionOptions: Option[] = [
@@ -23,28 +31,43 @@ const positionOptions: Option[] = [
 ];
 
 const sabbaticalOptions: Option<SabbaticalOption>[] = [
-  { label: 'No', value: SabbaticalOption.NO },
-  { label: 'Year', value: SabbaticalOption.YEAR },
-  { label: 'Semester', value: SabbaticalOption.SEMESTER },
+  { label: 'Not Sabbatical', value: SabbaticalOption.NO },
+  { label: 'Sabbatical: Year', value: SabbaticalOption.YEAR },
+  { label: 'Sabbatical: Semester', value: SabbaticalOption.SEMESTER },
 ];
 
-const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
-  submit,
-  back,
-}) => {
+const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
+  {
+    // submit,
+    // back,
+  },
+) => {
+  const userInfo = useSelector(selectUserInfo);
   const [position, setPosition] = useState('');
   const [teachingPercent, setTeachingPercent] = useState(0);
   const [researchPercent, setResearchPercent] = useState(0);
   const [servicePercent, setServicePercent] = useState(0);
   const [sabbatical, setSabbatical] = useState<SabbaticalOption | undefined>(
-    SabbaticalOption.NO,
+    undefined,
   );
   const [teachingReleaseExplanation, setExplanation] = useState('');
+  const [pageError, setPageError] = useState<string | null>(null);
+  const [positionError, setPositionError] = useState<string | undefined>(
+    undefined,
+  );
+  const [distributionError, setDistributionError] = useState<
+    string | undefined
+  >(undefined);
+  const [sabbaticalError, setSabbaticalError] = useState<string | undefined>(
+    undefined,
+  );
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const percentSetters: Record<string, (percent: number) => void> = {
     teaching: (percent) => setTeachingPercent(percent),
     creative: (percent) => setResearchPercent(percent),
-    serice: (percent) => setServicePercent(percent),
+    service: (percent) => setServicePercent(percent),
     default: (_) => {},
   };
 
@@ -59,20 +82,35 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
       setResearchPercent(0.5);
       setServicePercent(0.1);
     }
+    if (positionError) setPositionError(undefined);
+    if (distributionError) setDistributionError(undefined);
   };
 
-  const setPercent = (type: string, percent: number) =>
+  const setPercent = (type: string, percent: number) => {
     percentSetters[type](percent);
+    if (distributionError) setDistributionError(undefined);
+  };
+
+  const setSabbaticalOption = (option: SabbaticalOption) => {
+    setSabbatical(option);
+    if (sabbaticalError) setSabbaticalError(undefined);
+  };
 
   const submitInfo = () => {
     if (
       !position ||
       !sabbatical ||
       teachingPercent + researchPercent + servicePercent !== 1
-    )
+    ) {
+      if (!position) setPositionError('Please select your position.');
+      if (teachingPercent + researchPercent + servicePercent !== 1)
+        setDistributionError('Percentages should add up to 100.');
+      if (!sabbatical)
+        setSabbaticalError('Please select your sabbatical status.');
       return;
+    }
 
-    submit(
+    createProfessorInfo(
       position,
       teachingPercent,
       researchPercent,
@@ -82,75 +120,119 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = ({
     );
   };
 
+  const createProfessorInfo = async (
+    position: string,
+    teachingPercent: number,
+    researchPercent: number,
+    servicePercent: number,
+    sabbatical: SabbaticalOption,
+    teachingReleaseExplanation?: string,
+  ) => {
+    if (!userInfo) return;
+
+    const newUser = await createUser(userInfo);
+
+    if (newUser === ResponseStatus.UnknownError) setPageError('Unknown Error');
+    else {
+      let newProfessorInfo: CreateProfessorInfoDto = {
+        userId: newUser.id,
+        position,
+        teachingPercent,
+        researchPercent,
+        servicePercent,
+        sabbatical,
+        teachingReleaseExplanation: teachingReleaseExplanation || null,
+      };
+
+      const res = await updateProfessorInfoForUser(newProfessorInfo);
+      if (res === ResponseStatus.Unauthorized) setPageError('Unauthorized');
+      else if (res === ResponseStatus.BadRequest) setPageError('Bad request');
+      else if (res === ResponseStatus.UnknownError)
+        setPageError('Unknown error');
+      else {
+        router.push('/profile');
+      }
+    }
+  };
+
   return (
-    <div className="flex flex-col">
-      <InputContainer
-        label="Position: "
-        incomplete={!position}
-        incompleteMessage="Select a position."
+    <div className="w-full flex flex-grow justify-center items-center">
+      <StepWrapper
+        title="Basic Information"
+        subtitle="Please provide the following information."
+        currentStep={2}
+        next={submitInfo}
+        back={() => dispatch(setStep('user info'))}
       >
-        <DropdownInput
-          options={positionOptions}
-          placeholder="Select a Position"
-          selectValue={(value) => selectPosition(value?.toString() || '')}
-        />
-      </InputContainer>
-      <InputContainer
-        label="Activity Distribution: "
-        incomplete={teachingPercent + researchPercent + servicePercent !== 1}
-        incompleteMessage="Percentages must sum to 100."
-      >
-        <PercentageInfo
-          editing={true}
-          teaching={teachingPercent}
-          research={researchPercent}
-          service={servicePercent}
-          setPercent={setPercent}
-        />
-      </InputContainer>
-      <InputContainer
-        label="Sabbatical: "
-        incomplete={!sabbatical}
-        incompleteMessage="Select a sabbatical option."
-      >
-        <DropdownInput<SabbaticalOption>
-          options={sabbaticalOptions}
-          initialValue={sabbaticalOptions.find((o) => o.value === sabbatical)}
-          placeholder="Select a Sabbatical"
-          selectValue={(value) => setSabbatical(value as SabbaticalOption)}
-        />
-      </InputContainer>
-      <InputContainer
-        label="Teaching Release Explanation: "
-        incomplete={false}
-        incompleteMessage=""
-      >
-        <TextAreaInput
-          value={teachingReleaseExplanation}
-          change={(val) => setExplanation(val)}
-          placeholder="Teaching release explanation (optional)."
-          addOnClass="w-full"
-        />
-      </InputContainer>
-      <div className="flex justify-between items-center my-3">
-        <button
-          className="bg-gray-100 border border-gray-500 text-gray-500 px-3 py-2 rounded-xl"
-          onClick={back}
-        >
-          Back
-        </button>
-        <button
-          className="bg-red-500 disabled:bg-red-300 text-white px-3 py-2 rounded-xl"
-          onClick={submitInfo}
-          disabled={
-            !position ||
-            !sabbatical ||
-            teachingPercent + researchPercent + servicePercent !== 1
-          }
-        >
-          Submit
-        </button>
-      </div>
+        <div className="flex flex-col w-full">
+          <InputContainer
+            label="Position"
+            labelClass="text-body"
+            withMarginY
+            incomplete={!!positionError}
+            incompleteMessage={positionError}
+            required
+          >
+            <DropdownInput
+              options={positionOptions}
+              placeholder="Select a Position"
+              selectValue={(value) => selectPosition(value?.toString() || '')}
+              fillContainer
+            />
+          </InputContainer>
+          <InputContainer
+            label="Activity Distribution"
+            labelClass="text-body"
+            withMarginY
+            incomplete={!!distributionError}
+            incompleteMessage={distributionError}
+            required
+          >
+            <div className="w-full px-5">
+              <PercentageInfo
+                editing={true}
+                teaching={teachingPercent}
+                research={researchPercent}
+                service={servicePercent}
+                setPercent={setPercent}
+                fillContainer
+              />
+            </div>
+          </InputContainer>
+          <InputContainer
+            label="Sabbatical"
+            labelClass="text-body"
+            incomplete={!!sabbaticalError}
+            incompleteMessage={sabbaticalError}
+            withMarginY
+            required
+          >
+            <DropdownInput<SabbaticalOption>
+              options={sabbaticalOptions}
+              initialValue={sabbaticalOptions.find(
+                (o) => o.value === sabbatical,
+              )}
+              placeholder="Select a Sabbatical"
+              selectValue={(value) =>
+                setSabbaticalOption(value as SabbaticalOption)
+              }
+              fillContainer
+            />
+          </InputContainer>
+          <InputContainer
+            label="Teaching Release Explanation"
+            labelClass="text-body"
+            withMarginY
+          >
+            <TextAreaInput
+              value={teachingReleaseExplanation}
+              change={(val) => setExplanation(val)}
+              placeholder="Teaching release explanation (optional)."
+              addOnClass="w-full"
+            />
+          </InputContainer>
+        </div>
+      </StepWrapper>
     </div>
   );
 };

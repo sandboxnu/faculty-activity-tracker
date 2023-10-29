@@ -34,6 +34,64 @@
   visibility: visible;
 }
 
+.infoTooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Disable transitions for tooltip */
+.infoTooltip,
+.infoTooltip * {
+  transition-property: opacity 0.1s;
+}
+
+.infoTooltip .infoTooltipText {
+  opacity: 0;
+  width: 140px;
+  background-color: white;
+  color: #585858;
+  text-align: left;
+  border: solid 0.5px #585858;
+  border-radius: 2px;
+  padding: 6px;
+  position: absolute;
+  z-index: 1;
+  top: 150%;
+  left: 50%;
+  margin-left: -70px;
+}
+
+.infoTooltip .infoTooltipText::before,
+.infoTooltip .infoTooltipText::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+}
+
+/* The outline of the triangle */
+.infoTooltip .infoTooltipText::before {
+  border-left: 6.5px solid transparent;
+  border-right: 6.5px solid transparent;
+  border-bottom: 6.5px solid #585858;
+  margin-left: -6.5px;
+  margin-bottom: 0px;
+}
+
+/* The white fill of the triangle */
+.infoTooltip .infoTooltipText::after {
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid white;
+  margin-left: -6px;
+  margin-top: -2px;
+  z-index: 1;
+}
+
+.infoTooltip:hover .infoTooltipText {
+  opacity: 1;
+}
+
 .h-max-content {
   height: max-content;
 }
