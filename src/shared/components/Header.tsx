@@ -11,7 +11,7 @@ const Header: React.FC = () => {
 
   return (
     <div className="flex items-baseline w-screen bg-black font-bold px-5 py-3">
-      <Image src="/media/neuLogo.svg" alt="CAMD Logo" width={200} height={50} />
+      <Image src="/media/newLogo.svg" alt="Faculty Activity Tracker Logo" width={250} height={70} />
       {signedIn && (
         <Button
           onClick={() => router.push('/api/auth/signout')}
