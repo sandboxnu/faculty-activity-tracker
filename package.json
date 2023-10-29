@@ -15,7 +15,15 @@
     "seed": "yarn prisma db seed",
     "format:check": "prettier --check --ignore-path .gitignore .",
     "format": "prettier --write --ignore-path .gitignore .",
-    "prisma:studio:dev": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' npx prisma studio"
+    "prisma:studio:dev": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' npx prisma studio",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*.(ts|tsx|js)": [
+      "eslint .",
+      "prettier --write --ignore-path .gitignore ."
+    ],
+    "**/*.(md|json)": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
     "@next/font": "13.1.6",
@@ -44,7 +52,8 @@
     "prettier": "2.8.4",
     "sass": "^1.57.1",
     "tailwindcss": "^3.2.4",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "husky": "^8.0.0"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts",
