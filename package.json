@@ -20,7 +20,6 @@
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [
-      "eslint .",
       "prettier --write --ignore-path .gitignore ."
     ],
     "**/*.(md|json)": "prettier --write --ignore-path .gitignore ."
