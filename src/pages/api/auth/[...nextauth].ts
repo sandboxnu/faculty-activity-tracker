@@ -15,7 +15,7 @@ const preview_providers = [
       return {
         id: 1,
         name: 'Faculty TestUser',
-        email: 'faculty_test_user@northeastern.edu',
+        email: 'faculty_test_user@husky.neu.edu',
         image: 'https://i.pravatar.cc/150?u=jsmith@example.com',
       };
     },
@@ -28,7 +28,7 @@ const preview_providers = [
       return {
         id: 2,
         name: 'Merit TestUser',
-        email: 'merit_test_user@northeastern.edu',
+        email: 'merit_test_user@husky.neu.edu',
         image: 'https://i.pravatar.cc/150?u=jsmith@example.com',
       };
     },
