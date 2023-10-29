@@ -44,9 +44,9 @@ const AcademicInfo: React.FC = () => {
             <InputContainer
               label="Track"
               labelClass="text-sm font-normal"
-              incomplete={position === undefined}
+              incomplete={editing && position === undefined}
               incompleteMessage="Must specify track."
-              hideValidation={!editing}
+              withMarginY
             >
               {editing ? (
                 <DropdownInput<ProfessorPosition>
@@ -70,9 +70,9 @@ const AcademicInfo: React.FC = () => {
             <InputContainer
               label="Sabbatical"
               labelClass="text-sm font-normal"
-              incomplete={sabbatical === undefined}
+              incomplete={editing && sabbatical === undefined}
               incompleteMessage="Must specify status."
-              hideValidation={!editing}
+              withMarginY
             >
               {editing ? (
                 <DropdownInput<SabbaticalOption>
@@ -97,14 +97,13 @@ const AcademicInfo: React.FC = () => {
           label="Activity Distribution"
           labelClass="text-sm font-normal"
           incomplete={
-            (teachingPercent || 0) +
+            editing && ((teachingPercent || 0) +
               (researchPercent || 0) +
               (servicePercent || 0) !==
-            1
+            1)
           }
           incompleteMessage="Percentages must sum to 100."
-          statusPosition="top"
-          hideValidation={!editing}
+          withMarginY
         >
           <PercentageInfo
             editing={editing}

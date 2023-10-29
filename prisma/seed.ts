@@ -545,7 +545,7 @@ async function createProfessorInfoData() {
           email: 'hernandez.die@husky.neu.edu',
         },
       },
-      position: 'Tenure Track Faculty',
+      position: ProfessorPosition.TENURE,
       teachingPercent: 0.4,
       researchPercent: 0.5,
       servicePercent: 0.1,

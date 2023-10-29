@@ -33,9 +33,9 @@ const ContactInfo: React.FC = () => {
             <InputContainer
               label="Phone Number"
               labelClass="text-sm font-normal"
-              incomplete={!!phoneNumber && phoneNumber.length !== 10}
+              incomplete={editing && !!phoneNumber && phoneNumber.length !== 10}
               incompleteMessage="Invalid number."
-              hideValidation={!editing}
+              withMarginY
             >
               {editing ? (
                 <TextInput
@@ -56,9 +56,7 @@ const ContactInfo: React.FC = () => {
             <InputContainer
               label="Office Location"
               labelClass="text-sm font-normal"
-              incomplete={false}
-              incompleteMessage="Cannot be empty."
-              hideValidation={!editing}
+              withMarginY
             >
               {editing ? (
                 <TextInput
@@ -77,9 +75,9 @@ const ContactInfo: React.FC = () => {
           <InputContainer
             label="Email"
             labelClass="text-sm font-normal"
-            incomplete={!email || !isValidEmail(email)}
+            incomplete={editing && (!email || !isValidEmail(email))}
             incompleteMessage="Invalid email."
-            hideValidation={!editing}
+            withMarginY
           >
             {editing ? (
               <TextInput
