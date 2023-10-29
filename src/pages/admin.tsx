@@ -20,7 +20,6 @@ import NewUserRow from '@/components/AdminPage/NewUserRow';
 import { bigintToJSON } from '@/shared/utils/misc.util';
 import Image from 'next/image';
 import Button from '@/shared/components/Button';
-import AppLayout from '@/shared/components/AppLayout';
 
 interface AdminPageProps {
   users?: UserDto[];
@@ -235,32 +234,30 @@ const AdminPage: React.FC<AdminPageProps> = ({
       <Head>
         <title>Admin</title>
       </Head>
-      <AppLayout>
-        <div className="w-full relative">
-          <div className="w-full flex justify-between">
-            <h2>Users</h2>
-            <div className="flex items-center space-x-2">
-              <Button onClick={() => toggleAddingUser((b) => !b)}>
-                {isAddingUser ? 'Cancel' : 'Add User'}
-              </Button>
-            </div>
-          </div>
-          <div className="flex flex-col w-full space-y-3 my-4">
-            <Header />
-            {isAddingUser && (
-              <NewUserRow submit={createNewUser} cancel={cancel} />
-            )}
-            {sortedUsers.map((user) => (
-              <AdminTableRow
-                key={user.id}
-                user={user}
-                submit={(newUser) => saveUser(user.id, newUser)}
-                delete={() => handleDeleteUser(user.id)}
-              />
-            ))}
+      <div className="w-full relative">
+        <div className="w-full flex justify-between">
+          <h2>Users</h2>
+          <div className="flex items-center space-x-2">
+            <Button onClick={() => toggleAddingUser((b) => !b)}>
+              {isAddingUser ? 'Cancel' : 'Add User'}
+            </Button>
           </div>
         </div>
-      </AppLayout>
+        <div className="flex flex-col w-full space-y-3 my-4">
+          <Header />
+          {isAddingUser && (
+            <NewUserRow submit={createNewUser} cancel={cancel} />
+          )}
+          {sortedUsers.map((user) => (
+            <AdminTableRow
+              key={user.id}
+              user={user}
+              submit={(newUser) => saveUser(user.id, newUser)}
+              delete={() => handleDeleteUser(user.id)}
+            />
+          ))}
+        </div>
+      </div>
     </>
   );
 };

@@ -6,29 +6,25 @@ import { SessionProvider } from 'next-auth/react';
 import { Session } from 'next-auth';
 import '../styles/index.css';
 import '../styles/utilities.css';
+import AppLayout from '@/shared/components/AppLayout';
 
 interface CustomPageProps {
   session: Session;
+  hideSidebars?: boolean;
+  hideNavbar?: boolean;
 }
 
 function MyApp({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { session, hideSidebars = false, hideNavbar = false, ...pageProps },
 }: AppProps<CustomPageProps>) {
+
   return (
     <Provider store={store}>
       <SessionProvider session={session}>
-        <Component {...pageProps} />
-        {/* <div className="flex flex-col w-screen min-h-screen">
-          <Header />
-          <div className="flex w-full flex-grow">
-            <SideNavbar />
-            <div className="flex-1 overflow-x-hidden flex self-stretch border-x border-light-grey px-10 py-6">
-              <Component {...pageProps} />
-            </div>
-            <InfoSidebar />
-          </div>
-        </div> */}
+        <AppLayout hideSidebars={hideSidebars} hideNavbar={hideNavbar}>
+          <Component {...pageProps} />
+        </AppLayout>
       </SessionProvider>
     </Provider>
   );

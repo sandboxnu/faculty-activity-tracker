@@ -3,7 +3,6 @@ import ProfileInfo, {
 } from '@/components/Profile/ProfileInfo';
 import { getProfessorInfoForUser } from '@/services/professorInfo';
 import { getUserById, getUserWithInfo } from '@/services/user';
-import AppLayout from '@/shared/components/AppLayout';
 import { toTitleCase } from '@/shared/utils/misc.util';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
@@ -56,14 +55,12 @@ const Profile: React.FC<ProfilePageProps> = ({ info, error }) => {
     );
 
   return (
-    <AppLayout>
-      <div className="w-full">
-        <Head>
-          <title>My Profle</title>
-        </Head>
-        <ProfileInfo {...info} />
-      </div>
-    </AppLayout>
+    <div className="w-full">
+      <Head>
+        <title>My Profle</title>
+      </Head>
+      <ProfileInfo {...info} />
+    </div>
   );
 };
 
