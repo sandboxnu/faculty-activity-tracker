@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { CreateUserDto } from '@/models/user.model';
 import { CreateProfessorInfoDto } from '@/models/professorInfo.model';
 import RoleSetup from '@/components/AccountSetup/RoleSetup';
-import { ProfessorPosition, Role, SabbaticalOption } from '@prisma/client';
+import { Role, SabbaticalOption } from '@prisma/client';
 import UserInfoForm from '@/components/AccountSetup/UserInfoForm';
 import { createUser } from '@/client/users.client';
 import { ResponseStatus } from '@/client/activities.client';

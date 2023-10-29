@@ -41,18 +41,6 @@ const InputContainer: React.FC<InputContainerProps> = ({
     </div>
   );
 
-  const InfoIcon = () => (
-    <div className="relative">
-      <Image
-        src="/media/infoIcon.svg"
-        alt="Info"
-        width={10}
-        height={10}
-        className=""
-      />
-    </div>
-  );
-
   return (
     <div className={`flex flex-col ${withMarginY ? 'my-2' : ''} space-y-1`}>
       <div className="flex items-center space-x-1">

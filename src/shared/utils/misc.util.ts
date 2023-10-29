@@ -26,7 +26,7 @@ export const shortenDescription = (description: string): string => {
 
   if (descriptionLength < 97) {
     return description;
-  } 
+  }
 
   return description.substring(0, 99) + '...';
 }
