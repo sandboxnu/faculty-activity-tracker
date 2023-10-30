@@ -49,12 +49,12 @@ const ActivityGroup: React.FC<ActivityApprovalGroupProps> = ({
 
   return (
     <div
-      className="w-full flex flex-col border-box gap-[12px] mb-[30px]"
+      className="border-box mb-[30px] flex w-full flex-col gap-[12px]"
       style={{ userSelect: 'none' }}
     >
       <div className="flex items-center justify-between ">
         <div
-          className="flex items-center space-x-4 cursor-pointer"
+          className="flex cursor-pointer items-center space-x-4"
           onClick={toggleDropDown}
         >
           <div className="text-body">{title}</div>

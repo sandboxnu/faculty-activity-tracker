@@ -7,8 +7,8 @@ interface ActivityCardProps {
 
 const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
   return (
-    <div className="w-1/3 p-3 box-border">
-      <div className="border rounded-2xl border-black h-[100px] py-8 px-24 mr-2">
+    <div className="box-border w-1/3 p-3">
+      <div className="mr-2 h-[100px] rounded-2xl border border-black px-24 py-8">
         <p> {activity.name} </p>
       </div>
     </div>

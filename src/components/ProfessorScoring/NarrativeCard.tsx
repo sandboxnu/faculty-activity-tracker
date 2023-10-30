@@ -36,18 +36,18 @@ const NarrativeCard: React.FC<NarrativeCardProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-start justify-center relative rounded-lg gap-[20px] px-[20px] card py-[16px] cursor-pointer bg-gray-100 
+      className={`card relative flex cursor-pointer flex-col items-start justify-center gap-[20px] rounded-lg bg-gray-100 px-[20px] py-[16px] 
           ${
             expanded
-              ? 'border-gray-300 border-[1.5px] border-solid'
+              ? 'border-[1.5px] border-solid border-gray-300'
               : 'shadow-sm'
           }`}
       onClick={toggleDropDown}
       style={{ userSelect: 'none' }}
     >
-      <div className="flex items-center relative w-full">
-        <div className="flex flex-grow justify-start gap-[30px] items-center">
-          <div className="relative w-fit mt-[-1.00px] text-heading-3">
+      <div className="relative flex w-full items-center">
+        <div className="flex flex-grow items-center justify-start gap-[30px]">
+          <div className="relative mt-[-1.00px] w-fit text-heading-3">
             Narrative
           </div>
           {!expanded && (

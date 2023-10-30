@@ -31,9 +31,9 @@ const SideBarBubble: React.FC<{
   }, [cookieKey]);
 
   return (
-    <div className="flex flex-col px-5 py-3 bg-gray-100 w-full rounded-lg shadow-sm">
+    <div className="flex w-full flex-col rounded-lg bg-gray-100 px-5 py-3 shadow-sm">
       <div
-        className="flex items-center space-x-4 cursor-pointer"
+        className="flex cursor-pointer items-center space-x-4"
         onClick={toggleDropDown}
       >
         <Image

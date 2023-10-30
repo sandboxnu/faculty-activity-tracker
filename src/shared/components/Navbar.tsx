@@ -21,12 +21,12 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <div className="flex justify-between items-baseline w-screen bg-black font-bold px-12 py-6">
+    <div className="flex w-screen items-baseline justify-between bg-black px-12 py-6 font-bold">
       <Image src="/media/neuLogo.svg" alt="CAMD Logo" width={200} height={50} />
       {navlinks.map(({ path, name, onClick }) => (
         <Link
           key={path}
-          className={`text-white font-bold pb-2 border-b-2 border-transparent ${
+          className={`border-b-2 border-transparent pb-2 font-bold text-white ${
             router.pathname == path ? 'border-red-500' : 'hover:border-white'
           }`}
           href={path}

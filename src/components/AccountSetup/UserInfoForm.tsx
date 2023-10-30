@@ -74,7 +74,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
   };
 
   return (
-    <div className="w-full flex flex-grow justify-center items-center">
+    <div className="flex w-full flex-grow items-center justify-center">
       <StepWrapper
         title="Create your account"
         subtitle="Please provide your full name."
@@ -82,7 +82,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
         next={submit}
         back={() => dispatch(setStep('role'))}
       >
-        <div className="flex flex-col w-full">
+        <div className="flex w-full flex-col">
           <InputContainer
             label="First Name"
             labelClass="text-body"

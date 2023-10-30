@@ -16,7 +16,7 @@ const SideNavbar: React.FC = () => {
   const navClass = 'text-body-bold text-black pb-2 nav-underline relative';
 
   return (
-    <div className="flex flex-col items-start min-w-[207px] bg-white font-bold px-6 py-6 space-y-4">
+    <div className="flex min-w-[207px] flex-col items-start space-y-4 bg-white px-6 py-6 font-bold">
       <Link
         href={isMerit ? '/merit/dashboard' : '/dashboard'}
         className={`${navClass} ${
@@ -46,11 +46,11 @@ const SideNavbar: React.FC = () => {
             Submissions
           </p>
 
-          <div className="ml-4 pl-2 border-l">
+          <div className="ml-4 border-l pl-2">
             <div className="flex flex-col items-start space-y-5">
               <Link
                 href="/submissions/teaching"
-                className={`text-body pb-2 nav-underline relative ${
+                className={`nav-underline relative pb-2 text-body ${
                   category == 'teaching'
                     ? 'nav-underline-red'
                     : 'hover:nav-underline-red'
@@ -60,7 +60,7 @@ const SideNavbar: React.FC = () => {
               </Link>
               <Link
                 href="/submissions/research"
-                className={`text-body pb-2 nav-underline relative ${
+                className={`nav-underline relative pb-2 text-body ${
                   category == 'research'
                     ? 'nav-underline-red'
                     : 'hover:nav-underline-red'
@@ -70,7 +70,7 @@ const SideNavbar: React.FC = () => {
               </Link>
               <Link
                 href="/submissions/service"
-                className={`text-body pb-2 nav-underline relative ${
+                className={`nav-underline relative pb-2 text-body ${
                   category == 'service'
                     ? 'nav-underline-red'
                     : 'hover:nav-underline-red'

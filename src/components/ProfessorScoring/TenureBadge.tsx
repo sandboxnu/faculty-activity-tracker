@@ -5,11 +5,11 @@ interface TenureBadgeProps {
 const TenureBadge: React.FC<TenureBadgeProps> = ({ isTenure }) => {
   return (
     <div
-      className={`inline-flex items-center gap-[10px] px-[10px] py-[4px] rounded-[15px] justify-center relative ${
+      className={`relative inline-flex items-center justify-center gap-[10px] rounded-[15px] px-[10px] py-[4px] ${
         isTenure ? 'bg-[#c0d1f3]' : 'bg-[#E6C0F3]'
       }`}
     >
-      <div className="text-small w-fit mt-[-1.00px] whitespace-nowrap relative">
+      <div className="relative mt-[-1.00px] w-fit whitespace-nowrap text-small">
         {isTenure && <>TT/T</>}
         {!isTenure && <>NT</>}
       </div>

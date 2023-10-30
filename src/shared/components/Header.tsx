@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const signedIn = status === 'authenticated';
 
   return (
-    <div className="flex items-baseline w-screen bg-black font-bold px-5 py-3">
+    <div className="flex w-screen items-baseline bg-black px-5 py-3 font-bold">
       <Image
         src="/media/newLogo.svg"
         alt="Faculty Activity Tracker Logo"

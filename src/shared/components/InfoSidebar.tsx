@@ -93,7 +93,7 @@ const InfoSidebar: React.FC = () => {
   }, [pathname, category, userId, professorId]);
 
   return (
-    <div className="flex flex-col items-start w-1/5 bg-white px-6 py-6 space-y-6">
+    <div className="flex w-1/5 flex-col items-start space-y-6 bg-white px-6 py-6">
       {sidebarType === 'submissions' && category && (
         <SubmissionsInfo
           activitiesBySemester={activitiesBySemester}
