@@ -17,7 +17,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
 
   useEffect(() => {
     getProfessorScoreForUser(professorId).then((data) => {
-      setProfessorScore(data as CreateProfessorScoreDto);
+      setProfessorScore(data);
     });
   }, [professorId]);
 

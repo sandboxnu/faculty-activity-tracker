@@ -19,7 +19,7 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "**/*.(ts|tsx|js|md|json)": "prettier --write --ignore-path .gitignore ."
+    "**/*.(ts|tsx|js|md|json)": "npm run format"
   },
   "dependencies": {
     "@next/font": "13.1.6",
