@@ -30,7 +30,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.cache-lint.outputs.cache-hit != 'true'
-        run: npm ci --ignore-scripts
+        run: npm ci
 
       - name: Code Linting
         run: npm run lint
@@ -55,7 +55,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.cache-tsc.outputs.cache-hit != 'true'
-        run: npm ci --ignore-scripts
+        run: npm ci
 
       - name: Code Linting
         run: npx tsc
