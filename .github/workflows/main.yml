@@ -19,17 +19,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      
+
       - name: Cache Dependencies
-        id: cache-lint
-        uses: actions/cache@v3
+        id: cache
+        uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
 
       - name: Install Dependencies
-        if: steps.cache-lint.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Code Linting
@@ -44,17 +44,22 @@ jobs:
     steps:
       - name: Code Checkout
         uses: actions/checkout@v4
-      
-      - name: Cache Dependencies
-        id: cache-tsc
-        uses: actions/cache@v3
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache Dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
 
       - name: Install Dependencies
-        if: steps.cache-tsc.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Code Linting
