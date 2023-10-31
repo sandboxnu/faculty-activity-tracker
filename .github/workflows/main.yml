@@ -36,7 +36,7 @@ jobs:
         run: npm run lint
 
       - name: Code Formatting
-        run: npm run format
+        run: npm run format:check
 
   tsc:
     name: Check Typescript
