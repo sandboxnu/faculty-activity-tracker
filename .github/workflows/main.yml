@@ -19,9 +19,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Cache Dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
 
       - name: Install Dependencies
-        run: npm ci
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
 
       - name: Code Linting
         run: npm run lint
@@ -35,14 +44,18 @@ jobs:
     steps:
       - name: Code Checkout
         uses: actions/checkout@v4
-
-      - name: Install NodeJS
-        uses: actions/setup-node@v4
+      
+      - name: Cache Dependencies
+        id: cache
+        uses: actions/cache@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
 
       - name: Install Dependencies
-        run: npm ci
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
 
       - name: Code Linting
         run: npx tsc
