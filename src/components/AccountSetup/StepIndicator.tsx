@@ -39,12 +39,12 @@ const StepLabel: React.FC<{ step: number; state: CompletionState }> = ({
   state,
 }) => (
   <p className={`text-sm font-semibold ${textCompletionClass[state]}`}>
-    {step + 1}
+    {step}
   </p>
 );
 
 const idempotentArray = (length: number): number[] =>
-  Array.apply(null, Array(length)).map((_, idx) => idx);
+  Array.apply(null, Array(length)).map((_, idx) => idx + 1);
 
 const StepIndicator: React.FC<StepIndicatorProps> = ({
   currentStep,

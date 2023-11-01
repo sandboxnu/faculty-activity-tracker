@@ -59,6 +59,7 @@
   top: 150%;
   left: 50%;
   margin-left: -70px;
+  pointer-events: none;
 }
 
 .infoTooltip .infoTooltipText::before,

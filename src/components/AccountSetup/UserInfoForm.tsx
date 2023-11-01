@@ -11,22 +11,17 @@ import {
   setStep,
 } from '@/store/accountSetup.store';
 import { CreateUserDto } from '@/models/user.model';
+import { Role, SabbaticalOption } from '@prisma/client';
+import { createUser } from '@/client/users.client';
+import {
+  isErrorResponse,
+  responseStatusMessage,
+} from '@/shared/utils/misc.util';
+import { CreateProfessorInfoDto } from '@/models/professorInfo.model';
+import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
+import { useRouter } from 'next/router';
 
-interface UserInfoFormProps {
-  // initialName: string;
-  // initialPreferredName?: string;
-  // submit: (firstName: string, lastName: string, preferredName?: string) => void;
-  // back: () => void;
-}
-
-const UserInfoForm: React.FC<UserInfoFormProps> = (
-  {
-    // initialName,
-    // initialPreferredName,
-    // submit,
-    // back,
-  },
-) => {
+const UserInfoForm: React.FC = () => {
   const initialName = useSelector(selectName);
   const email = useSelector(selectEmail);
   const role = useSelector(selectRole);
@@ -34,6 +29,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
   const [firstName, setFirstName] = useState(parsedName[0] || '');
   const [lastName, setLastName] = useState(parsedName[1] || '');
   const [preferredName, setPreferredName] = useState('');
+  const [pageError, setPageError] = useState<string | null>(null);
   const [firstNameError, setFirstNameError] = useState<string | undefined>(
     undefined,
   );
@@ -41,7 +37,28 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
     undefined,
   );
 
+  const router = useRouter();
   const dispatch = useDispatch();
+
+  const createMeritUser = async (userInfo: CreateUserDto) => {
+    const newUser = await createUser(userInfo);
+    if (isErrorResponse(newUser))
+      return setPageError(responseStatusMessage[newUser]);
+
+    let newProfessorInfo: CreateProfessorInfoDto = {
+      userId: newUser.id,
+      position: '',
+      teachingPercent: 0,
+      researchPercent: 0,
+      servicePercent: 0,
+      sabbatical: SabbaticalOption.NO,
+      teachingReleaseExplanation: null,
+    };
+
+    const res = await updateProfessorInfoForUser(newProfessorInfo);
+    if (isErrorResponse(res)) return setPageError(responseStatusMessage[res]);
+    router.push('/profile');
+  };
 
   const submit = () => {
     if (!firstName || !lastName) {
@@ -59,8 +76,13 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
       role,
       dateModified: BigInt(Date.now()),
     };
-    dispatch(setUserInfo(newUser));
-    dispatch(setStep('professor info'));
+    // onlf faculty members are presented with third screen
+    if (role === Role.FACULTY) {
+      dispatch(setUserInfo(newUser));
+      dispatch(setStep('professor info'));
+    } else {
+      createMeritUser(newUser);
+    }
   };
 
   const onFirstNameChange = (value: string) => {
@@ -78,6 +100,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
       <StepWrapper
         title="Create your account"
         subtitle="Please provide your full name."
+        hideProgressBar={role !== Role.FACULTY}
         currentStep={1}
         next={submit}
         back={() => dispatch(setStep('role'))}

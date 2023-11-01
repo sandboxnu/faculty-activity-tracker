@@ -1,6 +1,5 @@
 import { obtainRoleForAccessCode } from '@/client/accessCodes.client';
 import { ResponseStatus } from '@/client/activities.client';
-import { Role } from '@prisma/client';
 import React, { useState } from 'react';
 
 import InputContainer from '@/shared/components/InputContainer';
@@ -8,6 +7,10 @@ import TextInput from '@/shared/components/TextInput';
 import StepWrapper from './StepWrapper';
 import { useDispatch } from 'react-redux';
 import { setRole, setStep } from '@/store/accountSetup.store';
+import {
+  isErrorResponse,
+  responseStatusMessage,
+} from '@/shared/utils/misc.util';
 
 interface RoleSetupProps {}
 
@@ -19,21 +22,17 @@ const RoleSetup: React.FC<RoleSetupProps> = () => {
   const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch();
 
-  const submitCode = () => {
-    console.log(codeInput);
+  const submitCode = async () => {
     if (!codeInput) return setAccessCodeError('Please enter your access code.');
 
-    obtainRoleForAccessCode(codeInput).then((res) => {
-      if (res === ResponseStatus.NotFound)
-        setAccessCodeError('Incorrect access code.');
-      else if (res === ResponseStatus.Unauthorized) setError('Unauthorized');
-      else if (res === ResponseStatus.BadRequest) setError('Bad request');
-      else if (res === ResponseStatus.UnknownError) setError('Unknown error');
-      else {
-        dispatch(setRole(res));
-        dispatch(setStep('user info'));
-      }
-    });
+    const res = await obtainRoleForAccessCode(codeInput);
+    if (res === ResponseStatus.NotFound)
+      setAccessCodeError('Incorrect access code.');
+    else if (isErrorResponse(res)) return setError(responseStatusMessage[res]);
+    else {
+      dispatch(setRole(res));
+      dispatch(setStep('user info'));
+    }
   };
 
   const onChange = (value: string) => {
@@ -46,6 +45,7 @@ const RoleSetup: React.FC<RoleSetupProps> = () => {
       <StepWrapper
         title="Welcome!"
         subtitle="Please enter your access code."
+        hideProgressBar
         currentStep={0}
         next={submitCode}
         back={() => {}}

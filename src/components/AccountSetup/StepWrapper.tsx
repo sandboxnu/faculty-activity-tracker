@@ -7,6 +7,7 @@ import { selectFieldsIncomplete } from '@/store/accountSetup.store';
 interface StepWrapperProps {
   currentStep: number;
   numSteps?: number;
+  hideProgressBar?: boolean;
   title: string;
   subtitle: string;
   next: () => void;
@@ -16,7 +17,8 @@ interface StepWrapperProps {
 
 const StepWrapper: React.FC<StepWrapperProps> = ({
   currentStep,
-  numSteps = 3,
+  hideProgressBar = false,
+  numSteps = 2,
   title,
   subtitle,
   next,
@@ -27,18 +29,17 @@ const StepWrapper: React.FC<StepWrapperProps> = ({
 
   return (
     <div className="flex flex-col w-full items-center rounded-lg bg-gray-100 shadow-lg pt-6 px-20 pb-11">
-      <StepIndicator currentStep={currentStep} numSteps={numSteps} />
-      <div className="my-8 flex flex-col items-center">
+      {!hideProgressBar && (
+        <StepIndicator currentStep={currentStep} numSteps={numSteps} />
+      )}
+      <div className="mt-6 mb-4 flex flex-col items-center">
         <p className="text-2xl font-bold">{title}</p>
         <p className="text-sm font-medium">{subtitle}</p>
       </div>
       {children}
       <div className="flex justify-between mt-12 w-full" id="buttons">
         {currentStep > 0 && (
-          <Button
-            variant='secondary'
-            onClick={back}
-          >
+          <Button variant="secondary" onClick={back}>
             <p className="text-xs">Back</p>
           </Button>
         )}

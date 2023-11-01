@@ -1,3 +1,5 @@
+import { ResponseStatus } from '@/client/activities.client';
+
 export const toTitleCase = (str: string): string => {
   return str
     .split(' ')
@@ -29,4 +31,23 @@ export const shortenDescription = (description: string): string => {
   }
 
   return description.substring(0, 99) + '...';
+};
+
+export const isErrorResponse = (
+  status: ResponseStatus | any,
+): status is ResponseStatus => {
+  return [
+    ResponseStatus.BadRequest,
+    ResponseStatus.NotFound,
+    ResponseStatus.Unauthorized,
+    ResponseStatus.UnknownError,
+  ].includes(status);
+};
+
+export const responseStatusMessage: Record<ResponseStatus, string> = {
+  [ResponseStatus.Success]: 'Success',
+  [ResponseStatus.UnknownError]: 'Unknown Error',
+  [ResponseStatus.NotFound]: 'Not Found',
+  [ResponseStatus.Unauthorized]: 'Unauthorized',
+  [ResponseStatus.BadRequest]: 'Bad Request',
 };

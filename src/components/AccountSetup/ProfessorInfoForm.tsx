@@ -4,7 +4,6 @@ import TextAreaInput from '@/shared/components/TextAreaInput';
 import { SabbaticalOption } from '@prisma/client';
 import React, { useState } from 'react';
 import PercentageInfo from '../Profile/PercentageInfo';
-import { ResponseStatus } from '@/client/activities.client';
 import { updateProfessorInfoForUser } from '@/client/professorInfo.client';
 import { createUser } from '@/client/users.client';
 import { CreateProfessorInfoDto } from '@/models/professorInfo.model';
@@ -12,18 +11,10 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserInfo, setStep } from '@/store/accountSetup.store';
 import StepWrapper from './StepWrapper';
-
-interface ProfessorInfoFormProps {
-  // submit: (
-  //   position: string,
-  //   teachingPercent: number,
-  //   researchPercent: number,
-  //   servicePercent: number,
-  //   sabbatical: SabbaticalOption,
-  //   teachingReleaseExplanation?: string,
-  // ) => void;
-  // back: () => void;
-}
+import {
+  isErrorResponse,
+  responseStatusMessage,
+} from '@/shared/utils/misc.util';
 
 const positionOptions: Option[] = [
   { label: 'Non-Tenure Track', value: 'Non-Tenure Track' },
@@ -36,12 +27,7 @@ const sabbaticalOptions: Option<SabbaticalOption>[] = [
   { label: 'Sabbatical: Semester', value: SabbaticalOption.SEMESTER },
 ];
 
-const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
-  {
-    // submit,
-    // back,
-  },
-) => {
+const ProfessorInfoForm: React.FC = () => {
   const userInfo = useSelector(selectUserInfo);
   const [position, setPosition] = useState('');
   const [teachingPercent, setTeachingPercent] = useState(0);
@@ -132,27 +118,21 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
 
     const newUser = await createUser(userInfo);
 
-    if (newUser === ResponseStatus.UnknownError) setPageError('Unknown Error');
-    else {
-      let newProfessorInfo: CreateProfessorInfoDto = {
-        userId: newUser.id,
-        position,
-        teachingPercent,
-        researchPercent,
-        servicePercent,
-        sabbatical,
-        teachingReleaseExplanation: teachingReleaseExplanation || null,
-      };
+    if (isErrorResponse(newUser))
+      return setPageError(responseStatusMessage[newUser]);
+    let newProfessorInfo: CreateProfessorInfoDto = {
+      userId: newUser.id,
+      position,
+      teachingPercent,
+      researchPercent,
+      servicePercent,
+      sabbatical,
+      teachingReleaseExplanation: teachingReleaseExplanation || null,
+    };
 
-      const res = await updateProfessorInfoForUser(newProfessorInfo);
-      if (res === ResponseStatus.Unauthorized) setPageError('Unauthorized');
-      else if (res === ResponseStatus.BadRequest) setPageError('Bad request');
-      else if (res === ResponseStatus.UnknownError)
-        setPageError('Unknown error');
-      else {
-        router.push('/profile');
-      }
-    }
+    const res = await updateProfessorInfoForUser(newProfessorInfo);
+    if (isErrorResponse(res)) return setPageError(responseStatusMessage[res]);
+    router.push('/profile');
   };
 
   return (
@@ -186,6 +166,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
             withMarginY
             incomplete={!!distributionError}
             incompleteMessage={distributionError}
+            infoMessage="This represents the standard workloads for the faculty level selected above. The weighting can be adjusted based on your circumstances."
             required
           >
             <div className="w-full px-5">
