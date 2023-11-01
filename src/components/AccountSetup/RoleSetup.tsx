@@ -26,10 +26,11 @@ const RoleSetup: React.FC<RoleSetupProps> = () => {
     if (!codeInput) return setAccessCodeError('Please enter your access code.');
 
     const res = await obtainRoleForAccessCode(codeInput);
-    if (res === ResponseStatus.NotFound)
+    if (res === ResponseStatus.NotFound) {
       setAccessCodeError('Incorrect access code.');
-    else if (isErrorResponse(res)) return setError(responseStatusMessage[res]);
-    else {
+    } else if (isErrorResponse(res)) {
+      setError(responseStatusMessage[res]);
+    } else {
       dispatch(setRole(res));
       dispatch(setStep('user info'));
     }
