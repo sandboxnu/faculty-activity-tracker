@@ -19,7 +19,7 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "**/*.(ts|tsx|js|md|json)": "npm run format"
+    "**/*.(ts|tsx|js|md|json)": "prettier --write"
   },
   "dependencies": {
     "@next/font": "13.1.6",
