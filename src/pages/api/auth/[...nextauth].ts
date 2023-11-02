@@ -7,6 +7,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 const preview_providers = [
+  // Faculty Test User
   CredentialsProvider({
     name: 'FACULTY',
     id: 'faculty-test-provider',
@@ -20,6 +21,7 @@ const preview_providers = [
       };
     },
   }),
+  // Merit Committee Test User
   CredentialsProvider({
     name: 'MERIT_COMMITTEE_MEMBER',
     id: 'merit-test-provider',
@@ -33,6 +35,20 @@ const preview_providers = [
       };
     },
   }),
+  // Admin (committee head) Test User
+  CredentialsProvider({
+    name: 'MERIT_COMMITTEE_HEAD',
+    id: 'admin-test-provider',
+    // @ts-ignore comment
+    async authorize() {
+      return {
+        id: 3,
+        name: 'Merit Head TestUser',
+        email: 'merit_head_test_user@husky.neu.edu',
+        image: 'https://i.pravatar.cc/150?u=admin_test_user',
+      }
+    }}),
+
 ];
 
 const production_providers = [
@@ -87,7 +103,6 @@ export const authOptions: AuthOptions = {
     },
     async signIn({ user, account, profile, email, credentials }) {
       let emailPattern = /[(\w)+.(\w), (\w)+]@husky.neu.edu/;
-      if (user.email === 'maxpinheiro181@gmail.com') return true;
       if (!user.email || !emailPattern.test(user.email)) {
         return '/invalid-email';
       }
