@@ -1,12 +1,11 @@
-import { PrismaClient, Narrative } from '.prisma/client';
+import { Narrative } from '.prisma/client';
 import {
   CreateNarrativeDto,
   UpdateNarrativeDto,
   DeleteNarrativeDto,
 } from '@/models/narrative.model';
 import { NarrativeCategory } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from 'lib/db';
 
 export const getNarrativeForUserForCategory = async (
   userId: number,
