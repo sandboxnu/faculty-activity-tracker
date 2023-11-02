@@ -26,7 +26,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
       rows={numRows}
       placeholder={placeholder || ''}
       className={clsx([
-        'border-[0.5px] border-gray-500 rounded-lg px-3 py-2 outline-none',
+        'rounded-lg border-[0.5px] border-gray-500 px-3 py-2 outline-none',
         incompleteBorderClass,
         fillContainer ? 'flex flex-grow' : 'min-w-[175px]',
         addOnClass,

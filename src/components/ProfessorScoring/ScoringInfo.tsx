@@ -13,12 +13,12 @@ const ScoringInfo: React.FC<SocringInfoProps> = ({ profInfo }) => {
   return (
     <>
       <StaticSideBarBubble title="Teaching Release">
-        <div className="space-y-2 my-2">
+        <div className="my-2 space-y-2">
           <p> {profInfo.teachingReleaseExplanation || 'N/A'}</p>
         </div>
       </StaticSideBarBubble>
       <StaticSideBarBubble title="Activity Rubric">
-        <div className="space-y-2 my-2">
+        <div className="my-2 space-y-2">
           <p> 8 significants = 1 major activity</p>
           <p> 4 significants = 1 minor activity</p>
         </div>

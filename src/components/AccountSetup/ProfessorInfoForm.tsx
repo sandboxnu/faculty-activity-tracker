@@ -156,7 +156,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
   };
 
   return (
-    <div className="w-full flex flex-grow justify-center items-center">
+    <div className="flex w-full flex-grow items-center justify-center">
       <StepWrapper
         title="Basic Information"
         subtitle="Please provide the following information."
@@ -164,7 +164,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
         next={submitInfo}
         back={() => dispatch(setStep('user info'))}
       >
-        <div className="flex flex-col w-full">
+        <div className="flex w-full flex-col">
           <InputContainer
             label="Position"
             labelClass="text-body"

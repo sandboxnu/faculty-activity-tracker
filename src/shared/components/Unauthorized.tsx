@@ -4,12 +4,12 @@ import { signIn } from 'next-auth/react';
 
 const Unauthorized: React.FC = () => {
   return (
-    <div className="flex flex-col items-center mx-auto">
+    <div className="mx-auto flex flex-col items-center">
       <div className="h-[20vh]" />
       <p>You must be logged in to view this page!</p>
       <button
         onClick={() => signIn('google', { callbackUrl: '/account-setup' })}
-        className="my-5 button bg-red-500 text-white"
+        className="button my-5 bg-red-500 text-white"
       >
         Login
       </button>

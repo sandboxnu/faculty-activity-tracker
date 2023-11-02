@@ -1,4 +1,8 @@
-import { CreateProfessorScoreDto, GetProfessorScore, UpdateProfessorScoreDto } from '@/models/professorScore.model';
+import {
+  CreateProfessorScoreDto,
+  GetProfessorScore,
+  UpdateProfessorScoreDto,
+} from '@/models/professorScore.model';
 import { ResponseStatus } from './activities.client';
 
 const apiRoot = '/api/professor-scores';
@@ -30,9 +34,8 @@ export const updateProfessorScoreForUser = async (
   }
 };
 
-
 export const getProfessorScoreForUser = async (
-  userId: number
+  userId: number,
 ): Promise<
   | CreateProfessorScoreDto
   | ResponseStatus.Unauthorized
@@ -40,19 +43,18 @@ export const getProfessorScoreForUser = async (
   | ResponseStatus.UnknownError
 > => {
   try {
-    const response = await fetch(apiRoot + "/" + userId, {
+    const response = await fetch(apiRoot + '/' + userId, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-      }
+      },
     });
 
     if (response.ok || response.status === 200) {
       const data = await response.json();
       return data;
-    }
-    else if (response.status === 400) return ResponseStatus.BadRequest;
+    } else if (response.status === 400) return ResponseStatus.BadRequest;
     else if (response.status === 401) return ResponseStatus.Unauthorized;
     else return ResponseStatus.UnknownError;
   } catch (error) {

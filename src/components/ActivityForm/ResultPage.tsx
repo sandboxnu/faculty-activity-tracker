@@ -11,7 +11,7 @@ const ResultPage: React.FC<{ success: boolean }> = ({ success }) => {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex flex-col w-full items-center mt-[20vh]">
+    <div className="mt-[20vh] flex w-full flex-col items-center">
       <Image
         src={
           success ? '/media/successCheckmark.svg' : '/media/failureWarning.svg'

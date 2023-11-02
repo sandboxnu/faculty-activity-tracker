@@ -17,12 +17,12 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <Head>
         <title>Dashboard</title>
       </Head>
       <h1>Dashboard</h1>
-      <p className="text-lg text-ruby my-4">Welcome, {name || 'User'}! </p>
+      <p className="text-ruby my-4 text-lg">Welcome, {name || 'User'}! </p>
     </div>
   );
 };
