@@ -2,7 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { UpdateProfessorScoreDto } from '@/models/professorScore.model';
-import { getProfessorScore, upsertProfessorScore } from '@/services/professorScore';
+import {
+  getProfessorScore,
+  upsertProfessorScore,
+} from '@/services/professorScore';
 import { getUserById } from '@/services/user';
 
 export default async function handler(
@@ -18,20 +21,20 @@ export default async function handler(
       if (req.method === 'PUT') {
         if (req.body.userId) {
           const userId = req.body.userId;
-          const user = await getUserById(userId)
+          const user = await getUserById(userId);
 
           if (!user) {
-            res.status(400).json({error: 'User with ID ' + userId + ' does not exist.'})
+            res
+              .status(400)
+              .json({ error: 'User with ID ' + userId + ' does not exist.' });
             return;
           }
-        }
-        else {
+        } else {
           res.status(200).json({ error: 'userId is required' });
         }
-        
+
         await handlePut(req, res);
-      }
-      else {
+      } else {
         res.status(405).send(`Method ${req.method} Not Allowed`);
       }
     } else {
@@ -42,14 +45,11 @@ export default async function handler(
   }
 }
 
-async function handlePut(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+async function handlePut(req: NextApiRequest, res: NextApiResponse) {
   const newScoreDto = JSON.parse(
     JSON.stringify(req.body),
   ) as UpdateProfessorScoreDto;
-  
+
   try {
     const score = await upsertProfessorScore(newScoreDto);
     res.status(200).json({ data: score });

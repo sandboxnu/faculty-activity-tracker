@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  NODE_VERSION: 20
+
+jobs:
+  lint:
+    name: Run Eslint And Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache Dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Code Linting
+        run: npm run lint
+
+      - name: Code Formatting
+        run: npm run format:check
+
+  tsc:
+    name: Check Typescript
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache Dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Code Linting
+        run: npx tsc

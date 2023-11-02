@@ -85,7 +85,7 @@ const AccountSetupPage: React.FC<AccountSetupPageProps> = ({
       <Head>
         <title>Account Setup</title>
       </Head>
-      <div className="flex flex-col w-full max-w-[480px] mx-auto">
+      <div className="mx-auto flex w-full max-w-[480px] flex-col">
         {SetupStepComponent[step]}
       </div>
     </div>

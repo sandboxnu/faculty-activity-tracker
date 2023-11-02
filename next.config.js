@@ -12,11 +12,6 @@ const nextConfig = {
     ];
   },
 
-  experimental: {
-    appDir: true,
-    serverComponentsExternalPackages: ['@prisma/client'],
-  },
-
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },

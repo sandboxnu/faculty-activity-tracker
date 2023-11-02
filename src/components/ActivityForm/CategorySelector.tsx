@@ -38,7 +38,7 @@ const CategorySelector: React.FC = () => {
   return (
     <div className="">
       <h1>Category</h1>
-      <ol className="list-inside my-6 space-y-4">
+      <ol className="my-6 list-inside space-y-4">
         <li>Teaching: Educational activities that benefit NU students.</li>
         <li>
           Creative Activity, Scholarship and Research/Professional Development.

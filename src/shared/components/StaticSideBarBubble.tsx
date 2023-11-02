@@ -5,8 +5,8 @@ const StaticSideBarBubble: React.FC<{
   children: JSX.Element;
 }> = ({ title, children }) => {
   return (
-    <div className="flex flex-col rounded-lg px-5 py-3 w-full bg-gray-100 shadow-sm">
-      <div className="flex w-full mt-[-1.00px] text-body-bold ">{title}</div>
+    <div className="flex w-full flex-col rounded-lg bg-gray-100 px-5 py-3 shadow-sm">
+      <div className="mt-[-1.00px] flex w-full text-body-bold ">{title}</div>
       <div className="flex text-body">{children}</div>
     </div>
   );

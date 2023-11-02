@@ -33,7 +33,7 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
   return (
     <>
       <SideBarBubble title="Instructions" cookieKey="submissions-instructions">
-        <div className="space-y-4 my-2">
+        <div className="my-2 space-y-4">
           <p className="text-sm">
             8-10 Score: 2+ Major Activities, 10+ Significant and Minor
             Activities
@@ -52,7 +52,7 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
 
       <SideBarBubble title="Summary" cookieKey="submissions-summary">
         <>
-          <div className="space-y-2 my-4">
+          <div className="my-4 space-y-2">
             {Object.entries(activitiesBySigLevel).map(
               ([sigLevel, activities]) => (
                 <div key={sigLevel} className="flex flex-col">
@@ -63,7 +63,7 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
               ),
             )}
           </div>
-          <div className="space-y-2 my-5">
+          <div className="my-5 space-y-2">
             {Object.entries(activitiesBySemester).map(
               ([semester, activities]) => (
                 <div key={semester} className="flex flex-col">
@@ -75,7 +75,7 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
             )}
           </div>
 
-          <p className="mt-6 mb-2">Total: {totalCount} activities</p>
+          <p className="mb-2 mt-6">Total: {totalCount} activities</p>
         </>
       </SideBarBubble>
       <SideBarBubble
@@ -87,7 +87,7 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
           {narrative?.text || 'No narrative submitted yet.'}{' '}
         </p>
       </SideBarBubble>
-      <div className="w-3/4 mx-auto">
+      <div className="mx-auto w-3/4">
         <Button
           onClick={() => router.push(`/narratives/${category}`)}
           addOnClass="mx-auto shadow-sm"

@@ -263,7 +263,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       {isEditing ? (
         <>
           <h2>Submitted Activity - {formatCategory(category)}</h2>
-          <p className={'text-gray-400 italic drop-shadow-sm'}>
+          <p className={'italic text-gray-400 drop-shadow-sm'}>
             Last Date Modified
             {` - ${moment(Number(lastDateModified)).format('MMM D, YYYY')}`}
           </p>
@@ -373,7 +373,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
           addOnClass="w-full"
         />
       </InputContainer>
-      <div className="flex justify-between items-center cursor-pointer my-9">
+      <div className="my-9 flex cursor-pointer items-center justify-between">
         <Button
           onClick={() =>
             isEditing ? router.back() : dispatch(setStep('selection'))

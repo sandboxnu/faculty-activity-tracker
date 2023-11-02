@@ -78,16 +78,16 @@ const ProfessorCommentBox: React.FC<ProfessorCommentBoxProps> = ({
   }, [saveComment, saved]);
 
   return (
-    <div className="flex flex-col rounded-lg w-full border-2">
-      <div className="flex flex-col text-body p-1">
+    <div className="flex w-full flex-col rounded-lg border-2">
+      <div className="flex flex-col p-1 text-body">
         <textarea
-          className="w-full h-32 rounded-lg p-2 pb-0 outline-transparent resize-none focus:outline-none"
+          className="h-32 w-full resize-none rounded-lg p-2 pb-0 outline-transparent focus:outline-none"
           placeholder="Add a comment..."
           value={comment}
           onChange={handleCommentChange}
         />
       </div>
-      <div className="flex items-center space-x-1 p-4 pt-0 pb-2">
+      <div className="flex items-center space-x-1 p-4 pb-2 pt-0">
         <p className="text-body-bold text-gray-400">
           {saved ? 'Saved' : 'Saving...'}
         </p>
