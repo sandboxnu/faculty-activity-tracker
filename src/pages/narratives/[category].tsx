@@ -120,7 +120,7 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
 
   if (pageError || activities === undefined) {
     return (
-      <p className="w-full text-center text-red-500 mt-20">
+      <p className="mt-20 w-full text-center text-red-500">
         {' '}
         Error: {pageError || 'Unknown Error'}
       </p>
@@ -128,7 +128,7 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
   }
   if (!category)
     return (
-      <p className="w-full text-center text-red-500 mt-20">
+      <p className="mt-20 w-full text-center text-red-500">
         {' '}
         Invalid Category{' '}
       </p>
@@ -160,7 +160,7 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
       </Head>
       <h1> {toTitleCase(category.toString())} - Narrative </h1>
       {newNarrative === false && narrative && (
-        <p className="text-neutral-500 italic">
+        <p className="italic text-neutral-500">
           Last Date Modified -&nbsp;
           {moment(Number(narrative.dateModified)).format('MMM D, YYYY')}
         </p>
@@ -179,12 +179,12 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
       <h3 className="mt-3"> Narrative: </h3>
 
       <textarea
-        className="rounded-xl border border-gray-400 focus-within:outline-none my-2 w-full h-1/2 px-6 py-4"
+        className="my-2 h-1/2 w-full rounded-xl border border-gray-400 px-6 py-4 focus-within:outline-none"
         value={narrativeInput}
         placeholder={'Enter narrative here'}
         onChange={(e) => setNarrativeInput(e.target.value)}
       />
-      <div className="flex justify-between my-9">
+      <div className="my-9 flex justify-between">
         <Button onClick={() => router.back()} variant="secondary" size="lg">
           Back
         </Button>

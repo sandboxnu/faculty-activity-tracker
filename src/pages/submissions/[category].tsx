@@ -116,13 +116,13 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
           category?.toString() || '',
         )}`}</title>
       </Head>
-      <div className="w-full flex flex-col border-box">
+      <div className="border-box flex w-full flex-col">
         <h1>{toTitleCase(category?.toString() || '')}</h1>
         {pageError && (
-          <p className="text-red-500 text-center w-full">{pageError}</p>
+          <p className="w-full text-center text-red-500">{pageError}</p>
         )}
         {Object.entries(activitiesBySigLevel).map(([sigLevel, activities]) => (
-          <div key={sigLevel} className="flex flex-col w-full">
+          <div key={sigLevel} className="flex w-full flex-col">
             <ActivityCarousel
               label={toTitleCase(sigLevel)}
               activities={activities}

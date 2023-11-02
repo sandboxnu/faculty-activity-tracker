@@ -35,10 +35,10 @@ const DropdownInput = <T extends unknown>({
     : options;
 
   return (
-    <div className="relative w-full min-h-[40px]">
+    <div className="relative min-h-[40px] w-full">
       <div
         className={clsx([
-          'flex flex-col bg-white border-[0.5px] border-gray-500 rounded-lg cursor-pointer',
+          'flex cursor-pointer flex-col rounded-lg border-[0.5px] border-gray-500 bg-white',
           incompleteBorderClass,
           absoluteDropdown ? 'absolute' : 'relative',
           fillContainer ? 'w-full' : 'w-[175px]',
@@ -63,7 +63,7 @@ const DropdownInput = <T extends unknown>({
             {allOptions.map((o, idx) => (
               <div
                 className={clsx([
-                  'w-full px-3 py-2.5 cursor-pointer hover:bg-gray-200',
+                  'w-full cursor-pointer px-3 py-2.5 hover:bg-gray-200',
                   selectedOption?.value === o.value && 'bg-gray-100',
                   o.value === undefined &&
                     'text-neutral-400 hover:text-gray-500',

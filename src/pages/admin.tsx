@@ -121,7 +121,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
 
   if (error || !users) {
     return (
-      <p className="text-red-500 w-full text-center mt-20">
+      <p className="mt-20 w-full text-center text-red-500">
         Error: {error || 'unknown error'}
       </p>
     );
@@ -133,7 +133,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
         <div className="flex items-end space-x-2">
           <p>First Name</p>
           <div
-            className="cursor-pointer mb-0.5"
+            className="mb-0.5 cursor-pointer"
             onClick={() => toggleSort('first name')}
           >
             <Image
@@ -145,7 +145,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
                   ? sortDir === 'asc'
                     ? '-rotate-90'
                     : 'rotate-90'
-                  : 'opacity-10 hover:opacity-25 -rotate-90'
+                  : '-rotate-90 opacity-10 hover:opacity-25'
               }`}
               alt="arrow"
             />
@@ -156,7 +156,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
         <div className="flex items-end space-x-2">
           <p>Last Name</p>
           <div
-            className="cursor-pointer mb-0.5"
+            className="mb-0.5 cursor-pointer"
             onClick={() => toggleSort('last name')}
           >
             <Image
@@ -168,7 +168,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
                   ? sortDir === 'asc'
                     ? '-rotate-90'
                     : 'rotate-90'
-                  : 'opacity-10 hover:opacity-25 -rotate-90'
+                  : '-rotate-90 opacity-10 hover:opacity-25'
               }`}
               alt="arrow"
             />
@@ -179,7 +179,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
         <div className="flex items-end space-x-2">
           <p>Email</p>
           <div
-            className="cursor-pointer mb-0.5"
+            className="mb-0.5 cursor-pointer"
             onClick={() => toggleSort('email')}
           >
             <Image
@@ -191,7 +191,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
                   ? sortDir === 'asc'
                     ? '-rotate-90'
                     : 'rotate-90'
-                  : 'opacity-10 hover:opacity-25 -rotate-90'
+                  : '-rotate-90 opacity-10 hover:opacity-25'
               }`}
               alt="arrow"
             />
@@ -202,7 +202,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
         <div className="flex items-end space-x-2">
           <p>Role</p>
           <div
-            className="cursor-pointer mb-0.5"
+            className="mb-0.5 cursor-pointer"
             onClick={() => toggleSort('role')}
           >
             <Image
@@ -214,7 +214,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
                   ? sortDir === 'asc'
                     ? '-rotate-90'
                     : 'rotate-90'
-                  : 'opacity-10 hover:opacity-25 -rotate-90'
+                  : '-rotate-90 opacity-10 hover:opacity-25'
               }`}
               alt="arrow"
             />
@@ -234,8 +234,8 @@ const AdminPage: React.FC<AdminPageProps> = ({
       <Head>
         <title>Admin</title>
       </Head>
-      <div className="w-full relative">
-        <div className="w-full flex justify-between">
+      <div className="relative w-full">
+        <div className="flex w-full justify-between">
           <h2>Users</h2>
           <div className="flex items-center space-x-2">
             <Button onClick={() => toggleAddingUser((b) => !b)}>
@@ -243,7 +243,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
             </Button>
           </div>
         </div>
-        <div className="flex flex-col w-full space-y-3 my-4">
+        <div className="my-4 flex w-full flex-col space-y-3">
           <Header />
           {isAddingUser && (
             <NewUserRow submit={createNewUser} cancel={cancel} />

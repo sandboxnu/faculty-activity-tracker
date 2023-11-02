@@ -16,7 +16,7 @@ const SideNavbar: React.FC = () => {
   const navClass = 'text-body-bold text-black pb-2 nav-underline relative';
 
   return (
-    <div className="flex flex-col items-start min-w-[207px] bg-white font-bold px-6 py-6 space-y-4">
+    <div className="flex min-w-[207px] flex-col items-start space-y-4 bg-white px-6 py-6 font-bold">
       <Link
         href={isMerit ? '/merit/dashboard' : '/dashboard'}
         className={`${navClass} ${
@@ -42,46 +42,46 @@ const SideNavbar: React.FC = () => {
       )}
       {!isMerit && (
         <>
-        <p className={`${navClass} cursor-default hover:border-white`}>
-          Submissions
-        </p>
+          <p className={`${navClass} cursor-default hover:border-white`}>
+            Submissions
+          </p>
 
-      <div className="ml-4 pl-2 border-l">
-        <div className="flex flex-col items-start space-y-5">
-          <Link
-            href="/submissions/teaching"
-            className={`text-body pb-2 nav-underline relative ${
-              category == 'teaching'
-                ? 'nav-underline-red'
-                : 'hover:nav-underline-red'
-            }`}
-          >
-            Teaching
-          </Link>
-          <Link
-            href="/submissions/research"
-            className={`text-body pb-2 nav-underline relative ${
-              category == 'research'
-                ? 'nav-underline-red'
-                : 'hover:nav-underline-red'
-            }`}
-          >
-            Research
-          </Link>
-          <Link
-            href="/submissions/service"
-            className={`text-body pb-2 nav-underline relative ${
-              category == 'service'
-                ? 'nav-underline-red'
-                : 'hover:nav-underline-red'
-            }`}
-          >
-            Service
-          </Link>
-        </div>
-      </div>
-      </>
-            )}
+          <div className="ml-4 border-l pl-2">
+            <div className="flex flex-col items-start space-y-5">
+              <Link
+                href="/submissions/teaching"
+                className={`nav-underline relative pb-2 text-body ${
+                  category == 'teaching'
+                    ? 'nav-underline-red'
+                    : 'hover:nav-underline-red'
+                }`}
+              >
+                Teaching
+              </Link>
+              <Link
+                href="/submissions/research"
+                className={`nav-underline relative pb-2 text-body ${
+                  category == 'research'
+                    ? 'nav-underline-red'
+                    : 'hover:nav-underline-red'
+                }`}
+              >
+                Research
+              </Link>
+              <Link
+                href="/submissions/service"
+                className={`nav-underline relative pb-2 text-body ${
+                  category == 'service'
+                    ? 'nav-underline-red'
+                    : 'hover:nav-underline-red'
+                }`}
+              >
+                Service
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
       {!isMerit && (
         <Link
           href="/profile"

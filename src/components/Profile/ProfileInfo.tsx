@@ -86,14 +86,14 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
 
   if (error)
     return (
-      <p className="text-red-500 w-full text-center mt-20">
+      <p className="mt-20 w-full text-center text-red-500">
         Error: {error || 'unknown error.'}
       </p>
     );
 
   return (
-    <div className="w-full pl-10 flex flex-col relative">
-      <div className="flex items-center w-full mb-10 pt-4" key="image+info">
+    <div className="relative flex w-full flex-col pl-10">
+      <div className="mb-10 flex w-full items-center pt-4" key="image+info">
         {defaultIcon ? (
           <Image
             src="/media/profileDefaultIcon.svg"
@@ -112,9 +112,9 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
         </div>
       </div>
       <div key="activity-info">
-        <div className="flex items-center w-full mb-6 pr-5">
-          <p className="text-base font-bold mr-2">Activity Distribution</p>
-          <div className="flex-grow h-[1.5px] bg-gray-200" />
+        <div className="mb-6 flex w-full items-center pr-5">
+          <p className="mr-2 text-base font-bold">Activity Distribution</p>
+          <div className="h-[1.5px] flex-grow bg-gray-200" />
         </div>
         <InputContainer
           label=""
@@ -137,20 +137,20 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
         </InputContainer>
       </div>
       <div key="contact-info">
-        <div className="flex items-center w-full mt-10 pr-5">
-          <p className="text-base font-bold mr-2">Contact Information</p>
-          <div className="flex-grow h-[1.5px] bg-gray-200" />
+        <div className="mt-10 flex w-full items-center pr-5">
+          <p className="mr-2 text-base font-bold">Contact Information</p>
+          <div className="h-[1.5px] flex-grow bg-gray-200" />
         </div>
-        <div className="mt-5 mb-6">
+        <div className="mb-6 mt-5">
           <div className="flex flex-col">
             <p className="mb-2">Email</p>
-            <p className="px-4 py-1.5 border-[0.5px] border-gray-500 rounded-xl w-max min-w-[250px]">
+            <p className="w-max min-w-[250px] rounded-xl border-[0.5px] border-gray-500 px-4 py-1.5">
               {email}
             </p>
           </div>
         </div>
       </div>
-      <div className="absolute top-0 right-0 flex items-center space-x-4">
+      <div className="absolute right-0 top-0 flex items-center space-x-4">
         {editing && (
           <Button onClick={cancel} variant="secondary">
             Cancel

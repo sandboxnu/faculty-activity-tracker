@@ -19,9 +19,9 @@ const TextInputPlayground: React.FC = () => {
   const [withContainer, setWithContainer] = useState(true);
 
   return (
-    <div className="flex flex-col w-full mb-4">
+    <div className="mb-4 flex w-full flex-col">
       <p
-        className="text-lg font-medium text-red-500 cursor-pointer"
+        className="cursor-pointer text-lg font-medium text-red-500"
         onClick={() => setOpen((b) => !b)}
       >
         TextInput
@@ -63,7 +63,7 @@ const TextInputPlayground: React.FC = () => {
             value={withContainer}
             onChange={() => setWithContainer((b) => !b)}
           />
-          <p className="text-lg text-gray-500 my-2">Result:</p>
+          <p className="my-2 text-lg text-gray-500">Result:</p>
           <div className="w-full border border-gray-200">
             {withContainer ? (
               <InputContainer
@@ -106,9 +106,9 @@ const TextAreaInputPlayground: React.FC = () => {
   const [withContainer, setWithContainer] = useState(true);
 
   return (
-    <div className="flex flex-col w-full mb-4">
+    <div className="mb-4 flex w-full flex-col">
       <p
-        className="text-lg font-medium text-red-500 cursor-pointer"
+        className="cursor-pointer text-lg font-medium text-red-500"
         onClick={() => setOpen((b) => !b)}
       >
         TextAreaInput
@@ -145,7 +145,7 @@ const TextAreaInputPlayground: React.FC = () => {
             value={withContainer}
             onChange={() => setWithContainer((b) => !b)}
           />
-          <p className="text-lg text-gray-500 my-2">Result:</p>
+          <p className="my-2 text-lg text-gray-500">Result:</p>
           <div className="w-full border border-gray-200">
             {withContainer ? (
               <InputContainer
@@ -194,9 +194,9 @@ const DropdownInputPlayground: React.FC = () => {
   const [withContainer, setWithContainer] = useState(true);
 
   return (
-    <div className="flex flex-col w-full mb-4">
+    <div className="mb-4 flex w-full flex-col">
       <p
-        className="text-lg font-medium text-red-500 cursor-pointer"
+        className="cursor-pointer text-lg font-medium text-red-500"
         onClick={() => setOpen((b) => !b)}
       >
         DropdownInput
@@ -243,7 +243,7 @@ const DropdownInputPlayground: React.FC = () => {
             value={withContainer}
             onChange={() => setWithContainer((b) => !b)}
           />
-          <p className="text-lg text-gray-500 my-2">Result:</p>
+          <p className="my-2 text-lg text-gray-500">Result:</p>
           <div className="w-full border border-gray-200">
             {withContainer ? (
               <InputContainer
@@ -289,9 +289,9 @@ const ButtonPlayground: React.FC = () => {
   const [fillContainer, setFillContainer] = useState(false);
 
   return (
-    <div className="flex flex-col w-full mb-4">
+    <div className="mb-4 flex w-full flex-col">
       <p
-        className="text-lg font-medium text-red-500 cursor-pointer"
+        className="cursor-pointer text-lg font-medium text-red-500"
         onClick={() => setOpen((b) => !b)}
       >
         Button
@@ -313,7 +313,7 @@ const ButtonPlayground: React.FC = () => {
             value={fillContainer}
             onChange={() => setFillContainer((b) => !b)}
           />
-          <p className="text-lg text-gray-500 my-2">Result:</p>
+          <p className="my-2 text-lg text-gray-500">Result:</p>
           <div className="w-full border border-gray-200">
             <Button
               variant={variant}
@@ -335,7 +335,7 @@ const InputsPlayground: React.FC = () => {
     return <p>You can only view this page in dev mode!</p>;
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <Head>
         <title>Playground - Inputs</title>
       </Head>
