@@ -1,7 +1,6 @@
 import { UpdateProfessorScoreDto } from '@/models/professorScore.model';
-import { PrismaClient, ProfessorScore } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { ProfessorScore } from '@prisma/client';
+import prisma from 'lib/db';
 
 export const getProfessorScore = async (userId: number) => {
   const score = await prisma.professorScore.findUnique({

@@ -1,11 +1,10 @@
-import { PrismaClient, Activity } from '.prisma/client';
+import { Activity } from '.prisma/client';
 import {
   ActivityOrderByQuery,
   CreateActivityDto,
   UpdateActivityDto,
 } from '@/models/activity.model';
-
-const prisma = new PrismaClient();
+import prisma from 'lib/db';
 
 export const getAllActivities = async (): Promise<Activity[]> => {
   const activities = await prisma.activity.findMany();

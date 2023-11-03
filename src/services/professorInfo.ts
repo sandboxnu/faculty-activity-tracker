@@ -1,10 +1,9 @@
-import { PrismaClient, ProfessorInfo, SabbaticalOption } from '.prisma/client';
+import { ProfessorInfo, SabbaticalOption } from '.prisma/client';
 import {
   CreateProfessorInfoDto,
   UpdateProfessorInfoDto,
 } from '@/models/professorInfo.model';
-
-const prisma = new PrismaClient();
+import prisma from 'lib/db';
 
 export const getProfessorInfoForUser = async (
   userId: number,

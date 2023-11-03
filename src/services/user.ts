@@ -1,4 +1,4 @@
-import { PrismaClient, User } from '.prisma/client';
+import { User } from '.prisma/client';
 import {
   CreateUserDto,
   UpdateUserDto,
@@ -7,8 +7,7 @@ import {
   UserWithAllData,
   UserWithInfo,
 } from '@/models/user.model';
-
-const prisma = new PrismaClient();
+import prisma from 'lib/db';
 
 export const getAllUsers = async (): Promise<User[]> => {
   const users = await prisma.user.findMany();
