@@ -50,11 +50,23 @@ const getProvider = () => {
   }
 };
 
+const getPages = () => {
+  if (process.env.VERCEL_ENV !== 'preview') {
+    return {
+      signIn: '/auth/signin',
+    };
+  } else {
+    return {};
+  }
+};
+
 export const authOptions: AuthOptions = {
   // Configure one or more authentication providers
 
   // @ts-ignore comment
   providers: getProvider(),
+
+  pages: getPages(),
 
   session: {
     strategy: 'jwt',
