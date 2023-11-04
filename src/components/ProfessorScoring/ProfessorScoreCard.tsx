@@ -25,22 +25,21 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
     return <></>;
   }
 
+  const professorScores = [
+    { category: 'Teaching', score: professorScore.teachingScore },
+    { category: 'Research', score: professorScore.researchScore },
+    { category: 'Service', score: professorScore.serviceScore },
+  ];
+
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full min-w-[64px] flex-col">
       <StaticSideBarBubble title="">
-        <div className="flex w-full justify-between">
-          <StaticScoreBubble
-            category="Teaching"
-            score={professorScore.teachingScore}
-          />
-          <StaticScoreBubble
-            category="Research"
-            score={professorScore.researchScore}
-          />
-          <StaticScoreBubble
-            category="Service"
-            score={professorScore.serviceScore}
-          />
+        <div className="flex w-full flex-col justify-between xl:flex-row">
+          {professorScores.map((item) => (
+            <div key={item.category} className="w-full xl:w-1/4">
+              <StaticScoreBubble category={item.category} score={item.score} />
+            </div>
+          ))}
         </div>
       </StaticSideBarBubble>
       <div className="flex w-min flex-col space-y-2 pt-4">
