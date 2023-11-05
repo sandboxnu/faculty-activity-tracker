@@ -38,7 +38,7 @@ const AcademicInfo: React.FC = () => {
       label="Academic Information"
       key="academic-profile-info"
     >
-      <div className="flex flex-col w-full [&>*]:mb-5">
+      <div className="flex w-full flex-col [&>*]:mb-5">
         <div className="flex w-full space-x-10">
           <div className="w-profile-field">
             <InputContainer
@@ -97,10 +97,11 @@ const AcademicInfo: React.FC = () => {
           label="Activity Distribution"
           labelClass="text-sm font-normal"
           incomplete={
-            editing && ((teachingPercent || 0) +
+            editing &&
+            (teachingPercent || 0) +
               (researchPercent || 0) +
               (servicePercent || 0) !==
-            1)
+              1
           }
           incompleteMessage="Percentages must sum to 100."
           withMarginY

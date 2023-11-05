@@ -11,9 +11,9 @@ const ProfileInfoSection: React.FC<ProfileInfoSectionProps> = ({
 }) => {
   return (
     <div>
-      <div className="flex items-center w-full mb-2 pr-5">
-        <p className="text-base font-bold mr-2">{label}</p>
-        <div className="flex-grow h-[1px] bg-gray-200" />
+      <div className="mb-2 flex w-full items-center pr-5">
+        <p className="mr-2 text-base font-bold">{label}</p>
+        <div className="h-[1px] flex-grow bg-gray-200" />
       </div>
       {children}
     </div>

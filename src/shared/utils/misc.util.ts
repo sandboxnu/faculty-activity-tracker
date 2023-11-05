@@ -1,4 +1,4 @@
-import { ResponseStatus } from "@/client/activities.client";
+import { ResponseStatus } from '@/client/activities.client';
 
 export const toTitleCase = (str: string): string => {
   return str
@@ -31,7 +31,7 @@ export const shortenDescription = (description: string): string => {
   }
 
   return description.substring(0, 99) + '...';
-}
+};
 
 export const formatPhoneNumberWithSlashes = (number: string): string => {
   const firstSlash = number.length > 3 ? '-' : '';
@@ -55,14 +55,20 @@ export const isValidEmail = (email: string): boolean => {
   );
 };
 
-export const responseStatusErrors: ResponseStatus[] = [ResponseStatus.BadRequest, ResponseStatus.NotFound, ResponseStatus.Unauthorized, ResponseStatus.UnknownError];
+export const responseStatusErrors: ResponseStatus[] = [
+  ResponseStatus.BadRequest,
+  ResponseStatus.NotFound,
+  ResponseStatus.Unauthorized,
+  ResponseStatus.UnknownError,
+];
 
-export const isErrorResponse = (status: ResponseStatus): boolean => responseStatusErrors.includes(status);
+export const isErrorResponse = (status: ResponseStatus): boolean =>
+  responseStatusErrors.includes(status);
 
 export const responseStatusMessage: Record<ResponseStatus, string> = {
-  [ResponseStatus.Success]: "Success",
-  [ResponseStatus.UnknownError]: "Unknown Error",
-  [ResponseStatus.NotFound]: "Not Found",
-  [ResponseStatus.Unauthorized]: "Unauthorized",
-  [ResponseStatus.BadRequest]: "Bad Request",
+  [ResponseStatus.Success]: 'Success',
+  [ResponseStatus.UnknownError]: 'Unknown Error',
+  [ResponseStatus.NotFound]: 'Not Found',
+  [ResponseStatus.Unauthorized]: 'Unauthorized',
+  [ResponseStatus.BadRequest]: 'Bad Request',
 };

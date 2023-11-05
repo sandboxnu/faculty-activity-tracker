@@ -16,7 +16,10 @@ import ContactInfo from './ContactInfo';
 import BasicInfo from './BasicInfo';
 import { separateProfileInformation } from '@/shared/utils/user.util';
 import { updateUser } from '@/client/users.client';
-import { isErrorResponse, responseStatusMessage } from '@/shared/utils/misc.util';
+import {
+  isErrorResponse,
+  responseStatusMessage,
+} from '@/shared/utils/misc.util';
 
 interface ProfileContainerProps {
   userId: number;
@@ -55,7 +58,8 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
       setError(completionStatus);
       return;
     }
-    const { userInfo, professorInfo } = separateProfileInformation(completionStatus);
+    const { userInfo, professorInfo } =
+      separateProfileInformation(completionStatus);
     setLoading(true);
     let profRes = await updateProfessorInfoForUser(professorInfo);
     if (isErrorResponse(profRes)) {
@@ -72,27 +76,27 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
 
   if (error)
     return (
-      <p className="text-red-500 w-full text-center mt-20">
+      <p className="mt-20 w-full text-center text-red-500">
         Error: {error || 'unknown error.'}
       </p>
     );
 
   return (
-    <div className="w-full pl-10 flex flex-col relative">
+    <div className="relative flex w-full flex-col pl-10">
       <BasicInfo />
       <AcademicInfo />
       <ContactInfo />
-      <div className="absolute top-0 right-0 space-x-4">
+      <div className="absolute right-0 top-0 space-x-4">
         {editing && (
           <button
             onClick={cancel}
-            className="px-3 py-2 bg-gray-100 border border-gray-500 text-gray-500 rounded-xl"
+            className="rounded-xl border border-gray-500 bg-gray-100 px-3 py-2 text-gray-500"
           >
             Cancel
           </button>
         )}
         <button
-          className="px-3 py-2 bg-red-500 text-white rounded-xl disabled:bg-red-300"
+          className="rounded-xl bg-red-500 px-3 py-2 text-white disabled:bg-red-300"
           onClick={editing ? submit : startEditing}
           disabled={loading || (editing && incomplete)}
         >

@@ -21,7 +21,7 @@ const BasicInfo: React.FC = () => {
 
   return (
     <div
-      className="flex items-center w-full mb-10 pt-4"
+      className="mb-10 flex w-full items-center pt-4"
       key="basic-profile-info"
     >
       {!defaultIcon && firstName && lastName ? (
