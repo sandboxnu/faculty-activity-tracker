@@ -1,7 +1,4 @@
-import {
-  ActivityDto,
-  UpdateActivityDto,
-} from '@/models/activity.model';
+import { ActivityDto, UpdateActivityDto } from '@/models/activity.model';
 import { ActivityMeritStatus, SignificanceLevel } from '@prisma/client';
 import { useState, useEffect } from 'react';
 import { toTitleCase } from '@/shared/utils/misc.util';
@@ -19,10 +16,10 @@ const ApproveButton: React.FC<{
 }> = ({ className = '', accepted = false, onClick }) => (
   <button
     onClick={onClick}
-    className={`inline-flex items-center justify-center p-0 border border-solid border-gray-400 relative rounded-full gap-[10px] px-[10px] py-[4px] ${className}`}
+    className={`relative inline-flex items-center justify-center gap-[10px] rounded-full border border-solid border-gray-400 p-0 px-[10px] py-[4px] ${className}`}
   >
     <svg
-      className="relative w-[13px] h-[11px] ml-[-1.00px]"
+      className="relative ml-[-1.00px] h-[11px] w-[13px]"
       width="12"
       height="10"
       viewBox="0 0 12 10"
@@ -38,7 +35,7 @@ const ApproveButton: React.FC<{
         strokeLinejoin="round"
       />
     </svg>
-    <div className="relative w-fit mt-[-1.00px] font-small">
+    <div className="font-small relative mt-[-1.00px] w-fit">
       {accepted ? 'Accepted' : 'Accept'}
     </div>
   </button>
@@ -51,10 +48,10 @@ const RejectButton: React.FC<{
 }> = ({ className = '', rejected = false, onClick }) => (
   <button
     onClick={onClick}
-    className={`inline-flex items-center justify-center p-0 border border-solid border-gray-400 relative rounded-full gap-[10px] px-[10px] py-[4px] ${className}`}
+    className={`relative inline-flex items-center justify-center gap-[10px] rounded-full border border-solid border-gray-400 p-0 px-[10px] py-[4px] ${className}`}
   >
     <svg
-      className="relative w-[13px] h-[11px] ml-[-1.00px]"
+      className="relative ml-[-1.00px] h-[11px] w-[13px]"
       width="10"
       height="10"
       viewBox="0 0 10 10"
@@ -69,7 +66,7 @@ const RejectButton: React.FC<{
         strokeLinecap="round"
       />
     </svg>
-    <div className="relative w-fit mt-[-1.00px] font-small">
+    <div className="font-small relative mt-[-1.00px] w-fit">
       {rejected ? 'Rejected' : 'Reject'}
     </div>
   </button>
@@ -101,7 +98,7 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
       );
       setExpanded(storedDropDownCookie);
     }
-  }, []);
+  }, [cookieKey]);
 
   const handleUpdateStatus = (status: ActivityMeritStatus | null) => {
     submit({
@@ -122,18 +119,18 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
 
   return (
     <div
-      className={`flex flex-col items-start justify-center relative rounded-lg gap-[20px] px-[20px] card py-[16px] cursor-pointer bg-gray-100 
+      className={`card relative flex cursor-pointer flex-col items-start justify-center gap-[20px] rounded-lg bg-gray-100 px-[20px] py-[16px] 
           ${
             expanded
-              ? 'border-gray-300 border-[1.5px] border-solid'
+              ? 'border-[1.5px] border-solid border-gray-300'
               : 'shadow-sm'
           }`}
       onClick={toggleDropDown}
       style={{ userSelect: 'none' }}
     >
-      <div className="flex items-center relative w-full">
-        <div className="flex flex-grow justify-start gap-[30px] items-center">
-          <div className="relative w-fit mt-[-1.00px] text-heading-3">
+      <div className="relative flex w-full items-center">
+        <div className="flex flex-grow items-center justify-start gap-[30px]">
+          <div className="relative mt-[-1.00px] w-fit text-heading-3">
             {activity?.name}
           </div>
           <div className="relative w-fit text-small text-gray-500">
@@ -147,15 +144,15 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
           </div>
         </div>
         <div className="flex-grow"></div>
-        <div className="flex-shrink-0 flex justify-end items-center gap-[8px]">
+        <div className="flex flex-shrink-0 items-center justify-end gap-[8px]">
           <ApproveButton
             className={`${
               activity?.meritStatus === ActivityMeritStatus.ACCEPTED
-                ? ' bg-success-100 border-success-500'
+                ? ' border-success-500 bg-success-100'
                 : activity?.meritStatus === ActivityMeritStatus.REJECTED
-                ? ' bg-white border-gray-400'
-                : 'bg-white border-gray-400 hover:bg-success-50'
-            } cursor-pointer duration-10`}
+                ? ' border-gray-400 bg-white'
+                : 'border-gray-400 bg-white hover:bg-success-50'
+            } duration-10 cursor-pointer`}
             accepted={
               activity?.meritStatus === ActivityMeritStatus.ACCEPTED
                 ? true
@@ -173,11 +170,11 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
           <RejectButton
             className={`${
               activity?.meritStatus === ActivityMeritStatus.ACCEPTED
-                ? 'bg-white border-gray-400'
+                ? 'border-gray-400 bg-white'
                 : activity?.meritStatus === ActivityMeritStatus.REJECTED
-                ? 'bg-error-100 border-error-500'
-                : 'bg-white border-gray-400 hover:bg-error-50'
-            } cursor-pointer duration-10`}
+                ? 'border-error-500 bg-error-100'
+                : 'border-gray-400 bg-white hover:bg-error-50'
+            } duration-10 cursor-pointer`}
             rejected={
               activity?.meritStatus === ActivityMeritStatus.REJECTED
                 ? true

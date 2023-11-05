@@ -9,13 +9,19 @@
     "lint": "next lint",
     "dev:db:up": "docker-compose up -d",
     "dev:db:down": "docker-compose down",
-    "migrate": "yarn prisma migrate dev --name init",
+    "reset:dev": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' npx prisma migrate reset",
+    "migrate": "yarn prisma migrate",
     "migrate:dev": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' yarn prisma migrate dev",
     "generate": "yarn prisma generate",
     "seed": "yarn prisma db seed",
+    "seed:dev": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' yarn seed",
     "format:check": "prettier --check --ignore-path .gitignore .",
     "format": "prettier --write --ignore-path .gitignore .",
-    "prisma:studio:dev": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' npx prisma studio"
+    "prisma:studio:dev": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' npx prisma studio",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*.(ts|tsx|js|md|json)": "prettier --write"
   },
   "dependencies": {
     "@next/font": "13.1.6",
@@ -41,8 +47,11 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
+    "husky": "^8.0.0",
+    "dotenv-cli": "^7.3.0",
     "postcss": "^8.4.21",
-    "prettier": "2.8.4",
+    "prettier": "3.0.3",
+    "prettier-plugin-tailwindcss": "0.5.6",
     "sass": "^1.57.1",
     "tailwindcss": "^3.2.4",
     "ts-node": "^10.9.1"

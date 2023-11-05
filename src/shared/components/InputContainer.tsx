@@ -29,7 +29,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
   children,
 }) => {
   const IncompleteStatus = () => (
-    <div className={`flex items-center mt-4`}>
+    <div className={`mt-4 flex items-center`}>
       <Image
         src={'/media/exclamationTriangle.svg'}
         alt="Error"
@@ -37,7 +37,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
         height={16}
         className="mr-2"
       />
-      <p className="text-error-300 inline">{incompleteMessage}</p>
+      <p className="inline text-error-300">{incompleteMessage}</p>
     </div>
   );
 
@@ -45,12 +45,12 @@ const InputContainer: React.FC<InputContainerProps> = ({
     <div className={`flex flex-col ${withMarginY ? 'my-2' : ''} space-y-1`}>
       <div className="flex items-center space-x-1">
         <p className={labelClass}>{label}</p>
-        {required && <p className="text-red-500 text-lg">*</p>}
+        {required && <p className="text-lg text-red-500">*</p>}
         {infoMessage && <InfoTooltip text={[infoMessage]} />}
       </div>
       <div
         data-input-status={incomplete ? 'error' : 'success'}
-        className="flex items-center space-x-2 group"
+        className="group flex items-center space-x-2"
       >
         {children}
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-export type ButtonVariant = 'primary' | 'secondary';
+export type ButtonVariant = 'primary' | 'secondary' | 'signIn';
 export type ButtonSize = 'sm' | 'lg';
 
 interface ButtonProps {
@@ -17,6 +17,7 @@ interface ButtonProps {
 const variantClasses: Record<ButtonVariant, string> = {
   primary: 'bg-red-500 border border-red-500 text-white',
   secondary: 'bg-white border border-gray-500 text-black',
+  signIn: 'bg-white text-black shadow-md',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {

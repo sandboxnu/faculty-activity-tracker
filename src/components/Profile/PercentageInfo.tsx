@@ -9,6 +9,7 @@ interface PercentageInfoProps {
   service: number;
   setPercent: (type: string, percent: number) => void;
   fillContainer?: boolean;
+  hideSteppers?: boolean;
 }
 
 const PercentageInfo: React.FC<PercentageInfoProps> = ({
@@ -18,6 +19,7 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
   service,
   setPercent,
   fillContainer = false,
+  hideSteppers = false,
 }) => {
   const labels: Record<string, number> = {
     Teaching: teaching,
@@ -48,10 +50,10 @@ const PercentageInfo: React.FC<PercentageInfoProps> = ({
                     parseFloat(e.target.value) / 100,
                   )
                 }
-                className={`w-12 py-2 border-[0.5px] border-gray-500 rounded-xl mr-1 text-center hide-steppers ${incompleteBorderClass}`}
+                className={`hide-steppers mr-1 w-12 rounded-xl border-[0.5px] border-gray-500 py-2 text-center ${incompleteBorderClass}`}
               />
             ) : (
-              <p className="w-12 py-2 border-[0.5px] border-gray-500 rounded-xl mr-1 text-center">
+              <p className="mr-1 w-12 rounded-xl border-[0.5px] border-gray-500 py-2 text-center">
                 {percent * 100}
               </p>
             )}

@@ -1,10 +1,9 @@
-import { PrismaClient, ProfessorInfo, SabbaticalOption } from '.prisma/client';
+import { ProfessorInfo, SabbaticalOption } from '.prisma/client';
 import {
   CreateProfessorInfoDto,
   UpdateProfessorInfoDto,
 } from '@/models/professorInfo.model';
-
-const prisma = new PrismaClient();
+import prisma from 'lib/db';
 
 export const getProfessorInfoForUser = async (
   userId: number,
@@ -44,7 +43,7 @@ export const upsertProfessorInfoForUser = async (
     update: { ...info },
     create: {
       userId,
-      position: info.position || '',
+      position: info.position || 'NONTENURE',
       teachingPercent: info.teachingPercent || 0.4,
       researchPercent: info.researchPercent || 0.3,
       servicePercent: info.servicePercent || 0.3,

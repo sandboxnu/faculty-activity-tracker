@@ -10,6 +10,7 @@ datasource db {
 model User {
   id             Int            @id @default(autoincrement())
   email          String         @unique
+  externalEmail  String?
   firstName      String
   lastName       String
   preferredName  String?
@@ -25,12 +26,15 @@ model ProfessorInfo {
   id                         Int              @id @default(autoincrement())
   user                       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                     Int              @unique
-  position                   String
+  title                      String?
+  position                   ProfessorPosition
   teachingPercent            Float
   researchPercent            Float
   servicePercent             Float
   sabbatical                 SabbaticalOption
   teachingReleaseExplanation String?
+  phoneNumber                String?
+  officeLocation             String?
 }
 
 model ProfessorScore {
@@ -118,4 +122,9 @@ enum Semester {
 enum ActivityMeritStatus {
   ACCEPTED
   REJECTED
+}
+
+enum ProfessorPosition {
+  TENURE
+  NONTENURE
 }

@@ -26,19 +26,16 @@ const StepWrapper: React.FC<StepWrapperProps> = ({
   const fieldsIncomplete = useSelector(selectFieldsIncomplete);
 
   return (
-    <div className="flex flex-col w-full items-center rounded-lg bg-gray-100 shadow-lg pt-6 px-20 pb-11">
+    <div className="flex w-full flex-col items-center rounded-lg bg-gray-100 px-20 pb-11 pt-6 shadow-lg">
       <StepIndicator currentStep={currentStep} numSteps={numSteps} />
       <div className="my-8 flex flex-col items-center">
         <p className="text-2xl font-bold">{title}</p>
         <p className="text-sm font-medium">{subtitle}</p>
       </div>
       {children}
-      <div className="flex justify-between mt-12 w-full" id="buttons">
+      <div className="mt-12 flex w-full justify-between" id="buttons">
         {currentStep > 0 && (
-          <Button
-            variant='secondary'
-            onClick={back}
-          >
+          <Button variant="secondary" onClick={back}>
             <p className="text-xs">Back</p>
           </Button>
         )}
@@ -47,7 +44,7 @@ const StepWrapper: React.FC<StepWrapperProps> = ({
           onClick={next}
           disabled={fieldsIncomplete}
         >
-          <p className="text-xs text-white font-bold">Next</p>
+          <p className="text-xs font-bold text-white">Next</p>
         </Button>
       </div>
     </div>

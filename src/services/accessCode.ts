@@ -1,6 +1,5 @@
-import { PrismaClient, Role } from '.prisma/client';
-
-const prisma = new PrismaClient();
+import { Role } from '.prisma/client';
+import prisma from 'lib/db';
 
 export const obtainRole = async (accessCode: string): Promise<Role | null> => {
   const roleAccessCode = await prisma.roleAccessCode.findFirst({

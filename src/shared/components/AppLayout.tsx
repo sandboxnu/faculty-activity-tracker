@@ -16,12 +16,16 @@ const AppLayout: React.FC<AppLayoutProps> = ({
   hideNavbar = false,
 }) => {
   return (
-    <div className="flex flex-col w-screen min-h-screen">
+    <div className="flex min-h-screen w-screen flex-col">
       {!hideNavbar && <Header />}
       <div className="flex w-full flex-grow">
         {!hideSidebars && <SideNavbar />}
-        <div className="flex-1 overflow-x-hidden flex self-stretch border-x border-light-grey px-10 py-6">
-          <NextNProgress color="#CC0000" height={4} options={{ showSpinner: false }}/>
+        <div className="border-light-grey flex flex-1 self-stretch overflow-x-hidden border-x px-10 py-6">
+          <NextNProgress
+            color="#CC0000"
+            height={4}
+            options={{ showSpinner: false }}
+          />
           {children}
         </div>
         {!hideSidebars && <InfoSidebar />}

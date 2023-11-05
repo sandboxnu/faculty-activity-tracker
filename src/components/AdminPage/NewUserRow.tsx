@@ -25,12 +25,13 @@ const NewUserRow: React.FC<NewUserRowProps> = ({ submit, cancel }) => {
       role,
       email,
       preferredName: '',
+      externalEmail: null,
       dateModified: BigInt(Date.now()),
     });
   };
 
   return (
-    <div className="flex w-full items-center rounded-xl border border-gray-300 px-4 py-3 shadow my-2">
+    <div className="my-2 flex w-full items-center rounded-xl border border-gray-300 px-4 py-3 shadow">
       <div className="basis-15">
         <TextOrInput
           value={firstName}

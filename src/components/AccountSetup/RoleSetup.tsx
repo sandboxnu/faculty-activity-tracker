@@ -42,7 +42,7 @@ const RoleSetup: React.FC<RoleSetupProps> = () => {
   };
 
   return (
-    <div className="w-full flex flex-grow justify-center items-center">
+    <div className="flex w-full flex-grow items-center justify-center">
       <StepWrapper
         title="Welcome!"
         subtitle="Please enter your access code."

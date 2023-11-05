@@ -17,9 +17,7 @@ import {
 import { seperateActivitiesByCategory } from '@/shared/utils/activity.util';
 import ActivityGroup from '@/components/ProfessorScoring/ActivityGroup';
 import { getUserById } from '@/services/user';
-import {
-  getNarrativesForUser,
-} from '@/services/narrative';
+import { getNarrativesForUser } from '@/services/narrative';
 import { seperateNarrativesByCategory } from '@/shared/utils/narrative.util';
 import TenureBadge from '@/components/ProfessorScoring/TenureBadge';
 
@@ -141,11 +139,11 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
   };
 
   return (
-    <div className="flex flex-col w-full px-[40px]">
+    <div className="flex w-full flex-col px-[40px]">
       <Head>
         <title>Professor Scoring Page</title>
       </Head>
-      <div className="items-center inline-flex text-heading-1 pt-[16px] pb-[32px]">
+      <div className="inline-flex items-center pb-[32px] pt-[16px] text-heading-1">
         Professor {user?.firstName} {user?.lastName}
         <div className="ml-[8px]">
           <TenureBadge
@@ -156,10 +154,10 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
         </div>
       </div>
       {activities && activities.length > 0 && (
-        <div className="flex flex-col w-full">
+        <div className="flex w-full flex-col">
           {Object.entries(activitiesByCategory).map(
             ([category, activities]) => (
-              <div key={category} className="flex flex-col w-full">
+              <div key={category} className="flex w-full flex-col">
                 <ActivityGroup
                   activities={activities}
                   title={toTitleCase(category)}
