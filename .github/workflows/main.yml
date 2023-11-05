@@ -64,5 +64,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
+      - name: Generate the Prisma Client
+        run: npx prisma generate
+
       - name: Code Linting
         run: npx tsc
