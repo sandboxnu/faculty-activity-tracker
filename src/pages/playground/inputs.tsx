@@ -72,7 +72,7 @@ const TextInputPlayground: React.FC = () => {
                 required={required}
                 incomplete={incomplete}
                 incompleteMessage="Incomplete message"
-                infoMessage={showTooltip ? 'Tooltip message' : ''}
+                tooltipMessage={showTooltip ? 'Tooltip message' : ''}
                 withMarginY={withMarginY}
               >
                 <TextInput

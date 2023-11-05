@@ -1,25 +1,26 @@
-import React, { ChangeEventHandler, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  addSemester,
+  removeSemester,
   selectActivityId,
   selectCategory,
-  selectDate,
+  selectCheckedSemesters,
   selectDescription,
+  selectActivityFormData,
   selectLastDateModified,
   selectName,
   selectOtherDescription,
-  selectSemester,
   selectWeight,
-  selectYear,
-  setDate,
   setDescription,
   setName,
   setOtherDescription,
-  setSemester,
   setStep,
   setWeight,
-  setYear,
+  selectYear,
+  ActivityFormData,
+  selectSemesters,
 } from '../../store/form.store';
 import {
   ActivityCategory,
@@ -29,53 +30,32 @@ import {
   Semester,
   UpdateActivityDto,
 } from '../../models/activity.model';
-import Tooltip from '../../shared/components/Tooltip';
 import {
   createActivity,
   ResponseStatus,
   updateActivityClient,
 } from '@/client/activities.client';
-import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { Checkbox } from '@/shared/components/Checkbox';
 import { ErrorBanner } from '../ErrorBanner';
 import { useRouter } from 'next/router';
-import DropdownInput from '@/shared/components/DropdownInput';
+import DropdownInput, { Option } from '@/shared/components/DropdownInput';
 import InputContainer from '@/shared/components/InputContainer';
 import TextInput from '@/shared/components/TextInput';
 import TextAreaInput from '@/shared/components/TextAreaInput';
 import Button from '@/shared/components/Button';
 
-const weightOptions = [
+const weightOptions: Option<ActivityWeight>[] = [
   { label: 'Major', value: 'MAJOR' },
   { label: 'Significant', value: 'SIGNIFICANT' },
   { label: 'Minor', value: 'MINOR' },
 ];
 
-const WeightInfo = () => (
-  <div className="flex items-center space-x-2 text-gray-500">
-    <Image
-      src="/media/infoIcon.svg"
-      alt="Little information icon"
-      width={16}
-      height={16}
-    />
-    <Tooltip
-      tooltipTitle="Weight Examples"
-      text={[
-        'Major: New courses, significantly redesigned courses, large courses (more than 25 students), running a dialogue',
-        'Significant: Workshops, fieldtrips, collaborations, client projects, etc.',
-        'Minor: Directed study, guest critic, guest lecture, letter of recommendation, mentoring',
-      ]}
-    />
-  </div>
-);
-
 interface FormInputProps {
-  editing: boolean;
+  isEditing: boolean;
 }
 
-const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
+const FormInput: React.FC<FormInputProps> = ({ isEditing }) => {
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -84,127 +64,119 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
   const category: ActivityCategory | null = useSelector(selectCategory);
   const name: string | null = useSelector(selectName);
   const weight: ActivityWeight | null = useSelector(selectWeight);
-  const semester: Semester[] | null = useSelector(selectSemester);
+  const semesters: Semester[] | null = useSelector(selectSemesters);
+  const checkedSemesters: Record<Semester, boolean> = useSelector(
+    selectCheckedSemesters,
+  );
+  const otherChecked = checkedSemesters['OTHER'];
   const year: number | null = useSelector(selectYear);
-  const date: string = useSelector(selectDate);
-  const description: string = useSelector(selectDescription);
+  const description: string | null = useSelector(selectDescription);
   const otherDescription: string | null = useSelector(selectOtherDescription);
   const lastDateModified: bigint | null = useSelector(selectLastDateModified);
+  const formData = useSelector(selectActivityFormData);
 
-  const [checkFall, setCheckFall] = useState(false);
-  const [checkSpring, setCheckSpring] = useState(false);
-  const [checkSummer, setCheckSummer] = useState(false);
-  const [checkOther, setCheckOther] = useState(false);
-  const [isEditing, setEditingState] = useState(props.editing);
+  // TODO: replace with toast error
   const [showEditingError, toggleEditingError] = useState(false);
   const [errorText, setErrorText] = useState('');
 
+  const [nameError, setNameError] = useState<string | undefined>(undefined);
+  const [weightError, setWeightError] = useState<string | undefined>(undefined);
+  const [semesterError, setSemesterError] = useState<string | undefined>(
+    undefined,
+  );
+  const [descriptionError, setDescriptionError] = useState<string | undefined>(
+    undefined,
+  );
+  const [otherDescriptionError, setOtherDescriptionError] = useState<
+    string | undefined
+  >(undefined);
+
+  const semesterOptions: Option<Semester>[] = [
+    { label: `Fall ${year}`, value: 'FALL' },
+    { label: `Spring ${year}`, value: 'SPRING' },
+    { label: `Summer ${year}`, value: 'SUMMER' },
+    { label: 'Other', value: 'OTHER' },
+  ];
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!semester) return;
-    semester.forEach((sem: Semester) => {
-      switch (sem) {
-        case 'FALL':
-          setCheckFall(true);
-          break;
-        case 'SPRING':
-          setCheckSpring(true);
-          break;
-        case 'SUMMER':
-          setCheckSummer(true);
-          break;
-        case 'OTHER':
-          setCheckOther(true);
-          break;
-        default:
-          break;
-      }
-    });
-  }, [semester]);
-
-  const handleAddSemester: ChangeEventHandler<Element> = (event) => {
-    const newSemester: Semester = event.target.parentElement?.textContent
-      ?.trim()
-      .toLocaleUpperCase() as Semester;
-    if (semester) {
-      const added_semester = [...semester, newSemester];
-      dispatch(setSemester(added_semester));
-    } else {
-      dispatch(setSemester([newSemester]));
-    }
-    console.log('added' + semester);
+  const onNameChange = (val: string) => {
+    dispatch(setName(val));
+    if (nameError) setNameError(undefined);
   };
 
-  const handleRemoveSemester: ChangeEventHandler<Element> = (event) => {
-    const newSemester: Semester = event.target.parentElement?.textContent
-      ?.trim()
-      .toLocaleUpperCase() as Semester;
-
-    if (semester) {
-      const removed_semester = semester.filter((item) => item !== newSemester);
-      dispatch(setSemester(removed_semester));
-    }
-    console.log('removed' + semester);
+  const onWeightChange = (val: ActivityWeight | undefined) => {
+    dispatch(setWeight(val as ActivityWeight));
+    if (weightError) setWeightError(undefined);
   };
 
-  const handleYearChange = (val: string) => {
-    // delete entire input => reset year
-    if (val === '') {
-      dispatch(setYear(null));
-    } else {
-      const newYear: number = parseInt(val);
-      if (!isNaN(newYear)) {
-        dispatch(setYear(newYear));
-      }
-    }
+  const onSemesterToggle = (semester: Semester) => {
+    dispatch(
+      checkedSemesters[semester!]
+        ? removeSemester(semester!)
+        : addSemester(semester!),
+    );
+    if (semesterError) setSemesterError(undefined);
+  };
+
+  const onOtherDescriptionChange = (val: string) => {
+    dispatch(setOtherDescription(val));
+    if (otherDescriptionError) setOtherDescriptionError(undefined);
+  };
+
+  const onDescriptionChange = (val: string) => {
+    dispatch(setDescription(val));
+    if (descriptionError) setDescriptionError(undefined);
   };
 
   const displayOtherDescription = () => {
     return (
-      <div className={inputContainer}>
-        <div className={inputWrapper}>
-          <p className={'text-slate-600'}>
-            If you checked Other, please explain in the area below.
-          </p>
-          <div className={inputStatus + ' ml-auto'}></div>
-        </div>
+      <InputContainer
+        label="If you checked Other, please explain in the area below."
+        labelClass="text-slate-600"
+        incomplete={!!otherDescriptionError}
+        incompleteMessage={otherDescriptionError}
+        withMarginY
+      >
         <TextAreaInput
           value={otherDescription || ''}
-          change={(val) => dispatch(setOtherDescription(val))}
+          fillContainer
+          change={onOtherDescriptionChange}
         />
-      </div>
+      </InputContainer>
     );
   };
 
+  const validateFormData = (): ActivityFormData | undefined => {
+    if (formData) return formData;
+    if (!name) {
+      setNameError('Enter an activity name.');
+    }
+    if (!weight) {
+      setWeightError('Select a weight.');
+    }
+    if (!semesters) {
+      setSemesterError('Select semesters.');
+    }
+    if (otherChecked && !otherDescription) {
+      setOtherDescriptionError("Enter 'Other' semester explanation.");
+    }
+    if (!description) {
+      setDescriptionError('Enter a description.');
+    }
+  };
+
   const submitActivity = () => {
-    if (
-      !description ||
-      !category ||
-      !weight ||
-      !name ||
-      !semester ||
-      !year ||
-      (!checkFall && !checkOther && !checkSpring && !checkSummer) ||
-      (checkOther && !otherDescription)
-    )
-      return;
+    const activityFormData = validateFormData();
+    if (!activityFormData || !userId) return;
 
     const newActivityDto: CreateActivityDto = {
-      userId: userId || 1,
-      semester: semester,
-      year: year,
-      //date : dateObject ? dateObject.getTime() : undefined,
+      ...activityFormData,
+      userId,
       dateModified: BigInt(new Date().getTime()),
-      name: name,
-      description: description,
-      category: category,
-      significance: weight,
       isFavorite: false,
-      semesterOtherDescription: otherDescription,
       meritStatus: null,
     };
-    console.log(newActivityDto);
     dispatch(setStep('loading'));
     createActivity(newActivityDto).then((res) => {
       dispatch(setStep(res === ResponseStatus.Success ? 'success' : 'error'));
@@ -212,31 +184,14 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
   };
 
   const updateActivity: VoidFunction = () => {
-    if (
-      !description ||
-      !category ||
-      !weight ||
-      !name ||
-      !semester ||
-      !year ||
-      (!checkFall && !checkOther && !checkSpring && !checkSummer) ||
-      (checkOther && !otherDescription) ||
-      !activityId
-    )
-      return;
+    const activityFormData = validateFormData();
+    if (!activityFormData || !activityId) return;
 
     const updateActivityDto: UpdateActivityDto = {
+      ...activityFormData,
       id: activityId,
-      userId: userId,
-      semester: semester,
-      year: year,
+      userId,
       dateModified: BigInt(new Date().getTime()),
-      name: name,
-      description: description,
-      category: category,
-      significance: weight,
-      isFavorite: true,
-      semesterOtherDescription: otherDescription,
     };
     updateActivityClient(updateActivityDto).then((res) => {
       if (res === ResponseStatus.Success) {
@@ -252,10 +207,6 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
   };
 
   if (category === null) return <div>Category must be selected</div>;
-
-  const inputContainer = 'flex flex-col my-2 space-y-1';
-  const inputWrapper = 'flex items-center';
-  const inputStatus = 'flex items-center py-3';
 
   return (
     <div className="flex flex-col">
@@ -273,21 +224,26 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
       )}
       <InputContainer
         label="Name: "
-        incomplete={!name}
-        incompleteMessage="Enter an activity name."
+        incomplete={!!nameError}
+        incompleteMessage={nameError}
         withMarginY
       >
         <TextInput
           value={name || ''}
-          change={(val) => dispatch(setName(val))}
+          change={onNameChange}
           placeholder="Enter Activity Name"
         />
       </InputContainer>
-      <WeightInfo />
       <InputContainer
         label="Weight: "
-        incomplete={!weight}
-        incompleteMessage="Select a weight."
+        incomplete={!!weightError}
+        incompleteMessage={weightError}
+        tooltipMessage={[
+          'Major: New courses, significantly redesigned courses, large courses (more than 25 students), running a dialogue',
+          'Significant: Workshops, field trips, collaborations, client projects, etc.',
+          'Minor: Directed study, guest critic, guest lecture, letter of recommendation, mentoring',
+        ]}
+        tooltipPosition="right"
         withMarginY
       >
         <DropdownInput
@@ -295,81 +251,37 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
           placeholder="Select Weight"
           addOnClass="w-[175px]"
           initialValue={weightOptions.find((o) => o.value === weight)}
-          selectValue={(value) => dispatch(setWeight(value as ActivityWeight))}
-        />
-      </InputContainer>
-      <InputContainer
-        label="Year: "
-        incomplete={!year}
-        incompleteMessage="Enter a year."
-        withMarginY
-      >
-        <TextInput
-          value={year || ''}
-          change={(val) => handleYearChange(val)}
-          placeholder="Enter Year"
+          selectValue={onWeightChange}
         />
       </InputContainer>
       <InputContainer
         label="Semester: "
-        incomplete={!checkFall && !checkSpring && !checkOther && !checkSummer}
-        incompleteMessage="Select semesters."
+        incomplete={!!semesterError}
+        incompleteMessage={semesterError}
         withMarginY
       >
         <div className="flex flex-col space-y-2">
-          <Checkbox
-            label="Fall"
-            value={checkFall}
-            onChange={(event) => {
-              setCheckFall(!checkFall);
-              checkFall
-                ? handleRemoveSemester(event)
-                : handleAddSemester(event);
-            }}
-          />
-          <Checkbox
-            label="Spring"
-            value={checkSpring}
-            onChange={(event) => {
-              setCheckSpring(!checkSpring);
-              checkSpring
-                ? handleRemoveSemester(event)
-                : handleAddSemester(event);
-            }}
-          />
-          <Checkbox
-            label="Summer"
-            value={checkSummer}
-            onChange={(event) => {
-              setCheckSummer(!checkSummer);
-              checkSummer
-                ? handleRemoveSemester(event)
-                : handleAddSemester(event);
-            }}
-          />
-          <Checkbox
-            label="Other"
-            value={checkOther}
-            onChange={(event) => {
-              setCheckOther(!checkOther);
-              checkOther
-                ? handleRemoveSemester(event)
-                : handleAddSemester(event);
-            }}
-          />
+          {semesterOptions.map(({ label, value: semester }) => (
+            <Checkbox
+              label={label}
+              key={`checkbox-${semester}`}
+              value={checkedSemesters[semester!]}
+              onChange={() => onSemesterToggle(semester!)}
+            />
+          ))}
         </div>
       </InputContainer>
-      {checkOther ? displayOtherDescription() : ''}
+      {otherChecked ? displayOtherDescription() : ''}
       <InputContainer
         label="Description: "
-        incomplete={!description}
-        incompleteMessage="Enter a description."
+        incomplete={!!descriptionError}
+        incompleteMessage={descriptionError}
         withMarginY
       >
         <TextAreaInput
           value={description || ''}
           placeholder="Enter Description"
-          change={(val) => dispatch(setDescription(val))}
+          change={onDescriptionChange}
           addOnClass="w-full"
         />
       </InputContainer>
@@ -382,17 +294,7 @@ const FormInput: React.FC<FormInputProps> = (props: FormInputProps) => {
         >
           Back
         </Button>
-        <Button
-          disabled={
-            weight === null ||
-            date === null ||
-            description === '' ||
-            !semester ||
-            !name ||
-            (checkOther && !otherDescription)
-          }
-          onClick={isEditing ? updateActivity : submitActivity}
-        >
+        <Button onClick={isEditing ? updateActivity : submitActivity}>
           Submit
         </Button>
       </div>

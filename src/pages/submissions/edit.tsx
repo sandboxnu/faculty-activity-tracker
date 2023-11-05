@@ -2,8 +2,6 @@ import FormContainer from '@/components/ActivityForm/FormContainer';
 import FormInput from '@/components/ActivityForm/FormInput';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-//import './ActivityForm.css';
 
 const EditActivityForm: React.FunctionComponent = (props) => {
   useEffect(() => {
@@ -18,7 +16,7 @@ const EditActivityForm: React.FunctionComponent = (props) => {
         <title>Edit Submission</title>
       </Head>
       <FormContainer>
-        <FormInput editing={true} />
+        <FormInput isEditing={true} />
       </FormContainer>
     </>
   );
