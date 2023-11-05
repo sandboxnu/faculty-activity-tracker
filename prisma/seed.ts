@@ -8,9 +8,6 @@ import {
 } from '@prisma/client';
 import prisma from 'lib/db';
 
-// initialize Prisma Client
-const prisma = new PrismaClient();
-
 async function createUserData() {
   const user1 = await prisma.user.upsert({
     where: { email: 'a@b.com' },
