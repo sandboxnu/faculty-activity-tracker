@@ -12,32 +12,36 @@ export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <div className="w-full flex flex-grow justify-center items-center">
+    <div className="flex w-full flex-grow items-center justify-center">
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
-          <div className="flex-col gap-3 rounded-lg bg-gray-100 shadow-lg py-10 px-14 justify-center items-center">
-            <div className="text-heading-1 text-center">
+          <div className="flex-col items-center justify-center gap-3 rounded-lg bg-gray-100 px-14 py-10 shadow-lg">
+            <div className="text-center text-heading-1">
               Create your account
             </div>
-            <div className="text-body mb-8 text-center">
+            <div className="mb-8 text-center text-body">
               Sign in with your Google account to get started.
             </div>
-            
-              <Button variant="signIn" fillContainer onClick={() => signIn(provider.id)}>
-                <div className="flex items-center justify-center">
-                  <Image
-                    className="inline mr-4"
-                    src="/media/googleIcon.svg"
-                    alt="Google icon"
-                    width={32}
-                    height={32}
-                  />
-                  <div className="text-heading-3">
-                    {/* <Image className='inline' src="/media/googleIcon.svg" alt="Google icon" width={32} height={32} /> */}
-                    Sign in with Google
-                  </div>
+
+            <Button
+              variant="signIn"
+              fillContainer
+              onClick={() => signIn(provider.id)}
+            >
+              <div className="flex items-center justify-center">
+                <Image
+                  className="mr-4 inline"
+                  src="/media/googleIcon.svg"
+                  alt="Google icon"
+                  width={32}
+                  height={32}
+                />
+                <div className="text-heading-3">
+                  {/* <Image className='inline' src="/media/googleIcon.svg" alt="Google icon" width={32} height={32} /> */}
+                  Sign in with Google
                 </div>
-              </Button>
+              </div>
+            </Button>
           </div>
         </div>
       ))}
