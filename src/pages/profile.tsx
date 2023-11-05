@@ -1,15 +1,13 @@
-import ProfileInfo, {
-  ProfileInformation,
-} from '@/components/Profile/ProfileInfo';
-import { getProfessorInfoForUser } from '@/services/professorInfo';
-import { getUserById, getUserWithInfo } from '@/services/user';
-import { toTitleCase } from '@/shared/utils/misc.util';
+import ProfileContainer from '@/components/Profile/ProfileContainer';
+import { getUserWithInfo } from '@/services/user';
+import { ProfileInformation } from '@/store/profile.store';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import React from 'react';
 
 interface ProfilePageProps {
+  userId?: number;
   info?: ProfileInformation;
   error?: string;
 }
@@ -31,23 +29,36 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
   const user = await getUserWithInfo(userId);
   if (!user) return { props: { error: 'User not found.' } };
 
+  if (!user.professorInfo)
+    return {
+      redirect: {
+        destination: '/account-setup',
+        permanent: false,
+      },
+    };
+
   return {
     props: {
+      userId,
       info: {
         firstName: user.firstName,
         lastName: user.lastName,
-        email: user.email,
-        position: user.professorInfo?.position || toTitleCase(user.role || ''),
-        teachingPercent: user.professorInfo?.teachingPercent || 0,
-        researchPercent: user.professorInfo?.researchPercent || 0,
-        servicePercent: user.professorInfo?.servicePercent || 0,
+        title: user.professorInfo.title ?? '',
+        email: user.externalEmail || user.email,
+        position: user.professorInfo.position,
+        sabbatical: user.professorInfo.sabbatical,
+        teachingPercent: user.professorInfo.teachingPercent,
+        researchPercent: user.professorInfo.researchPercent,
+        servicePercent: user.professorInfo.servicePercent,
+        phoneNumber: user.professorInfo.phoneNumber ?? '',
+        officeLocation: user.professorInfo.officeLocation ?? '',
       },
     },
   };
 };
 
-const Profile: React.FC<ProfilePageProps> = ({ info, error }) => {
-  if (error || !info)
+const Profile: React.FC<ProfilePageProps> = ({ userId, info, error }) => {
+  if (error || !info || !userId)
     return (
       <p className="mt-20 w-full text-center text-red-500">
         Error: {error || 'unknown error.'}
@@ -59,7 +70,7 @@ const Profile: React.FC<ProfilePageProps> = ({ info, error }) => {
       <Head>
         <title>My Profle</title>
       </Head>
-      <ProfileInfo {...info} />
+      <ProfileContainer userId={userId} currentInfo={info} />
     </div>
   );
 };

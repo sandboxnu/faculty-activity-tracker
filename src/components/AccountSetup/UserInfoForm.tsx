@@ -56,6 +56,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = (
       firstName,
       lastName,
       preferredName: preferredName || null,
+      externalEmail: null,
       role,
       dateModified: BigInt(Date.now()),
     };

@@ -25,6 +25,7 @@ const NewUserRow: React.FC<NewUserRowProps> = ({ submit, cancel }) => {
       role,
       email,
       preferredName: '',
+      externalEmail: null,
       dateModified: BigInt(Date.now()),
     });
   };

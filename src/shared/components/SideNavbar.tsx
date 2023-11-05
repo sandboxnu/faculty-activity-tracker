@@ -29,6 +29,18 @@ const SideNavbar: React.FC = () => {
       </Link>
       {!isMerit && (
         <Link
+          href="/profile"
+          className={`${navClass} ${
+            router.pathname == '/profile'
+              ? 'nav-underline-red'
+              : 'hover:nav-underline-red'
+          }`}
+        >
+          My Profile
+        </Link>
+      )}
+      {!isMerit && (
+        <Link
           href="/submissions/new"
           className={`${navClass} ${
             router.pathname == '/submissions/new'
@@ -81,18 +93,6 @@ const SideNavbar: React.FC = () => {
             </div>
           </div>
         </>
-      )}
-      {!isMerit && (
-        <Link
-          href="/profile"
-          className={`${navClass} ${
-            router.pathname == '/profile'
-              ? 'nav-underline-red'
-              : 'hover:nav-underline-red'
-          }`}
-        >
-          My Profile
-        </Link>
       )}
       {isMerit && (
         <Link

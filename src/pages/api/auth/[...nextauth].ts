@@ -10,28 +10,28 @@ const preview_providers = [
   CredentialsProvider({
     name: 'FACULTY',
     id: 'faculty-test-provider',
-    // @ts-ignore comment
     async authorize() {
       return {
-        id: 1,
+        id: '1',
         name: 'Faculty TestUser',
         email: 'faculty_test_user@husky.neu.edu',
         image: 'https://i.pravatar.cc/150?u=jsmith@example.com',
       };
     },
+    credentials: {},
   }),
   CredentialsProvider({
     name: 'MERIT_COMMITTEE_MEMBER',
     id: 'merit-test-provider',
-    // @ts-ignore comment
     async authorize() {
       return {
-        id: 2,
+        id: '2',
         name: 'Merit TestUser',
         email: 'merit_test_user@husky.neu.edu',
         image: 'https://i.pravatar.cc/150?u=jsmith@example.com',
       };
     },
+    credentials: {},
   }),
 ];
 

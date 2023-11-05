@@ -43,7 +43,7 @@ export const upsertProfessorInfoForUser = async (
     update: { ...info },
     create: {
       userId,
-      position: info.position || '',
+      position: info.position || 'NONTENURE',
       teachingPercent: info.teachingPercent || 0.4,
       researchPercent: info.researchPercent || 0.3,
       servicePercent: info.servicePercent || 0.3,

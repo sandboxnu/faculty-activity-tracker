@@ -1,7 +1,13 @@
 // prisma/seed.ts
 
-import { Role, SabbaticalOption } from '@prisma/client';
-import prisma from 'lib/db';
+import {
+  Role,
+  SabbaticalOption,
+  ProfessorPosition,
+  PrismaClient,
+} from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 async function createUserData() {
   const user1 = await prisma.user.upsert({
@@ -450,7 +456,7 @@ async function createProfessorInfoData() {
           email: 'a@b.com',
         },
       },
-      position: 'Tenured Faculty',
+      position: ProfessorPosition.TENURE,
       teachingPercent: 0.4,
       researchPercent: 0.4,
       servicePercent: 0.2,
@@ -467,7 +473,7 @@ async function createProfessorInfoData() {
           email: 'a2@b.com',
         },
       },
-      position: 'Tenure Track Faculty',
+      position: ProfessorPosition.TENURE,
       teachingPercent: 0.4,
       researchPercent: 0.5,
       servicePercent: 0.1,
@@ -484,7 +490,7 @@ async function createProfessorInfoData() {
           email: 'a3@b.com',
         },
       },
-      position: 'Teaching Faculty',
+      position: ProfessorPosition.NONTENURE,
       teachingPercent: 0.8,
       researchPercent: 0.1,
       servicePercent: 0.1,
@@ -501,7 +507,7 @@ async function createProfessorInfoData() {
           email: 'a4@b.com',
         },
       },
-      position: 'Tenure Track Faculty',
+      position: ProfessorPosition.TENURE,
       teachingPercent: 0.4,
       researchPercent: 0.5,
       servicePercent: 0.1,
@@ -519,7 +525,7 @@ async function createProfessorInfoData() {
           email: 'maxpinheiro181@gmail.com',
         },
       },
-      position: 'Tenure Track Faculty',
+      position: ProfessorPosition.TENURE,
       teachingPercent: 0.4,
       researchPercent: 0.5,
       servicePercent: 0.1,
@@ -537,7 +543,7 @@ async function createProfessorInfoData() {
           email: 'hernandez.die@husky.neu.edu',
         },
       },
-      position: 'Tenure Track Faculty',
+      position: ProfessorPosition.TENURE,
       teachingPercent: 0.4,
       researchPercent: 0.5,
       servicePercent: 0.1,
