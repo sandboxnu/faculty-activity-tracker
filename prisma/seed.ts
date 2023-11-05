@@ -1,12 +1,13 @@
 // prisma/seed.ts
 
 import {
-  PrismaClient,
   Role,
   SabbaticalOption,
   ProfessorPosition,
+  PrismaClient,
 } from '@prisma/client';
-import prisma from 'lib/db';
+
+const prisma = new PrismaClient();
 
 async function createUserData() {
   const user1 = await prisma.user.upsert({

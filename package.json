@@ -9,6 +9,7 @@
     "lint": "next lint",
     "dev:db:up": "docker-compose up -d",
     "dev:db:down": "docker-compose down",
+    "reset:dev": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' npx prisma migrate reset",
     "migrate": "yarn prisma migrate",
     "migrate:dev": "DATABASE_URL='postgresql://sandbox:chongus@localhost:5432/fat?schema=public' yarn prisma migrate dev",
     "generate": "yarn prisma generate",
