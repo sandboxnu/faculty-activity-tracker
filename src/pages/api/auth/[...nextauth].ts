@@ -39,16 +39,16 @@ const preview_providers = [
   CredentialsProvider({
     name: 'MERIT_COMMITTEE_HEAD',
     id: 'admin-test-provider',
-    // @ts-ignore comment
     async authorize() {
       return {
-        id: 3,
+        id: '3',
         name: 'Merit Head TestUser',
         email: 'merit_head_test_user@husky.neu.edu',
         image: 'https://i.pravatar.cc/150?u=admin_test_user',
-      }
-    }}),
-
+      };
+    },
+    credentials: {},
+  }),
 ];
 
 const production_providers = [
