@@ -12,7 +12,7 @@ import {
   setLastDateModified,
   setName,
   setOtherDescription,
-  setSemester,
+  setSemesters,
   setWeight,
   setYear,
 } from '@/store/form.store';
@@ -76,13 +76,12 @@ const ActivityCarousel: React.FC<ActivityCarouselProps> = ({
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     activity: ActivityDto,
   ) => {
-    // console.log(activity.dateModified);
     dispatch(setCategory(activity.category));
     dispatch(setActivityId(activity.id));
     dispatch(setName(activity.name));
     dispatch(setWeight(activity.significance));
     dispatch(setYear(activity.year));
-    dispatch(setSemester(activity.semester));
+    dispatch(setSemesters(activity.semester));
     dispatch(setDescription(activity.description));
     dispatch(setOtherDescription(activity.semesterOtherDescription));
     dispatch(setLastDateModified(activity.dateModified));

@@ -56,21 +56,45 @@
   padding: 6px;
   position: absolute;
   z-index: 1;
+  pointer-events: none;
+}
+
+.infoTooltipBottom .infoTooltipText {
+  width: 140px;
   top: 150%;
   left: 50%;
   margin-left: -70px;
+}
+
+.infoTooltipRight .infoTooltipText {
+  height: 100px;
+  width: max-content;
+  max-width: 220px;
+  top: 50%;
+  left: 150%;
+  margin-top: -50px;
 }
 
 .infoTooltip .infoTooltipText::before,
 .infoTooltip .infoTooltipText::after {
   content: '';
   position: absolute;
+}
+
+.infoTooltipBottom .infoTooltipText::before,
+.infoTooltipBottom .infoTooltipText::after {
   bottom: 100%;
   left: 50%;
 }
 
-/* The outline of the triangle */
-.infoTooltip .infoTooltipText::before {
+.infoTooltipRight .infoTooltipText::before,
+.infoTooltipRight .infoTooltipText::after {
+  top: 50%;
+  right: 100%;
+}
+
+/* The outline of the up-pointing triangle */
+.infoTooltipBottom .infoTooltipText::before {
   border-left: 6.5px solid transparent;
   border-right: 6.5px solid transparent;
   border-bottom: 6.5px solid #585858;
@@ -78,13 +102,32 @@
   margin-bottom: 0px;
 }
 
-/* The white fill of the triangle */
-.infoTooltip .infoTooltipText::after {
+/* The white fill of the up-pointing triangle */
+.infoTooltipBottom .infoTooltipText::after {
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-bottom: 6px solid white;
   margin-left: -6px;
   margin-top: -2px;
+  z-index: 1;
+}
+
+/* The outline of the left-pointing triangle */
+.infoTooltipRight .infoTooltipText::before {
+  border-top: 6.5px solid transparent;
+  border-bottom: 6.5px solid transparent;
+  border-right: 6.5px solid #585858;
+  margin-top: -6.5px;
+  margin-left: 0;
+}
+
+/* The white fill of the left-pointing triangle */
+.infoTooltipRight .infoTooltipText::after {
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid white;
+  margin-top: -6px;
+  margin-right: -2px;
   z-index: 1;
 }
 

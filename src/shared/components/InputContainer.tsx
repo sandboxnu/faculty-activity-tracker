@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import InfoTooltip from './InfoTooltip';
+import InfoTooltip, { TooltipPosition } from './InfoTooltip';
 
 type InputContainerProps = {
   label: string;
@@ -8,7 +8,8 @@ type InputContainerProps = {
   required?: boolean; // whether the field is required
   incomplete?: boolean; // whether the field is currently incomplete or incorrect
   incompleteMessage?: string; // message to display when incomplete
-  infoMessage?: string; // any additional info to provide on hover
+  tooltipMessage?: string | string[]; // any additional info to provide on hover
+  tooltipPosition?: TooltipPosition;
   withMarginY?: boolean; // whether to include vertical margin
   children: JSX.Element;
 };
@@ -24,7 +25,8 @@ const InputContainer: React.FC<InputContainerProps> = ({
   required = false,
   incomplete = false,
   incompleteMessage,
-  infoMessage,
+  tooltipMessage,
+  tooltipPosition,
   withMarginY = false,
   children,
 }) => {
@@ -46,7 +48,12 @@ const InputContainer: React.FC<InputContainerProps> = ({
       <div className="flex items-center space-x-1">
         <p className={labelClass}>{label}</p>
         {required && <p className="text-lg text-red-500">*</p>}
-        {infoMessage && <InfoTooltip text={[infoMessage]} />}
+        {tooltipMessage && (
+          <InfoTooltip
+            text={Array.isArray(tooltipMessage) ? tooltipMessage : [tooltipMessage]}
+            tooltipPosition={tooltipPosition}
+          />
+        )}
       </div>
       <div
         data-input-status={incomplete ? 'error' : 'success'}

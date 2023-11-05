@@ -4,19 +4,18 @@ import FormInput from '@/components/ActivityForm/FormInput';
 import ResultPage from '@/components/ActivityForm/ResultPage';
 import { FormStep, selectStep } from '@/store/form.store';
 import Head from 'next/head';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-//import './ActivityForm.css';
 
 const StepComponent: Record<FormStep, JSX.Element> = {
   selection: (
     <FormContainer>
       <CategorySelector />
     </FormContainer>
-  ), // TODO: Look into children
+  ),
   form: (
     <FormContainer>
-      <FormInput editing={false} />
+      <FormInput isEditing={false} />
     </FormContainer>
   ),
   success: <ResultPage success={true} />,
