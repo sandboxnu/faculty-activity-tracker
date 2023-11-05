@@ -50,7 +50,9 @@ const InputContainer: React.FC<InputContainerProps> = ({
         {required && <p className="text-lg text-red-500">*</p>}
         {tooltipMessage && (
           <InfoTooltip
-            text={Array.isArray(tooltipMessage) ? tooltipMessage : [tooltipMessage]}
+            text={
+              Array.isArray(tooltipMessage) ? tooltipMessage : [tooltipMessage]
+            }
             tooltipPosition={tooltipPosition}
           />
         )}

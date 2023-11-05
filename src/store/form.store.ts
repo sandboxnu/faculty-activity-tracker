@@ -27,7 +27,10 @@ export interface FormState {
 }
 
 // data to be provided when creating/updating activity
-export type ActivityFormData = Omit<CreateActivityDto, 'userId' | 'dateModified' | 'isFavorite' | 'meritStatus'>;
+export type ActivityFormData = Omit<
+  CreateActivityDto,
+  'userId' | 'dateModified' | 'isFavorite' | 'meritStatus'
+>;
 
 const initialState: FormState = {
   step: 'selection',
@@ -36,7 +39,7 @@ const initialState: FormState = {
   category: null,
   weight: null,
   semesters: null,
-  year: (new Date()).getFullYear(),
+  year: new Date().getFullYear(),
   date: '',
   description: null,
   otherDescription: null,
@@ -63,10 +66,13 @@ export const formSlice = createSlice({
       state.semesters = action.payload;
     },
     addSemester: (state, action: PayloadAction<Semester>) => {
-      state.semesters = Array.from(new Set([...(state.semesters || []), action.payload]));
+      state.semesters = Array.from(
+        new Set([...(state.semesters || []), action.payload]),
+      );
     },
     removeSemester: (state, action: PayloadAction<Semester>) => {
-      state.semesters = state.semesters?.filter(s => s !== action.payload) || null;
+      state.semesters =
+        state.semesters?.filter((s) => s !== action.payload) || null;
     },
     setYear: (state, action: PayloadAction<number | null>) => {
       state.year = action.payload;
@@ -92,7 +98,7 @@ export const formSlice = createSlice({
       state.category = null;
       state.weight = null;
       state.semesters = null;
-      state.year = (new Date()).getFullYear();
+      state.year = new Date().getFullYear();
       state.date = '';
       state.description = null;
       state.otherDescription = null;
@@ -133,17 +139,21 @@ export const selectWeight: Selector<RootState, ActivityWeight | null> = (
   state,
 ) => state.form.weight;
 
-export const selectSemesters: Selector<RootState, Semester[] | null> = (state) =>
-  state.form.semesters;
+export const selectSemesters: Selector<RootState, Semester[] | null> = (
+  state,
+) => state.form.semesters;
 
-export const selectCheckedSemesters: Selector<RootState, Record<Semester, boolean>> = (state) => {
+export const selectCheckedSemesters: Selector<
+  RootState,
+  Record<Semester, boolean>
+> = (state) => {
   const checkedSemesters: Record<Semester, boolean> = {
     FALL: false,
     SPRING: false,
     SUMMER: false,
-    OTHER: false
+    OTHER: false,
   };
-  state.form.semesters?.forEach(s => checkedSemesters[s] = true);
+  state.form.semesters?.forEach((s) => (checkedSemesters[s] = true));
   return checkedSemesters;
 };
 
@@ -167,7 +177,10 @@ export const selectLastDateModified: Selector<RootState, bigint | null> = (
   state,
 ) => state.form.lastDateModified;
 
-export const selectActivityFormData: Selector<RootState, ActivityFormData | null> = (state) => {
+export const selectActivityFormData: Selector<
+  RootState,
+  ActivityFormData | null
+> = (state) => {
   if (
     !state.form.activityName ||
     !state.form.description ||
@@ -175,7 +188,8 @@ export const selectActivityFormData: Selector<RootState, ActivityFormData | null
     !state.form.weight ||
     !state.form.semesters ||
     !state.form.year
-  ) return null;
+  )
+    return null;
   const otherChecked = state.form.semesters.includes('OTHER');
   if (otherChecked && !state.form.otherDescription) return null;
   return {
@@ -186,7 +200,7 @@ export const selectActivityFormData: Selector<RootState, ActivityFormData | null
     semester: state.form.semesters,
     semesterOtherDescription: state.form.otherDescription,
     year: state.form.year,
-  }
-}
+  };
+};
 
 export default formSlice.reducer;

@@ -6,7 +6,13 @@ import {
   seperateActivitiesBySignifanceLevel,
 } from '@/shared/utils/activity.util';
 import { bigintToJSON, toTitleCase } from '@/shared/utils/misc.util';
-import { resetForm, setWeight, setStep, setCategory, setYear } from '@/store/form.store';
+import {
+  resetForm,
+  setWeight,
+  setStep,
+  setCategory,
+  setYear,
+} from '@/store/form.store';
 import { ActivityCategory, SignificanceLevel } from '@prisma/client';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
@@ -77,7 +83,7 @@ const SubmissionsPage: React.FC<SubmissionsPageProps> = ({
     );
     dispatch(setWeight(sigLevel));
     dispatch(setStep('form'));
-    dispatch(setYear((new Date()).getFullYear()));
+    dispatch(setYear(new Date().getFullYear()));
     router.push('/submissions/new');
   };
 

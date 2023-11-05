@@ -65,7 +65,9 @@ const FormInput: React.FC<FormInputProps> = ({ isEditing }) => {
   const name: string | null = useSelector(selectName);
   const weight: ActivityWeight | null = useSelector(selectWeight);
   const semesters: Semester[] | null = useSelector(selectSemesters);
-  const checkedSemesters: Record<Semester, boolean> = useSelector(selectCheckedSemesters);
+  const checkedSemesters: Record<Semester, boolean> = useSelector(
+    selectCheckedSemesters,
+  );
   const otherChecked = checkedSemesters['OTHER'];
   const year: number | null = useSelector(selectYear);
   const description: string | null = useSelector(selectDescription);
@@ -79,9 +81,15 @@ const FormInput: React.FC<FormInputProps> = ({ isEditing }) => {
 
   const [nameError, setNameError] = useState<string | undefined>(undefined);
   const [weightError, setWeightError] = useState<string | undefined>(undefined);
-  const [semesterError, setSemesterError] = useState<string | undefined>(undefined);
-  const [descriptionError, setDescriptionError] = useState<string | undefined>(undefined);
-  const [otherDescriptionError, setOtherDescriptionError] = useState<string | undefined>(undefined);
+  const [semesterError, setSemesterError] = useState<string | undefined>(
+    undefined,
+  );
+  const [descriptionError, setDescriptionError] = useState<string | undefined>(
+    undefined,
+  );
+  const [otherDescriptionError, setOtherDescriptionError] = useState<
+    string | undefined
+  >(undefined);
 
   const semesterOptions: Option<Semester>[] = [
     { label: `Fall ${year}`, value: 'FALL' },
@@ -104,9 +112,9 @@ const FormInput: React.FC<FormInputProps> = ({ isEditing }) => {
 
   const onSemesterToggle = (semester: Semester) => {
     dispatch(
-      checkedSemesters[semester!] ?
-      removeSemester(semester!) :
-      addSemester(semester!)
+      checkedSemesters[semester!]
+        ? removeSemester(semester!)
+        : addSemester(semester!),
     );
     if (semesterError) setSemesterError(undefined);
   };
@@ -114,18 +122,18 @@ const FormInput: React.FC<FormInputProps> = ({ isEditing }) => {
   const onOtherDescriptionChange = (val: string) => {
     dispatch(setOtherDescription(val));
     if (otherDescriptionError) setOtherDescriptionError(undefined);
-  }
+  };
 
   const onDescriptionChange = (val: string) => {
     dispatch(setDescription(val));
     if (descriptionError) setDescriptionError(undefined);
-  }
+  };
 
   const displayOtherDescription = () => {
     return (
       <InputContainer
         label="If you checked Other, please explain in the area below."
-        labelClass='text-slate-600'
+        labelClass="text-slate-600"
         incomplete={!!otherDescriptionError}
         incompleteMessage={otherDescriptionError}
         withMarginY
@@ -136,25 +144,25 @@ const FormInput: React.FC<FormInputProps> = ({ isEditing }) => {
           change={onOtherDescriptionChange}
         />
       </InputContainer>
-    )
+    );
   };
 
   const validateFormData = (): ActivityFormData | undefined => {
     if (formData) return formData;
     if (!name) {
-      setNameError("Enter an activity name.");
+      setNameError('Enter an activity name.');
     }
     if (!weight) {
-      setWeightError("Select a weight.");
+      setWeightError('Select a weight.');
     }
     if (!semesters) {
-      setSemesterError("Select semesters.");
+      setSemesterError('Select semesters.');
     }
     if (otherChecked && !otherDescription) {
       setOtherDescriptionError("Enter 'Other' semester explanation.");
     }
     if (!description) {
-      setDescriptionError("Enter a description.");
+      setDescriptionError('Enter a description.');
     }
   };
 
@@ -254,11 +262,11 @@ const FormInput: React.FC<FormInputProps> = ({ isEditing }) => {
       >
         <div className="flex flex-col space-y-2">
           {semesterOptions.map(({ label, value: semester }) => (
-              <Checkbox
-                label={label}
-                key={`checkbox-${semester}`}
-                value={checkedSemesters[semester!]}
-                onChange={() => onSemesterToggle(semester!)}
+            <Checkbox
+              label={label}
+              key={`checkbox-${semester}`}
+              value={checkedSemesters[semester!]}
+              onChange={() => onSemesterToggle(semester!)}
             />
           ))}
         </div>
