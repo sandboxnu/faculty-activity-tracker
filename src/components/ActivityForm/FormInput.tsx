@@ -240,7 +240,7 @@ const FormInput: React.FC<FormInputProps> = ({ isEditing }) => {
         incompleteMessage={weightError}
         tooltipMessage={[
           'Major: New courses, significantly redesigned courses, large courses (more than 25 students), running a dialogue',
-          'Significant: Workshops, fieldtrips, collaborations, client projects, etc.',
+          'Significant: Workshops, field trips, collaborations, client projects, etc.',
           'Minor: Directed study, guest critic, guest lecture, letter of recommendation, mentoring',
         ]}
         tooltipPosition="right"

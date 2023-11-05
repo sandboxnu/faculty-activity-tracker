@@ -16,7 +16,7 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
   return (
     <div className={`infoTooltip infoTooltip${toTitleCase(tooltipPosition)}`}>
       <Image src="/media/infoIcon.svg" alt="i" width={16} height={16} />
-      <span className="infoTooltipText">
+      <span className="infoTooltipText space-y-2">
         {text.map((item) => {
           return (
             <p key={item} className="text-tooltip">
