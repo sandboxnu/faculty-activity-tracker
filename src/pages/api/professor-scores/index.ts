@@ -30,7 +30,7 @@ export default async function handler(
             return;
           }
         } else {
-          res.status(200).json({ error: 'userId is required' });
+          res.status(422).json({ error: 'userId is required' });
         }
 
         await handlePut(req, res);

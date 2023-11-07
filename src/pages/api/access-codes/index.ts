@@ -15,7 +15,7 @@ import {
 import { PrismaClientValidationError } from '@prisma/client/runtime';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
-import { getAccessCodes } from '@/services/accessCode';
+import { getAccessCodes, setAccessCode } from '@/services/accessCode';
 
 // next js .json doesnt parse bigint so we use workaround below
 // https://github.com/GoogleChromeLabs/jsbi/issues/30
@@ -41,6 +41,14 @@ export default async function handler(
       if (req.method === 'GET') {
         await handleGet(req, res);
       }
+
+      if (req.method === 'POST') {
+        if (req.body.role && req.body.newCode) {
+          await handlePost(req, res);
+        } else {
+          res.status(422).json({ error: 'role and newCode is required' });
+        }
+      }
     } else {
       res.status(401).json({ error: 'Not authorized' });
     }
@@ -51,6 +59,15 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
   try {
     const accessCodes = await getAccessCodes();
     res.status(200).json({ data: accessCodes });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+async function handlePost(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const roleAccessCode = await setAccessCode(req.body.role, req.body.newCode);
+    res.status(200).json({ data: roleAccessCode });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
