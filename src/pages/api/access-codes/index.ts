@@ -13,6 +13,9 @@ import {
   getNarrativeForUserForCategory,
 } from '@/services/narrative';
 import { PrismaClientValidationError } from '@prisma/client/runtime';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]';
+import { getAccessCodes } from '@/services/accessCode';
 
 // next js .json doesnt parse bigint so we use workaround below
 // https://github.com/GoogleChromeLabs/jsbi/issues/30
@@ -29,21 +32,26 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method === 'GET') {
-    await handleGet(req, res);
+  const session = await getServerSession(req, res, authOptions);
+
+  if (session) {
+    const isAdmin = session?.user.admin;
+
+    if (isAdmin) {
+      if (req.method === 'GET') {
+        await handleGet(req, res);
+      }
+    } else {
+      res.status(401).json({ error: 'Not authorized' });
+    }
   }
 }
 
 async function handleGet(req: NextApiRequest, res: NextApiResponse) {
-  const { userId, category } = req.query;
-  if (userId && category) {
-    const narrative = await getNarrativeForUserForCategory(
-      parseInt(userId.toString()),
-      category.toString().toUpperCase() as NarrativeCategory,
-    );
-
-    res.status(200).json({ data: narrative });
-  } else {
-    res.status(404).json({ error: 'Invalid Parameters' });
+  try {
+    const accessCodes = await getAccessCodes();
+    res.status(200).json({ data: accessCodes });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 }
