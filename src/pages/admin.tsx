@@ -280,10 +280,13 @@ const AdminPage: React.FC<AdminPageProps> = ({
               />
               <Button
                 onClick={async () => {
-                  await setAccessCode(Role.FACULTY, facultyAccessCode);
-                  window.alert(
-                    `Faculty Access Code updated to "${facultyAccessCode}".`,
-                  );
+                  if (
+                    window.confirm(
+                      `Are you sure you want to set the Faculty Access Code to "${facultyAccessCode}"?`,
+                    ) === true
+                  ) {
+                    await setAccessCode(Role.FACULTY, facultyAccessCode);
+                  }
                 }}
               >
                 Save
@@ -299,13 +302,16 @@ const AdminPage: React.FC<AdminPageProps> = ({
               />
               <Button
                 onClick={async () => {
-                  await setAccessCode(
-                    Role.MERIT_COMMITTEE_MEMBER,
-                    meritAccessCode,
-                  );
-                  window.alert(
-                    `Merit Access Code updated to "${meritAccessCode}".`,
-                  );
+                  if (
+                    window.confirm(
+                      `Are you sure you want to set the Merit Access Code to "${meritAccessCode}"?`,
+                    ) === true
+                  ) {
+                    await setAccessCode(
+                      Role.MERIT_COMMITTEE_MEMBER,
+                      meritAccessCode,
+                    );
+                  }
                 }}
               >
                 Save
