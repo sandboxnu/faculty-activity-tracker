@@ -22,7 +22,7 @@ import NewUserRow from '@/components/AdminPage/NewUserRow';
 import { bigintToJSON } from '@/shared/utils/misc.util';
 import Image from 'next/image';
 import Button from '@/shared/components/Button';
-import { getAccessCodes } from '@/client/accessCodes.client';
+import { getAccessCodes, setAccessCode } from '@/client/accessCodes.client';
 
 interface AdminPageProps {
   users?: UserDto[];
@@ -278,7 +278,13 @@ const AdminPage: React.FC<AdminPageProps> = ({
                 change={(val) => setFacultyAccessCode(val)}
                 placeholder="Enter Access Code"
               />
-              <Button onClick={() => {}}>Save</Button>
+              <Button
+                onClick={async () => {
+                  await setAccessCode(Role.FACULTY, facultyAccessCode);
+                }}
+              >
+                Save
+              </Button>
             </div>
           </InputContainer>
           <InputContainer label="Merit Access Code: ">
@@ -288,7 +294,16 @@ const AdminPage: React.FC<AdminPageProps> = ({
                 change={(val) => setMeritAccessCode(val)}
                 placeholder="Enter Access Code"
               />
-              <Button onClick={() => {}}>Save</Button>
+              <Button
+                onClick={async () => {
+                  await setAccessCode(
+                    Role.MERIT_COMMITTEE_MEMBER,
+                    meritAccessCode,
+                  );
+                }}
+              >
+                Save
+              </Button>
             </div>
           </InputContainer>
           <Header />
