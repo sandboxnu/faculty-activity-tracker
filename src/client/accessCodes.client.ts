@@ -47,7 +47,7 @@ export const setAccessCode = async (
 > => {
   try {
     const response = await fetch(`${apiRoot}`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',

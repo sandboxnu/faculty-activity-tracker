@@ -42,9 +42,9 @@ export default async function handler(
         await handleGet(req, res);
       }
 
-      if (req.method === 'POST') {
+      if (req.method === 'PUT') {
         if (req.body.role && req.body.newCode) {
-          await handlePost(req, res);
+          await handlePut(req, res);
         } else {
           res.status(422).json({ error: 'role and newCode is required' });
         }
@@ -64,7 +64,7 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-async function handlePost(req: NextApiRequest, res: NextApiResponse) {
+async function handlePut(req: NextApiRequest, res: NextApiResponse) {
   try {
     const roleAccessCode = await setAccessCode(req.body.role, req.body.newCode);
     res.status(200).json({ data: roleAccessCode });
