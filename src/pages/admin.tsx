@@ -9,6 +9,8 @@ import { GetServerSideProps } from 'next';
 import AdminTableRow from '../components/AdminPage/AdminTableRow';
 import { deleteUser, createUser, updateUser } from '../client/users.client';
 import { ResponseStatus } from '@/client/activities.client';
+import InputContainer from '@/shared/components/InputContainer';
+import TextInput from '@/shared/components/TextInput';
 import {
   isAdminUser,
   SortDir,
@@ -60,6 +62,8 @@ const AdminPage: React.FC<AdminPageProps> = ({
   const [isAddingUser, toggleAddingUser] = useState<boolean>(false);
   const [sortType, setSortType] = useState<SortType | null>(null);
   const [sortDir, setSortDir] = useState<SortDir | null>(null);
+  const [facultyAccessCode, setFacultyAccessCode] = useState<string>('');
+  const [meritAccessCode, setMeritAccessCode] = useState<string>('');
   const sortedUsers =
     sortType && sortDir ? users.sort(userSorter[sortType][sortDir]) : users;
 
@@ -244,6 +248,26 @@ const AdminPage: React.FC<AdminPageProps> = ({
           </div>
         </div>
         <div className="my-4 flex w-full flex-col space-y-3">
+          <InputContainer label="Faculty Access Code: ">
+            <div className="flex space-x-2">
+              <TextInput
+                value={facultyAccessCode}
+                change={(val) => setFacultyAccessCode(val)}
+                placeholder="Enter Access Code"
+              />
+              <Button onClick={() => {}}>Save</Button>
+            </div>
+          </InputContainer>
+          <InputContainer label="Merit Access Code: ">
+            <div className="flex space-x-2">
+              <TextInput
+                value={meritAccessCode}
+                change={(val) => setMeritAccessCode(val)}
+                placeholder="Enter Access Code"
+              />
+              <Button onClick={() => {}}>Save</Button>
+            </div>
+          </InputContainer>
           <Header />
           {isAddingUser && (
             <NewUserRow submit={createNewUser} cancel={cancel} />
