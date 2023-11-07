@@ -1,7 +1,7 @@
 // TODO: Admin page
 import { useSession, getSession } from 'next-auth/react';
 import Unauthorized from '@/shared/components/Unauthorized';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CreateUserDto, UpdateUserDto, UserDto } from 'src/models/user.model';
 import { User, Role } from '@prisma/client';
 import { getAllUsers, getUserById, getUsersByQuery } from '@/services/user';
@@ -22,6 +22,7 @@ import NewUserRow from '@/components/AdminPage/NewUserRow';
 import { bigintToJSON } from '@/shared/utils/misc.util';
 import Image from 'next/image';
 import Button from '@/shared/components/Button';
+import { getAccessCodes } from '@/client/accessCodes.client';
 
 interface AdminPageProps {
   users?: UserDto[];
@@ -66,6 +67,28 @@ const AdminPage: React.FC<AdminPageProps> = ({
   const [meritAccessCode, setMeritAccessCode] = useState<string>('');
   const sortedUsers =
     sortType && sortDir ? users.sort(userSorter[sortType][sortDir]) : users;
+
+  useEffect(() => {
+    getAccessCodes()
+      .then((response) => {
+        if (Array.isArray(response)) {
+          const facultyCodeObj = response.find(
+            (code) => code.role === 'FACULTY',
+          );
+          const meritCodeObj = response.find(
+            (code) => code.role === 'MERIT_COMMITTEE_MEMBER',
+          );
+
+          if (facultyCodeObj) setFacultyAccessCode(facultyCodeObj.accessCode);
+          if (meritCodeObj) setMeritAccessCode(meritCodeObj.accessCode);
+        } else {
+          setError(response + '');
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to fetch access codes:', error);
+      });
+  }, []);
 
   const cancel = () => {
     toggleAddingUser(false);
