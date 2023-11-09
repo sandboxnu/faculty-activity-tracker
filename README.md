@@ -1,45 +1,14 @@
-## Installation
+# Faculty Activity Tracker (FAT)
 
-```bash
-yarn install
-```
+FAT is a dashboard-driven app to be used by the faculty and merit committee of Northeastern College of Arts, Media and Design (CAMD) at Northeastern University to log and view their extra curricular activities. Faculty members report their extra curricular involvement through their view of the app, and merit committee reviews and scores all submissions through their dashboard.
 
-## Running the app
+## Features
 
-```bash
-# start database with docker
-yarn dev:db:up
-
-# start development server
-yarn dev
-```
-
-### Starting the app for the first time
-
-[ TODO ]
-
-## Database
-
-```bash
-# start database with docker
-yarn dev:db:up
-
-# stop database with docker
-yarn dev:db:down
-```
-
-## Updating Prisma
-
-```bash
-# generate types
-yarn generate
-
-# update/migrate prisma schema
-yarn migrate
-
-# populate database with seed data
-yarn seed
-```
+- [Next.js](https://nextjs.org) - Web development framework
+- [Tailwind CSS](https://tailwindcss.com) - CSS framework
+- [NextAuth.js](https://next-auth.js.org/) - Authentication
+- [Prisma](https://www.prisma.io/) - ORM
+- [PostgreSQL](https://www.postgresql.org/) - Database
 
 ## Project structure
 
@@ -61,35 +30,84 @@ yarn seed
 │   └── styles/
 ```
 
-- `prisma/` - prisma-related files, including schemas and seed scripts
-- `public/`- static content, including any images used in app
+- `prisma/` - Prisma-related files, including schemas and seed scripts.
+- `public/`- Static content, including any images used in app.
 - `src/`
-  - `client/` - functions for making calls to API
-  - `components/` - React components used in the frontend pages
-  - `middleware.ts` - middleware for authentication (protecting routes)
-  - `models/` - type definitions for models, dtos, and any other necessary types
-  - `pages/` - contains all pages/routes for both frontend and backend (more details explained below)
-  - `services/` - functions for interacting with prisma/database
-  - `shared/` - various shared items, including components (e.g. Navbar) and utils
-  - `store/` - redux store logic
-  - `styles/` - any necessary stylesheets
+  - `client/` - Functions for making calls to API.
+  - `components/` - React components used in the frontend pages.
+  - `middleware.ts` - Middleware for authentication (protecting routes).
+  - `models/` - Type definitions for models, dtos, and any other necessary types.
+  - `pages/` - Contains all pages/routes for both frontend and backend (uses the [Pages Router](https://nextjs.org/docs/pages)).
+  - `services/` - Functions for interacting with Prisma/database.
+  - `shared/` - Various shared items, including components and utils.
+  - `store/` - [Redux](https://redux.js.org/) store logic.
+  - `styles/` - Any necessary stylesheets.
 
-### Pages
+## Running Locally
 
-In NextJS apps, pages within the `pages/` directory are automatically connected to url routes. Each page is associated with a route based on its file name. Additionally, folders correspond to url paths. Some examples include:
+Before you start you will need the following:
 
-- `pages/index.tsx` is found at `/`
-- `pages/dashboard.tsx` is found at `/dashboard`
-- `pages/submissions/index.tsx` is found at `/submissions`
-- `pages/submissions/new.tsx` is found at `/submissions/new`
+- [Node.js](https://nodejs.org/en)
+- [Docker](https://www.docker.com/)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as **API routes** instead of React pages. For more details, reference the NextJS documentation on [API routes](https://nextjs.org/docs/api-routes/introduction).
+1. Clone the repo.
 
-## Learn More
+```bash
+git clone git@github.com:sandboxnu/faculty-activity-tracker.git
+cd faculty-activity-tracker
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. Install the necessary dependencies.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+3. Configure the `.env` file by following the template in `.env.example`. See [Setting up the environment](#setting-up-the-environment).
+
+4. Run the docker container.
+
+```bash
+docker compose up -d
+```
+
+> **Note:** The `docker-compose.yml` file sets the `POSTGRES_USER` as "sandbox", `POSTGRES_PASSWORD` as "chongus", and `POSTGRES_DB` as "fat" by default.
+
+5. Sync your database.
+
+```bash
+npx prisma migrate dev
+```
+
+6. Run the application.
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the results!
+
+### Setting up the environment
+
+1. Create a new file called `.env` or copy the `.env.example` and rename it to `.env`.
+
+```bash
+cp .env.example .env
+```
+
+2. Complete the file to add your environment variables.
+
+```env
+DATABASE_URL="postgresql://sandbox:chongus@localhost:5432/fat?schema=public"
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+NEXTAUTH_SECRET=
+```
+
+To setup your Google Client, see [Setting up OAuth 2.0](https://support.google.com/cloud/answer/6158849?hl=en). To generate a new `NEXTAUTH_SECRET`, run the following command in your terminal and add it to the `.env` file.
+
+```bash
+openssl rand -base64 32
+```
