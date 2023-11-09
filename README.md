@@ -106,7 +106,7 @@ GOOGLE_CLIENT_SECRET=
 NEXTAUTH_SECRET=
 ```
 
-To setup your Google Client, see [Setting up OAuth 2.0](https://support.google.com/cloud/answer/6158849?hl=en). To generate a new `NEXTAUTH_SECRET`, run the following command in your terminal and add it to the `.env` file.
+To generate `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, see [Setting up OAuth 2.0](https://support.google.com/cloud/answer/6158849?hl=en). To generate a new `NEXTAUTH_SECRET`, run the following command in your terminal and add it to the `.env` file.
 
 ```bash
 openssl rand -base64 32
