@@ -1,7 +1,7 @@
 // TODO: Admin page
 import { useSession, getSession } from 'next-auth/react';
 import Unauthorized from '@/shared/components/Unauthorized';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CreateUserDto, UpdateUserDto, UserDto } from 'src/models/user.model';
 import { User, Role } from '@prisma/client';
 import { getAllUsers, getUserById, getUsersByQuery } from '@/services/user';
@@ -9,6 +9,8 @@ import { GetServerSideProps } from 'next';
 import AdminTableRow from '../components/AdminPage/AdminTableRow';
 import { deleteUser, createUser, updateUser } from '../client/users.client';
 import { ResponseStatus } from '@/client/activities.client';
+import InputContainer from '@/shared/components/InputContainer';
+import TextInput from '@/shared/components/TextInput';
 import {
   isAdminUser,
   SortDir,
@@ -20,6 +22,7 @@ import NewUserRow from '@/components/AdminPage/NewUserRow';
 import { bigintToJSON } from '@/shared/utils/misc.util';
 import Image from 'next/image';
 import Button from '@/shared/components/Button';
+import { getAccessCodes, setAccessCode } from '@/client/accessCodes.client';
 
 interface AdminPageProps {
   users?: UserDto[];
@@ -60,8 +63,32 @@ const AdminPage: React.FC<AdminPageProps> = ({
   const [isAddingUser, toggleAddingUser] = useState<boolean>(false);
   const [sortType, setSortType] = useState<SortType | null>(null);
   const [sortDir, setSortDir] = useState<SortDir | null>(null);
+  const [facultyAccessCode, setFacultyAccessCode] = useState<string>('');
+  const [meritAccessCode, setMeritAccessCode] = useState<string>('');
   const sortedUsers =
     sortType && sortDir ? users.sort(userSorter[sortType][sortDir]) : users;
+
+  useEffect(() => {
+    getAccessCodes()
+      .then((response) => {
+        if (Array.isArray(response)) {
+          const facultyCodeObj = response.find(
+            (code) => code.role === 'FACULTY',
+          );
+          const meritCodeObj = response.find(
+            (code) => code.role === 'MERIT_COMMITTEE_MEMBER',
+          );
+
+          if (facultyCodeObj) setFacultyAccessCode(facultyCodeObj.accessCode);
+          if (meritCodeObj) setMeritAccessCode(meritCodeObj.accessCode);
+        } else {
+          setError(response + '');
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to fetch access codes:', error);
+      });
+  }, []);
 
   const cancel = () => {
     toggleAddingUser(false);
@@ -244,6 +271,53 @@ const AdminPage: React.FC<AdminPageProps> = ({
           </div>
         </div>
         <div className="my-4 flex w-full flex-col space-y-3">
+          <InputContainer label="Faculty Access Code: ">
+            <div className="flex space-x-2">
+              <TextInput
+                value={facultyAccessCode}
+                change={(val) => setFacultyAccessCode(val)}
+                placeholder="Enter Access Code"
+              />
+              <Button
+                onClick={async () => {
+                  if (
+                    window.confirm(
+                      `Are you sure you want to set the Faculty Access Code to "${facultyAccessCode}"?`,
+                    ) === true
+                  ) {
+                    await setAccessCode(Role.FACULTY, facultyAccessCode);
+                  }
+                }}
+              >
+                Save
+              </Button>
+            </div>
+          </InputContainer>
+          <InputContainer label="Merit Access Code: ">
+            <div className="flex space-x-2">
+              <TextInput
+                value={meritAccessCode}
+                change={(val) => setMeritAccessCode(val)}
+                placeholder="Enter Access Code"
+              />
+              <Button
+                onClick={async () => {
+                  if (
+                    window.confirm(
+                      `Are you sure you want to set the Merit Access Code to "${meritAccessCode}"?`,
+                    ) === true
+                  ) {
+                    await setAccessCode(
+                      Role.MERIT_COMMITTEE_MEMBER,
+                      meritAccessCode,
+                    );
+                  }
+                }}
+              >
+                Save
+              </Button>
+            </div>
+          </InputContainer>
           <Header />
           {isAddingUser && (
             <NewUserRow submit={createNewUser} cancel={cancel} />
