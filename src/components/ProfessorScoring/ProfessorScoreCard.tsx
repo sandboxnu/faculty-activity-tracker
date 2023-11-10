@@ -50,7 +50,11 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
           <p className="text-center text-body-bold xl:text-left">Scoring</p>
           <div className="flex flex-col justify-between border-b-2 px-2 pb-4 xl:flex-row">
             {professorScores.map(({ category, score }) => (
-              <ProfessorScoreItem category={category} score={score} />
+              <ProfessorScoreItem
+                category={category}
+                score={score}
+                key={category}
+              />
             ))}
           </div>
           <div className="flex flex-col justify-between px-4 xl:flex-row">
