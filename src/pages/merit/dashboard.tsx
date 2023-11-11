@@ -3,6 +3,21 @@ import Unauthorized from '@/shared/components/Unauthorized';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import ErrorMessage from '@/shared/components/ErrorMessage';
+import GraphCard from '@/components/Merit/GraphCard';
+
+const tenureData = [
+  { x: '0-5', y: 10 },
+  { x: '5-10', y: 20 },
+  { x: '10-15', y: 7 },
+  { x: '15+', y: 45 },
+];
+
+const nonTenureData = [
+  { x: '0-5', y: 5 },
+  { x: '5-10', y: 15 },
+  { x: '10-15', y: 14 },
+  { x: '15+', y: 3 },
+];
 
 const Dashboard: React.FC = () => {
   const { data: session, status } = useSession();
@@ -28,6 +43,10 @@ const Dashboard: React.FC = () => {
       </Head>
       <h1>Dashboard</h1>
       <p className="my-4 text-lg text-red-500">Welcome, {name || 'User'}! </p>
+      <div className="flex w-full items-center">
+        <GraphCard label="Tenured/Tenure Track" data={tenureData} />
+        <GraphCard label="Non-Tenure" data={nonTenureData} />
+      </div>
     </div>
   );
 };
