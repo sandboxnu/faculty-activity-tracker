@@ -164,3 +164,17 @@
   left: 0;
   right: 0;
 }
+
+/* override recharts tick label */
+.recharts-cartesian-axis-tick-value,
+.recharts-cartesian-axis-tick-value tspan {
+  font-size: 0.625rem; /* 10px */
+  color: theme('colors.gray.500');
+}
+
+/* override recharts label */
+.recharts-label,
+.recharts-label tspan {
+  font-size: 0.75rem; /* 12px */
+  color: theme('colors.gray.500');
+}
