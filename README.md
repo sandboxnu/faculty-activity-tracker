@@ -1,6 +1,12 @@
-# Faculty Activity Tracker (FAT)
+<!-- # Faculty Activity Tracker (FAT) -->
 
-FAT is a dashboard-driven app to be used by the faculty and merit committee of Northeastern College of Arts, Media and Design (CAMD) at Northeastern University to log and view their extra curricular activities. Faculty members report their extra curricular involvement through their view of the app, and merit committee reviews and scores all submissions through their dashboard.
+<p align="center">
+  <a href="https://searchneu.com/">
+    <img alt="Faculty Activity Tracker Logo" src="./screenshots/Logo.svg" width="350"/>
+  </a>
+</p>
+
+Faculty Acivity Tracker ("FAT") is a dashboard-driven app to be used by the faculty and merit committee of Northeastern College of Arts, Media and Design (CAMD) at Northeastern University to log and view their extra curricular activities. Faculty members report their extra curricular involvement through their view of the app, and merit committee reviews and scores all submissions through their dashboard.
 
 ## Features
 
@@ -9,6 +15,12 @@ FAT is a dashboard-driven app to be used by the faculty and merit committee of N
 - [NextAuth.js](https://next-auth.js.org/) - Authentication
 - [Prisma](https://www.prisma.io/) - ORM
 - [PostgreSQL](https://www.postgresql.org/) - Database
+
+## Screenshots
+
+| <image src="./screenshots/faculty-submit-activity.png"> | <image src="./screenshots/faculty-activities.png"> |
+| ------------------------------------------------------- | -------------------------------------------------- |
+| <image src="./screenshots/mc-scoring.png">              | coming soon!                                       |
 
 ## Project structure
 
