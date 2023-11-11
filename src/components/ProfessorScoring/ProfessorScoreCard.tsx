@@ -7,6 +7,7 @@ import FinalScoreCard from './FinalScoreCard';
 import ProfessorScoreItem from './ProfessorScoreItem';
 import Tooltip from '@/shared/components/Tooltip';
 import InputContainer from '@/shared/components/InputContainer';
+import TextInput from '@/shared/components/TextInput';
 
 interface ProfessorScoreCardProps {
   professorId: number;
@@ -17,6 +18,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
 }) => {
   const [professorScore, setProfessorScore] =
     useState<CreateProfessorScoreDto | null>(null);
+  const [finalScore, setFinalScore] = useState(0);
 
   useEffect(() => {
     getProfessorScoreForUser(professorId).then((data) => {
@@ -41,7 +43,8 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
     3
   ).toFixed(1);
 
-  const sampleTextArray = ['Sample Text 1', 'Sample Text 2', 'Sample Text 3'];
+  const tooltipMessage =
+    'A professor may be recently hired or have special circumstances, so you can adjust their score accordingly below.';
 
   return (
     <div className="flex w-full min-w-[64px] flex-col">
@@ -61,9 +64,22 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
             <ProfessorScoreItem
               category={'Average'}
               score={parseFloat(averageScore)}
+              className="space-y-2"
             />
-            <div className="text-center">
-              <p className="text-body">Final Score</p>
+            <div className="flex items-center justify-center xl:justify-start">
+              <InputContainer
+                label="Final Score"
+                labelClass="text-body"
+                tooltipMessage={tooltipMessage}
+                className="justify-center text-body-bold"
+              >
+                <TextInput
+                  value={12}
+                  change={() => {}}
+                  placeholder=""
+                  className="max-w-[64px]"
+                />
+              </InputContainer>
             </div>
           </div>
         </div>

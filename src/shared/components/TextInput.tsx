@@ -32,14 +32,12 @@ const TextInput: React.FC<TextInputProps> = ({
       onChange={(e) => change(e.target.value)}
       onKeyDown={onKeyDown}
       value={value}
-      className={
-        className ||
-        clsx(
-          'rounded-lg border-[0.5px] border-gray-500 px-3 py-2 outline-none',
-          incompleteBorderClass,
-          fillContainer ? 'flex flex-grow' : 'max-w-[175px]',
-        )
-      }
+      className={clsx(
+        className,
+        'rounded-lg border-[0.5px] border-gray-500 px-3 py-2 outline-none',
+        incompleteBorderClass,
+        fillContainer ? 'flex flex-grow' : 'max-w-[175px]',
+      )}
     />
   );
 };
