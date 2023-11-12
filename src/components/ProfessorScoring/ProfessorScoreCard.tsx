@@ -96,6 +96,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
                   change={onChange}
                   placeholder=""
                   className="max-w-[48px]"
+                  centerText={true}
                 />
               </InputContainer>
             </div>
