@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import InfoTooltip, { TooltipPosition } from './InfoTooltip';
+import clsx from 'clsx';
 
 type InputContainerProps = {
   label: string;
@@ -11,6 +12,7 @@ type InputContainerProps = {
   tooltipMessage?: string | string[]; // any additional info to provide on hover
   tooltipPosition?: TooltipPosition;
   withMarginY?: boolean; // whether to include vertical margin
+  className?: string;
   children: JSX.Element;
 };
 
@@ -28,6 +30,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
   tooltipMessage,
   tooltipPosition,
   withMarginY = false,
+  className,
   children,
 }) => {
   const IncompleteStatus = () => (
@@ -59,7 +62,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
       </div>
       <div
         data-input-status={incomplete ? 'error' : 'success'}
-        className="group flex items-center space-x-2"
+        className={clsx(className, 'group flex items-center space-x-2')}
       >
         {children}
       </div>
