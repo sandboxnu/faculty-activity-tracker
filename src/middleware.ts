@@ -5,6 +5,7 @@ export const config = {
     '/submissions',
     '/submissions/(.*)',
     '/narratives/(.*)',
+    '/merit/(.*)',
     '/profile',
     '/account-setup',
   ],
