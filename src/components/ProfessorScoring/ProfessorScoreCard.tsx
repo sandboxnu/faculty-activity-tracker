@@ -20,20 +20,22 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
   const [professorScore, setProfessorScore] =
     useState<CreateProfessorScoreDto | null>(null);
   const [finalScore, setFinalScore] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     getProfessorScoreForUser(professorId).then((data) => {
-      if (
-        data === ResponseStatus.UnknownError ||
-        data === ResponseStatus.Unauthorized ||
-        data === ResponseStatus.BadRequest
-      ) {
-        return;
+      if (data === ResponseStatus.UnknownError) {
+        setError('Unknown Error');
+      } else if (data === ResponseStatus.Unauthorized) {
+        setError('Unauthorized');
+      } else if (data === ResponseStatus.BadRequest) {
+        setError('Bad Request');
+      } else {
+        setProfessorScore(data as CreateProfessorScoreDto);
+        setFinalScore(
+          (data as CreateProfessorScoreDto)?.totalScore.toString() ?? '',
+        );
       }
-      setProfessorScore(data as CreateProfessorScoreDto);
-      setFinalScore(
-        (data as CreateProfessorScoreDto)?.totalScore.toString() ?? '',
-      );
     });
   }, [professorId]);
 
@@ -46,8 +48,8 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
     }
   }, [finalScore, professorId]);
 
-  if (!professorScore) {
-    return null;
+  if (error || !professorScore) {
+    return <p className="text-red-500">Could not fetch scores: {error}</p>;
   }
 
   const onChange = (value: string) => {
