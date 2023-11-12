@@ -12,18 +12,10 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserInfo, setStep } from '@/store/accountSetup.store';
 import StepWrapper from './StepWrapper';
-
-interface ProfessorInfoFormProps {
-  // submit: (
-  //   position: string,
-  //   teachingPercent: number,
-  //   researchPercent: number,
-  //   servicePercent: number,
-  //   sabbatical: SabbaticalOption,
-  //   teachingReleaseExplanation?: string,
-  // ) => void;
-  // back: () => void;
-}
+import {
+  isErrorResponse,
+  responseStatusMessage,
+} from '@/shared/utils/misc.util';
 
 const positionOptions: Option<ProfessorPosition>[] = [
   { label: 'Non-Tenure Track', value: ProfessorPosition.NONTENURE },
@@ -36,12 +28,7 @@ const sabbaticalOptions: Option<SabbaticalOption>[] = [
   { label: 'Sabbatical: Semester', value: SabbaticalOption.SEMESTER },
 ];
 
-const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
-  {
-    // submit,
-    // back,
-  },
-) => {
+const ProfessorInfoForm: React.FC = () => {
   const userInfo = useSelector(selectUserInfo);
   const [position, setPosition] = useState<ProfessorPosition | null>(null);
   const [teachingPercent, setTeachingPercent] = useState(0);
@@ -148,13 +135,8 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
       };
 
       const res = await updateProfessorInfoForUser(newProfessorInfo);
-      if (res === ResponseStatus.Unauthorized) setPageError('Unauthorized');
-      else if (res === ResponseStatus.BadRequest) setPageError('Bad request');
-      else if (res === ResponseStatus.UnknownError)
-        setPageError('Unknown error');
-      else {
-        router.push('/profile');
-      }
+      if (isErrorResponse(res)) return setPageError(responseStatusMessage[res]);
+      router.push('/profile');
     }
   };
 
@@ -189,6 +171,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
             withMarginY
             incomplete={!!distributionError}
             incompleteMessage={distributionError}
+            tooltipMessage="This represents the standard workloads for the faculty level selected above. The weighting can be adjusted based on your circumstances."
             required
           >
             <div className="w-full px-5">
@@ -226,6 +209,7 @@ const ProfessorInfoForm: React.FC<ProfessorInfoFormProps> = (
             label="Teaching Release Explanation"
             labelClass="text-body"
             withMarginY
+            tooltipMessage="If you were released from teaching, please explain here what you were asked to do instead. For example, research or service on a committee."
           >
             <TextAreaInput
               value={teachingReleaseExplanation}
