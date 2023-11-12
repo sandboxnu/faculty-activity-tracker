@@ -36,7 +36,7 @@ const InfoSidebar: React.FC = () => {
   const router = useRouter();
   const pathname = router.pathname;
   const { category, professorId: professorIdString } = router.query;
-  const professorId = parseInt(professorIdString?.toString() ?? "")
+  const professorId = parseInt(professorIdString?.toString() ?? '');
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [sidebarType, setType] = useState<SidebarType | null>(null);
@@ -80,41 +80,43 @@ const InfoSidebar: React.FC = () => {
     } else if (pathname.includes('narratives')) {
       setType('narratives');
     } else if (pathname == '/merit/professors/[professorId]') {
-      Promise.all([
-        getProfessorInfoForUser(professorId),
-      ]).then(([professorInfo]) => {
-        if (professorInfo === ResponseStatus.UnknownError) return;
-        setType('scoring');
-        setProfessorInfo(professorInfo);
-      });
+      Promise.all([getProfessorInfoForUser(professorId)]).then(
+        ([professorInfo]) => {
+          if (professorInfo === ResponseStatus.UnknownError) return;
+          setType('scoring');
+          setProfessorInfo(professorInfo);
+        },
+      );
     } else {
       setType(null);
     }
   }, [pathname, category, userId]);
 
   return (
-    <div className="flex flex-col items-start w-1/5 bg-white px-6 py-6 space-y-6">
-      {sidebarType === 'submissions' && category && (
-        <SubmissionsInfo
-          activitiesBySemester={activitiesBySemester}
-          activitiesBySigLevel={activitiesBySigLevel}
-          category={category.toString() as ActivityCategory}
-          narrative={narrative}
-        />
-      )}
-      {(sidebarType === 'new' || sidebarType === 'edit') && (
-        <FormInstructions />
-      )}
-      {sidebarType === 'narratives' && <NarrativeInstructions />}
-      {sidebarType === 'profile' && <ProfileInstructions />}
-      {sidebarType === 'scoring' && (
-        <>
-          <ScoringInfo profInfo={professorInfo}/>
-          <ProfessorCommentBox professorId={professorId}/>
-          <ProfessorScoreCard professorId={professorId} />
-        </>
-      )}
-    </div>
+    sidebarType && (
+      <div className="flex flex-col items-start w-1/5 bg-white px-6 py-6 space-y-6">
+        {sidebarType === 'submissions' && category && (
+          <SubmissionsInfo
+            activitiesBySemester={activitiesBySemester}
+            activitiesBySigLevel={activitiesBySigLevel}
+            category={category.toString() as ActivityCategory}
+            narrative={narrative}
+          />
+        )}
+        {(sidebarType === 'new' || sidebarType === 'edit') && (
+          <FormInstructions />
+        )}
+        {sidebarType === 'narratives' && <NarrativeInstructions />}
+        {sidebarType === 'profile' && <ProfileInstructions />}
+        {sidebarType === 'scoring' && (
+          <>
+            <ScoringInfo profInfo={professorInfo} />
+            <ProfessorCommentBox professorId={professorId} />
+            <ProfessorScoreCard professorId={professorId} />
+          </>
+        )}
+      </div>
+    )
   );
 };
 

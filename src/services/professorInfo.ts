@@ -13,6 +13,11 @@ export const getProfessorInfoForUser = async (
   return info;
 };
 
+export const getAllProfessorInfo = async (): Promise<ProfessorInfo[]> => {
+  const info = await prisma.professorInfo.findMany();
+  return info;
+};
+
 export const createProfessorInfo = async (
   info: CreateProfessorInfoDto,
 ): Promise<ProfessorInfo> => {

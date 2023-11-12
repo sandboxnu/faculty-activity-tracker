@@ -3,15 +3,18 @@ import { PrismaClient, ProfessorScore } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getProfessorScore = async (
-  userId: number
-) => {
+export const getProfessorScore = async (userId: number) => {
   const score = await prisma.professorScore.findUnique({
-    where: {userId: userId}
-  })
+    where: { userId: userId },
+  });
 
   return score;
-}
+};
+
+export const getAllProfessorScores = async (): Promise<ProfessorScore[]> => {
+  const scores = await prisma.professorScore.findMany();
+  return scores;
+};
 
 export const upsertProfessorScore = async (
   score: UpdateProfessorScoreDto,

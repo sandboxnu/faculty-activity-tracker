@@ -35,10 +35,7 @@ const StepWrapper: React.FC<StepWrapperProps> = ({
       {children}
       <div className="flex justify-between mt-12 w-full" id="buttons">
         {currentStep > 0 && (
-          <Button
-            variant='secondary'
-            onClick={back}
-          >
+          <Button variant="secondary" onClick={back}>
             <p className="text-xs">Back</p>
           </Button>
         )}

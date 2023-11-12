@@ -1,7 +1,4 @@
-import {
-  ActivityDto,
-  UpdateActivityDto,
-} from '@/models/activity.model';
+import { ActivityDto, UpdateActivityDto } from '@/models/activity.model';
 import { ActivityMeritStatus, SignificanceLevel } from '@prisma/client';
 import { useState, useEffect } from 'react';
 import { toTitleCase } from '@/shared/utils/misc.util';
@@ -83,9 +80,8 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
   const [expanded, setExpanded] = useState(false);
   const toggleDropDown = () => {
     const newState = !expanded;
-    console.log(`SET sidebar-dropdown-${cookieKey} => ${newState}`);
     window.localStorage.setItem(
-      `sidebar-dropdown-${cookieKey}`,
+      `activityCard-dropdown-${cookieKey}`,
       JSON.stringify(newState),
     );
     setExpanded(newState);
@@ -93,11 +89,12 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
 
   useEffect(() => {
     const storedDropDownCookie = JSON.parse(
-      window.localStorage.getItem(`sidebar-dropdown-${cookieKey}`) || 'null',
+      window.localStorage.getItem(`activityCard-dropdown-${cookieKey}`) ||
+        'null',
     );
     if (storedDropDownCookie !== null) {
       console.log(
-        `GET sidebar-dropdown-${cookieKey} => ${storedDropDownCookie}`,
+        `GET activityCard-dropdown-${cookieKey} => ${storedDropDownCookie}`,
       );
       setExpanded(storedDropDownCookie);
     }

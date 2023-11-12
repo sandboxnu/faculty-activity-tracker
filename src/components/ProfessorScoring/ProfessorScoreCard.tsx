@@ -45,7 +45,9 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
       </StaticSideBarBubble>
       <div className="flex flex-col pt-4 space-y-2 w-min">
         <p className="text-body-bold whitespace-nowrap">Final Score</p>
-        <FinalScoreCard score={parseFloat(professorScore.totalScore + "").toFixed(1)} />
+        <FinalScoreCard
+          score={parseFloat(professorScore.totalScore + '').toFixed(1)}
+        />
       </div>
     </div>
   );

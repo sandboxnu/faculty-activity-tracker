@@ -17,9 +17,7 @@ import {
 import { seperateActivitiesByCategory } from '@/shared/utils/activity.util';
 import ActivityGroup from '@/components/ProfessorScoring/ActivityGroup';
 import { getUserById } from '@/services/user';
-import {
-  getNarrativesForUser,
-} from '@/services/narrative';
+import { getNarrativesForUser } from '@/services/narrative';
 import { seperateNarrativesByCategory } from '@/shared/utils/narrative.util';
 import TenureBadge from '@/components/ProfessorScoring/TenureBadge';
 
