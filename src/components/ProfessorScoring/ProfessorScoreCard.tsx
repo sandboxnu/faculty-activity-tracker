@@ -5,10 +5,7 @@ import {
 import { CreateProfessorScoreDto } from '@/models/professorScore.model';
 import StaticSideBarBubble from '@/shared/components/StaticSideBarBubble';
 import { useEffect, useState } from 'react';
-import StaticScoreBubble from './StaticScoreBubble';
-import FinalScoreCard from './FinalScoreCard';
 import ProfessorScoreItem from './ProfessorScoreItem';
-import Tooltip from '@/shared/components/Tooltip';
 import InputContainer from '@/shared/components/InputContainer';
 import TextInput from '@/shared/components/TextInput';
 
