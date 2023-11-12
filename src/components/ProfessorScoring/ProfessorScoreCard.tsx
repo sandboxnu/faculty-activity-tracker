@@ -32,7 +32,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
       }
       setProfessorScore(data as CreateProfessorScoreDto);
       setFinalScore(
-        (data as CreateProfessorScoreDto)?.totalScore?.toString() ?? '',
+        (data as CreateProfessorScoreDto)?.totalScore.toString() ?? '',
       );
     });
   }, [professorId]);
@@ -58,15 +58,15 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
   };
 
   const professorScores = [
-    { category: 'Teaching', score: professorScore?.teachingScore },
-    { category: 'Research', score: professorScore?.researchScore },
-    { category: 'Service', score: professorScore?.serviceScore },
+    { category: 'Teaching', score: professorScore.teachingScore },
+    { category: 'Research', score: professorScore.researchScore },
+    { category: 'Service', score: professorScore.serviceScore },
   ];
 
   const averageScore = (
-    (professorScore?.teachingScore +
-      professorScore?.researchScore +
-      professorScore?.serviceScore) /
+    (professorScore.teachingScore +
+      professorScore.researchScore +
+      professorScore.serviceScore) /
     3
   ).toFixed(1);
 
