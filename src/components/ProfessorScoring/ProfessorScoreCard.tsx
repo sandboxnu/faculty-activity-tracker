@@ -1,13 +1,14 @@
+import React, { useEffect, useState } from 'react';
 import {
   getProfessorScoreForUser,
   updateProfessorScoreForUser,
 } from '@/client/professorScore.client';
 import { CreateProfessorScoreDto } from '@/models/professorScore.model';
+import { ResponseStatus } from '@/client/activities.client';
 import StaticSideBarBubble from '@/shared/components/StaticSideBarBubble';
-import { useEffect, useState } from 'react';
-import ProfessorScoreItem from './ProfessorScoreItem';
 import InputContainer from '@/shared/components/InputContainer';
 import TextInput from '@/shared/components/TextInput';
+import ProfessorScoreItem from './ProfessorScoreItem';
 
 interface ProfessorScoreCardProps {
   professorId: number;
@@ -22,8 +23,17 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
 
   useEffect(() => {
     getProfessorScoreForUser(professorId).then((data) => {
+      if (
+        data === ResponseStatus.UnknownError ||
+        data === ResponseStatus.Unauthorized ||
+        data === ResponseStatus.BadRequest
+      ) {
+        return;
+      }
       setProfessorScore(data as CreateProfessorScoreDto);
-      setFinalScore((data as CreateProfessorScoreDto).totalScore.toString());
+      setFinalScore(
+        (data as CreateProfessorScoreDto)?.totalScore?.toString() ?? '',
+      );
     });
   }, [professorId]);
 
@@ -34,14 +44,13 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
         totalScore: parseFloat(finalScore),
       });
     }
-  }, [finalScore]);
+  }, [finalScore, professorId]);
 
   if (!professorScore) {
-    return <></>;
+    return null;
   }
 
   const onChange = (value: string) => {
-    // There has to be a more elegant way to do this!
     const isValidFloat = /^(?:10(?:\.0*)?|\d(?:\.\d{0,1})?|)$/g.test(value);
     if (isValidFloat) {
       setFinalScore(value);
@@ -49,15 +58,15 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
   };
 
   const professorScores = [
-    { category: 'Teaching', score: professorScore.teachingScore },
-    { category: 'Research', score: professorScore.researchScore },
-    { category: 'Service', score: professorScore.serviceScore },
+    { category: 'Teaching', score: professorScore?.teachingScore },
+    { category: 'Research', score: professorScore?.researchScore },
+    { category: 'Service', score: professorScore?.serviceScore },
   ];
 
   const averageScore = (
-    (professorScore.teachingScore +
-      professorScore.researchScore +
-      professorScore.serviceScore) /
+    (professorScore?.teachingScore +
+      professorScore?.researchScore +
+      professorScore?.serviceScore) /
     3
   ).toFixed(1);
 
