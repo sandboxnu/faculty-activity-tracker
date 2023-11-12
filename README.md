@@ -1,7 +1,7 @@
 <!-- # Faculty Activity Tracker (FAT) -->
 
 <p align="center">
-  <a href="https://searchneu.com/">
+  <a href="https://faculty-activity-tracker.vercel.app">
     <img alt="Faculty Activity Tracker Logo" src="./screenshots/Logo.svg" width="350"/>
   </a>
 </p>
