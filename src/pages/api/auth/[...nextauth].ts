@@ -70,6 +70,7 @@ const getPages = () => {
   if (process.env.VERCEL_ENV !== 'preview') {
     return {
       signIn: '/auth/signin',
+      signOut: '/auth/signout',
     };
   } else {
     return {};
