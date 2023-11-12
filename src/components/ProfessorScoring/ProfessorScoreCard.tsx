@@ -1,4 +1,7 @@
-import { getProfessorScoreForUser } from '@/client/professorScore.client';
+import {
+  getProfessorScoreForUser,
+  updateProfessorScoreForUser,
+} from '@/client/professorScore.client';
 import { CreateProfessorScoreDto } from '@/models/professorScore.model';
 import StaticSideBarBubble from '@/shared/components/StaticSideBarBubble';
 import { useEffect, useState } from 'react';
@@ -18,7 +21,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
 }) => {
   const [professorScore, setProfessorScore] =
     useState<CreateProfessorScoreDto | null>(null);
-  const [finalScore, setFinalScore] = useState(0);
+  const [finalScore, setFinalScore] = useState('0');
 
   useEffect(() => {
     getProfessorScoreForUser(professorId).then((data) => {
@@ -26,9 +29,24 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
     });
   }, [professorId]);
 
+  useEffect(() => {
+    updateProfessorScoreForUser({
+      userId: professorId,
+      totalScore: parseFloat(finalScore),
+    });
+  }, [finalScore]);
+
   if (!professorScore) {
     return <></>;
   }
+
+  const onChange = (value: string) => {
+    // There has to be a more elegant way to do this!
+    const isValidFloat = /^(?:10(?:\.0*)?|\d(?:\.\d{0,1})?|)$/g.test(value);
+    if (isValidFloat) {
+      setFinalScore(value);
+    }
+  };
 
   const professorScores = [
     { category: 'Teaching', score: professorScore.teachingScore },
@@ -74,10 +92,10 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
                 className="justify-center text-body-bold"
               >
                 <TextInput
-                  value={12}
-                  change={() => {}}
+                  value={finalScore}
+                  change={onChange}
                   placeholder=""
-                  className="max-w-[64px]"
+                  className="max-w-[48px]"
                 />
               </InputContainer>
             </div>
