@@ -31,10 +31,8 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
       } else if (data === ResponseStatus.BadRequest) {
         setError('Bad Request');
       } else {
-        setProfessorScore(data as CreateProfessorScoreDto);
-        setFinalScore(
-          (data as CreateProfessorScoreDto)?.totalScore.toString() ?? '',
-        );
+        setProfessorScore(data);
+        setFinalScore(data.totalScore.toString() ?? '');
       }
     });
   }, [professorId]);
