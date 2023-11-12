@@ -46,8 +46,8 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
     }
   }, [finalScore, professorId]);
 
-  if (error || !professorScore) {
-    return <p className="text-red-500">Could not fetch scores: {error}</p>;
+  if (!professorScore) {
+    return null; // Use error in some other way...
   }
 
   const onChange = (value: string) => {
