@@ -21,19 +21,22 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
 }) => {
   const [professorScore, setProfessorScore] =
     useState<CreateProfessorScoreDto | null>(null);
-  const [finalScore, setFinalScore] = useState('0');
+  const [finalScore, setFinalScore] = useState('');
 
   useEffect(() => {
     getProfessorScoreForUser(professorId).then((data) => {
       setProfessorScore(data as CreateProfessorScoreDto);
+      setFinalScore((data as CreateProfessorScoreDto).totalScore.toString());
     });
   }, [professorId]);
 
   useEffect(() => {
-    updateProfessorScoreForUser({
-      userId: professorId,
-      totalScore: parseFloat(finalScore),
-    });
+    if (finalScore !== '') {
+      updateProfessorScoreForUser({
+        userId: professorId,
+        totalScore: parseFloat(finalScore),
+      });
+    }
   }, [finalScore]);
 
   if (!professorScore) {
