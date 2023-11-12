@@ -35,7 +35,12 @@ const DropdownInput = <T extends unknown>({
     : options;
 
   return (
-    <div className="relative min-h-[40px] w-full">
+    <div
+      className={clsx([
+        'relative min-h-[40px] w-full',
+        absoluteDropdown && 'z-[2]',
+      ])}
+    >
       <div
         className={clsx([
           'flex cursor-pointer flex-col rounded-lg border-[0.5px] border-gray-500 bg-white',
