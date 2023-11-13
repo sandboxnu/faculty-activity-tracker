@@ -51,7 +51,7 @@ const NarrativeCard: React.FC<NarrativeCardProps> = ({
             Narrative
           </div>
           {!expanded && (
-            <div className="relative w-fit text-small">
+            <div className="relative w-fit whitespace-pre-wrap text-small">
               {narrative ? shortenDescription(narrative?.text) : 'No narrative'}
             </div>
           )}

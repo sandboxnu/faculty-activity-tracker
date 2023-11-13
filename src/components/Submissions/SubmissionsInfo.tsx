@@ -82,7 +82,7 @@ const SubmissionsInfo: React.FC<SubmissionsInfoProps> = ({
         title="Narrative Preview"
         cookieKey="submissions-narrative-preview"
       >
-        <p className="mt-2">
+        <p className="mt-2 whitespace-pre-wrap">
           {' '}
           {narrative?.text || 'No narrative submitted yet.'}{' '}
         </p>
