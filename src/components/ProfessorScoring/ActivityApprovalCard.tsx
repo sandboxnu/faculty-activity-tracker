@@ -191,7 +191,11 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
           />
         </div>
       </div>
-      {expanded && <div className="text-regular">{activity?.description}</div>}
+      {expanded && (
+        <div className="text-regular whitespace-pre-wrap">
+          {activity?.description}
+        </div>
+      )}
     </div>
   );
 };
