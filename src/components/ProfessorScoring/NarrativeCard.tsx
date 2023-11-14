@@ -57,7 +57,11 @@ const NarrativeCard: React.FC<NarrativeCardProps> = ({
           )}
         </div>
       </div>
-      {expanded && <div className="text-regular">{narrative?.text}</div>}
+      {expanded && (
+        <div className="text-regular whitespace-pre-wrap">
+          {narrative?.text}
+        </div>
+      )}
     </div>
   );
 };
