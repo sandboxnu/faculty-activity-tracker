@@ -58,7 +58,7 @@ const preview_providers = [
         id: '4',
         name: 'Dean TestUser',
         email: 'dean_test_user@husky.neu.edu',
-        image: 'https://i.pravatar.cc/150?u=admin_test_user',
+        image: 'https://i.pravatar.cc/150?u=dean_test_user',
       };
     },
     credentials: {},
