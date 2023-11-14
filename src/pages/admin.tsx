@@ -23,6 +23,7 @@ import { bigintToJSON } from '@/shared/utils/misc.util';
 import Image from 'next/image';
 import Button from '@/shared/components/Button';
 import { getAccessCodes, setAccessCode } from '@/client/accessCodes.client';
+import ErrorMessage from '@/shared/components/ErrorMessage';
 
 interface AdminPageProps {
   users?: UserDto[];
@@ -38,7 +39,8 @@ export const getServerSideProps: GetServerSideProps<AdminPageProps> = async (
   if (!userId) return { props: { error: 'User not found' } };
 
   // if (user && !isAdminUser(user)) return { props: { error: 'bad role' } };
-  if (!session?.user?.admin) return { props: { error: 'bad role' } };
+  if (!session?.user?.admin)
+    return { props: { error: 'You are not authorized to view this page.' } };
 
   //const users: User[] = await getAllUsers();
   const users = await getUsersByQuery({}, { dateModified: 'desc' });
@@ -82,7 +84,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
           if (facultyCodeObj) setFacultyAccessCode(facultyCodeObj.accessCode);
           if (meritCodeObj) setMeritAccessCode(meritCodeObj.accessCode);
         } else {
-          setError(response + '');
+          setError(initialError || response + '');
         }
       })
       .catch((error) => {
@@ -147,11 +149,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
   }
 
   if (error || !users) {
-    return (
-      <p className="mt-20 w-full text-center text-red-500">
-        Error: {error || 'unknown error'}
-      </p>
-    );
+    return error ? <ErrorMessage message={error} /> : <ErrorMessage />;
   }
 
   const Header = () => (
