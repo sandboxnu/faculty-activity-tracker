@@ -1,5 +1,6 @@
 import ProfileContainer from '@/components/Profile/ProfileContainer';
 import { getUserWithInfo } from '@/services/user';
+import ErrorMessage from '@/shared/components/ErrorMessage';
 import { ProfileInformation } from '@/store/profile.store';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
@@ -59,11 +60,7 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async (
 
 const Profile: React.FC<ProfilePageProps> = ({ userId, info, error }) => {
   if (error || !info || !userId)
-    return (
-      <p className="mt-20 w-full text-center text-red-500">
-        Error: {error || 'unknown error.'}
-      </p>
-    );
+    return error ? <ErrorMessage message={error} /> : <ErrorMessage />;
 
   return (
     <div className="w-full">
