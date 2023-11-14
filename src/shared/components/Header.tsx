@@ -9,6 +9,7 @@ const Header: React.FC = () => {
   const { status } = useSession();
   const router = useRouter();
   const signedIn = status === 'authenticated';
+  const notSignOutPage = !(router.pathname === '/auth/signout');
 
   return (
     <div className="flex w-screen items-baseline bg-black px-5 py-3 font-bold">
@@ -23,7 +24,7 @@ const Header: React.FC = () => {
           />
         </a>
       </Link>
-      {signedIn && (
+      {signedIn && notSignOutPage && (
         <Button
           onClick={() => router.push('/api/auth/signout')}
           addOnClass="ml-auto my-auto mr-5"
