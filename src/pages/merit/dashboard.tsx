@@ -2,6 +2,7 @@ import React from 'react';
 import Unauthorized from '@/shared/components/Unauthorized';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
+import ErrorMessage from '@/shared/components/ErrorMessage';
 
 const Dashboard: React.FC = () => {
   const { data: session, status } = useSession();
@@ -14,6 +15,10 @@ const Dashboard: React.FC = () => {
 
   if (status === 'unauthenticated') {
     return <Unauthorized />;
+  }
+
+  if (!session?.user.merit) {
+    return <ErrorMessage message="You are not authorized to view this page." />;
   }
 
   return (
