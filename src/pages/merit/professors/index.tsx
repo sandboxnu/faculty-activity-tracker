@@ -72,13 +72,12 @@ const ProfessorSearchPage: React.FC<ProfessorSearchPageProps> = ({
   scores,
   info,
 }) => {
+  const { data: session, status } = useSession();
   const groupedData = groupByFirstLetterAndUserId(
     users || [],
     scores || [],
     info || [],
   );
-const ProfessorSearchPage: React.FC<ProfessorSearchPageProps> = ({}) => {
-  const { data: session, status } = useSession();
 
   if (status === 'loading') {
     return <p>Loading...</p>;
