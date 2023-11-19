@@ -92,6 +92,8 @@ const InfoSidebar: React.FC = () => {
     }
   }, [pathname, category, userId, professorId]);
 
+  if (!sidebarType) return null;
+
   return (
     <div className="flex w-1/5 flex-col items-start space-y-6 bg-white px-6 py-6">
       {sidebarType === 'submissions' && category && (

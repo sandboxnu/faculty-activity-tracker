@@ -10,6 +10,11 @@ export const getProfessorScore = async (userId: number) => {
   return score;
 };
 
+export const getAllProfessorScores = async (): Promise<ProfessorScore[]> => {
+  const scores = await prisma.professorScore.findMany();
+  return scores;
+};
+
 export const upsertProfessorScore = async (
   score: UpdateProfessorScoreDto,
 ): Promise<ProfessorScore> => {
