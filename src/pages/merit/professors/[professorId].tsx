@@ -21,6 +21,7 @@ import { getNarrativesForUser } from '@/services/narrative';
 import { seperateNarrativesByCategory } from '@/shared/utils/narrative.util';
 import TenureBadge from '@/components/ProfessorScoring/TenureBadge';
 import ErrorMessage from '@/shared/components/ErrorMessage';
+import { computeProfessorScore } from '@/services/professorScore';
 
 interface ProfessorScoringPageProps {
   activities?: ActivityDto[];
