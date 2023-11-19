@@ -109,7 +109,7 @@ const InfoSidebar: React.FC = () => {
       )}
       {sidebarType === 'narratives' && <NarrativeInstructions />}
       {sidebarType === 'profile' && <ProfileInstructions />}
-      {sidebarType === 'scoring' && (
+      {sidebarType === 'scoring' && session?.user?.merit && (
         <>
           <ScoringInfo profInfo={professorInfo} />
           <ProfessorCommentBox professorId={professorId} />

@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next';
 import { ActivityDto, UpdateActivityDto } from '@/models/activity.model';
 import { NarrativeDto } from '@/models/narrative.model';
 import { ProfessorInfoDto } from '@/models/professorInfo.model';
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { getActivitiesByQuery, getActivityById } from '@/services/activity';
 import { bigintToJSON, toTitleCase } from '@/shared/utils/misc.util';
 import { getProfessorInfoForUser } from '@/services/professorInfo';
@@ -20,6 +20,7 @@ import { getUserById } from '@/services/user';
 import { getNarrativesForUser } from '@/services/narrative';
 import { seperateNarrativesByCategory } from '@/shared/utils/narrative.util';
 import TenureBadge from '@/components/ProfessorScoring/TenureBadge';
+import ErrorMessage from '@/shared/components/ErrorMessage';
 
 interface ProfessorScoringPageProps {
   activities?: ActivityDto[];
@@ -48,6 +49,14 @@ export const getServerSideProps: GetServerSideProps<
     return {
       props: {
         error: 'User not found.',
+      },
+    };
+  }
+
+  if (!session.user.merit) {
+    return {
+      props: {
+        error: 'You are not authorized to view this page.',
       },
     };
   }
@@ -114,6 +123,10 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
     initialNarratives || [],
   );
   const [error, setError] = useState<string | null>(initialError || null);
+
+  if (error) {
+    return <ErrorMessage message={error} />;
+  }
 
   const updateActivity = (updatedActivity: UpdateActivityDto) => {
     updateActivityClient(updatedActivity).then((res) => {

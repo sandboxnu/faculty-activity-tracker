@@ -9,6 +9,7 @@ import {
 import { getActivitiesByQuery } from '@/services/activity';
 import { getNarrativeForUserForCategory } from '@/services/narrative';
 import Button from '@/shared/components/Button';
+import ErrorMessage from '@/shared/components/ErrorMessage';
 import { bigintToJSON, toTitleCase } from '@/shared/utils/misc.util';
 import { Activity, ActivityCategory, NarrativeCategory } from '@prisma/client';
 import moment from 'moment';
@@ -119,20 +120,10 @@ const NarrativeForm: React.FC<NarrativeFormProps> = ({
   };
 
   if (pageError || activities === undefined) {
-    return (
-      <p className="mt-20 w-full text-center text-red-500">
-        {' '}
-        Error: {pageError || 'Unknown Error'}
-      </p>
-    );
+    return error ? <ErrorMessage message={error} /> : <ErrorMessage />;
   }
-  if (!category)
-    return (
-      <p className="mt-20 w-full text-center text-red-500">
-        {' '}
-        Invalid Category{' '}
-      </p>
-    );
+
+  if (!category) return <ErrorMessage message="Invalid Category." />;
 
   const unfavoriteActivity = async (
     activityId: number,

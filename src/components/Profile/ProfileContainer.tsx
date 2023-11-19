@@ -20,6 +20,7 @@ import {
   isErrorResponse,
   responseStatusMessage,
 } from '@/shared/utils/misc.util';
+import ErrorMessage from '@/shared/components/ErrorMessage';
 
 interface ProfileContainerProps {
   userId: number;
@@ -74,12 +75,7 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
     router.reload();
   };
 
-  if (error)
-    return (
-      <p className="mt-20 w-full text-center text-red-500">
-        Error: {error || 'unknown error.'}
-      </p>
-    );
+  if (error) return <ErrorMessage message={error} />;
 
   return (
     <div className="relative flex w-full flex-col pl-10">

@@ -8,6 +8,9 @@ import { getUsersByQuery } from '@/services/user';
 import { bigintToJSON } from '@/shared/utils/misc.util';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import ErrorMessage from '@/shared/components/ErrorMessage';
+import Unauthorized from '@/shared/components/Unauthorized';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import groupByFirstLetterAndUserId from '@/shared/utils/professorScore.util';
 import ProfessorCardGroup from '@/components/ProfessorSearch/ProfessorCardGroup';
@@ -74,6 +77,21 @@ const ProfessorSearchPage: React.FC<ProfessorSearchPageProps> = ({
     scores || [],
     info || [],
   );
+const ProfessorSearchPage: React.FC<ProfessorSearchPageProps> = ({}) => {
+  const { data: session, status } = useSession();
+
+  if (status === 'loading') {
+    return <p>Loading...</p>;
+  }
+
+  if (status === 'unauthenticated') {
+    return <Unauthorized />;
+  }
+
+  if (!session?.user.merit) {
+    return <ErrorMessage message="You are not authorized to view this page." />;
+  }
+
   return (
     <div className="flex w-full flex-col">
       <Head>

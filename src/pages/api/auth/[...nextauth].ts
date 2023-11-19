@@ -49,6 +49,20 @@ const preview_providers = [
     },
     credentials: {},
   }),
+  // Dean Test User
+  CredentialsProvider({
+    name: 'DEAN_TEST_USER',
+    id: 'dean-test-provider',
+    async authorize() {
+      return {
+        id: '4',
+        name: 'Dean TestUser',
+        email: 'dean_test_user@husky.neu.edu',
+        image: 'https://i.pravatar.cc/150?u=dean_test_user',
+      };
+    },
+    credentials: {},
+  }),
 ];
 
 const production_providers = [
