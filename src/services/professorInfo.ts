@@ -5,6 +5,11 @@ import {
 } from '@/models/professorInfo.model';
 import prisma from 'lib/db';
 
+export const getAllProfessorInfo = async (): Promise<ProfessorInfo[]> => {
+  const info = await prisma.professorInfo.findMany();
+  return info;
+};
+
 export const getProfessorInfoForUser = async (
   userId: number,
 ): Promise<ProfessorInfo | null> => {
