@@ -22,8 +22,10 @@ import { seperateNarrativesByCategory } from '@/shared/utils/narrative.util';
 import TenureBadge from '@/components/ProfessorScoring/TenureBadge';
 import ErrorMessage from '@/shared/components/ErrorMessage';
 import { computeProfessorScore } from '@/services/professorScore';
+import { updateComputedProfessorScoreForUser } from '@/client/professorScore.client';
 
 interface ProfessorScoringPageProps {
+  professorId?: number;
   activities?: ActivityDto[];
   professorInfo?: ProfessorInfoDto;
   user?: UserDto;
@@ -96,6 +98,7 @@ export const getServerSideProps: GetServerSideProps<
   if (activities) {
     return {
       props: {
+        professorId: professorId,
         activities: bigintToJSON(activities),
         professorInfo: bigintToJSON(professorInfo),
         user: bigintToJSON(user),
@@ -110,6 +113,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
+  professorId,
   activities: initialActivities,
   narratives: initialNarratives,
   professorInfo,
@@ -129,6 +133,10 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
     return <ErrorMessage message={error} />;
   }
 
+  if (!professorId) {
+    return <ErrorMessage message="Missing Professor ID" />;
+  }
+
   const updateActivity = (updatedActivity: UpdateActivityDto) => {
     updateActivityClient(updatedActivity).then((res) => {
       if (res === ResponseStatus.Success) {
@@ -140,6 +148,7 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
         setError('Unknown error');
       }
     });
+    updateComputedProfessorScoreForUser(professorId);
   };
 
   const activitiesByCategory = seperateActivitiesByCategory(activities);
