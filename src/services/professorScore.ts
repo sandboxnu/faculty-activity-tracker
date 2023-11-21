@@ -131,7 +131,6 @@ export const computeProfessorScore = async (
     }
 
     if (category === 'SERVICE') {
-      console.table({ majorActivities, significantActivites, minorActivities });
       if (
         majorActivities > 3 &&
         significantActivites > 3 &&
