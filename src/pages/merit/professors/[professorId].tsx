@@ -148,7 +148,13 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
         setError('Unknown error');
       }
     });
-    updateComputedProfessorScoreForUser(professorId);
+    updateComputedProfessorScoreForUser(professorId).then((res) => {
+      if (res) {
+        console.log(res);
+      } else {
+        setError('Unknown error');
+      }
+    });
   };
 
   const activitiesByCategory = seperateActivitiesByCategory(activities);

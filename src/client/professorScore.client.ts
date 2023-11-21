@@ -1,6 +1,5 @@
 import {
   CreateProfessorScoreDto,
-  GetProfessorScore,
   UpdateProfessorScoreDto,
 } from '@/models/professorScore.model';
 import { ResponseStatus } from './activities.client';
@@ -66,7 +65,7 @@ export const getProfessorScoreForUser = async (
 export const updateComputedProfessorScoreForUser = async (
   userId: number,
 ): Promise<
-  | CreateProfessorScoreDto
+  | UpdateProfessorScoreDto
   | ResponseStatus.Unauthorized
   | ResponseStatus.BadRequest
   | ResponseStatus.UnknownError
