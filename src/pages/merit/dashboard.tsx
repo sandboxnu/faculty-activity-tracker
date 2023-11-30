@@ -3,7 +3,6 @@ import Unauthorized from '@/shared/components/Unauthorized';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import ErrorMessage from '@/shared/components/ErrorMessage';
-import GraphCard from '@/components/Merit/GraphCard';
 import { GetServerSideProps } from 'next';
 import ActivityHistogram, {
   mockNonTenureHistogramData,
