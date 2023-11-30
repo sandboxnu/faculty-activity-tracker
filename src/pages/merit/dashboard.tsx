@@ -5,21 +5,22 @@ import Head from 'next/head';
 import ErrorMessage from '@/shared/components/ErrorMessage';
 import GraphCard from '@/components/Merit/GraphCard';
 import { GetServerSideProps } from 'next';
+import ActivityHistogram from '@/components/Merit/ActivityHistogram';
 
 const tenureData = [
-  { x: '0-5', y: 62 },
-  { x: '5-10', y: 85 },
-  { x: '10-15', y: 104 },
-  { x: '15-20', y: 81 },
-  { x: '20+', y: 18 },
+  { activityGroup: '0-5', professorCount: 62 },
+  { activityGroup: '5-10', professorCount: 85 },
+  { activityGroup: '10-15', professorCount: 104 },
+  { activityGroup: '15-20', professorCount: 81 },
+  { activityGroup: '20+', professorCount: 18 },
 ];
 
 const nonTenureData = [
-  { x: '0-5', y: 61 },
-  { x: '5-10', y: 83 },
-  { x: '10-15', y: 76 },
-  { x: '15-20', y: 22 },
-  { x: '20+', y: 9 },
+  { activityGroup: '0-5', professorCount: 61 },
+  { activityGroup: '5-10', professorCount: 83 },
+  { activityGroup: '10-15', professorCount: 76 },
+  { activityGroup: '15-20', professorCount: 22 },
+  { activityGroup: '20+', professorCount: 9 },
 ];
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -56,10 +57,10 @@ const Dashboard: React.FC = () => {
       <p className="my-4 text-lg text-red-500">Welcome, {name || 'User'}! </p>
       <div className="flex w-full items-center">
         <div className="flex w-1/2 justify-center">
-          <GraphCard label="Tenured/Tenure Track" data={tenureData} />
+          <ActivityHistogram label="Tenured/Tenure Track" data={tenureData} />
         </div>
         <div className="flex w-1/2 justify-center">
-          <GraphCard label="Non-Tenure" data={nonTenureData} />
+          <ActivityHistogram label="Non-Tenure" data={nonTenureData} />
         </div>
       </div>
     </div>

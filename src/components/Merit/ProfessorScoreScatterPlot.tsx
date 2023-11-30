@@ -10,9 +10,9 @@ import {
   TooltipProps,
 } from 'recharts';
 
-interface GraphCardProps {
+interface ProfessorScoreScatterPlotProps {
   label: string;
-  data: { x: string; y: number }[];
+  data: { professorScore: number }[];
 }
 
 const CustomTooltip = ({ active, payload }: TooltipProps<string, string>) => {
@@ -27,7 +27,10 @@ const CustomTooltip = ({ active, payload }: TooltipProps<string, string>) => {
   return null;
 };
 
-const GraphCard: React.FC<GraphCardProps> = ({ label, data }) => {
+const ProfessorScoreScatterPlot: React.FC<ProfessorScoreScatterPlotProps> = ({
+  label,
+  data,
+}) => {
   return (
     <div className="px-4">
       <div className="flex flex-col rounded-lg bg-gray-100 px-5 py-5 shadow-lg">
@@ -73,4 +76,4 @@ const GraphCard: React.FC<GraphCardProps> = ({ label, data }) => {
   );
 };
 
-export default GraphCard;
+export default ProfessorScoreScatterPlot;

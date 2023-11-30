@@ -24,6 +24,13 @@ export const getUserById = async (userId: number): Promise<User | null> => {
   return user;
 };
 
+export const getUsersByIds = async (userIds: number[]): Promise<User[]> => {
+  const users = await prisma.user.findMany({
+    where: { id: { in: userIds } },
+  });
+  return users;
+};
+
 export const getUserWithInfo = async (
   userId: number,
 ): Promise<UserWithInfo | null> => {
@@ -32,6 +39,16 @@ export const getUserWithInfo = async (
     include: { professorInfo: true },
   });
   return user;
+};
+
+export const getUsersWithInfo = async (
+  userIds: number[],
+): Promise<UserWithInfo[]> => {
+  const users = await prisma.user.findMany({
+    where: { id: { in: userIds } },
+    include: { professorInfo: true },
+  });
+  return users;
 };
 
 export const getUserWithActivities = async (
