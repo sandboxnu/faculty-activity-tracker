@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BarChart,
   Bar,
@@ -52,9 +52,10 @@ const ActivityHistogram: React.FC<ActivityHistogramProps> = ({
   label,
   data,
 }) => {
+  const [posData, setPosData] = useState({ x: 0, y: 0 });
   return (
     <div className="px-4">
-      <div className="flex flex-col rounded-lg bg-gray-100 px-5 py-5 shadow-lg">
+      <div className="flex flex-col rounded-lg bg-gray-100 px-5 py-5">
         <p className="mb-4 text-heading-3">{label}</p>
         <BarChart
           width={330}
@@ -87,10 +88,19 @@ const ActivityHistogram: React.FC<ActivityHistogramProps> = ({
           </YAxis>
           <Tooltip
             cursor={{ fill: 'transparent' }}
+            position={{ x: posData.x - 35, y: posData.y - 35 }}
+            offset={0}
             content={<CustomTooltip />}
           />
           <CartesianGrid vertical={false} />
-          <Bar dataKey="professorCount" fill="#DB4D4D" barSize={35} />
+          <Bar
+            dataKey="professorCount"
+            fill="#DB4D4D"
+            barSize={35}
+            onMouseOver={(data) => {
+              setPosData(data);
+            }}
+          />
         </BarChart>
       </div>
     </div>

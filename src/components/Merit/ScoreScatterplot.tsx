@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   CartesianGrid,
   Label,
@@ -9,6 +9,7 @@ import {
   TooltipProps,
   ScatterChart,
   Scatter,
+  ZAxis,
 } from 'recharts';
 
 export type ScoreScatterplotData = {
@@ -18,13 +19,13 @@ export type ScoreScatterplotData = {
 
 const mockTenureScores: number[] = [
   10, 10, 10, 10, 9.6, 9.6, 9.2, 9.2, 9.1, 9, 9, 8.8, 8.8, 8.6, 8.5, 8, 8, 8,
-  7.8, 7.6, 7.2, 7, 7, 6.8, 6.5, 6.5, 6.5, 6.5, 6.2, 6, 5, 6, 5.4, 5.2, 4.8,
+  7.8, 7.6, 7.2, 7, 7, 6.8, 6.5, 6.5, 6.5, 6.5, 6.2, 6, 6, 6, 5.4, 5.2, 4.8,
   4.6, 4.6, 4.2, 4, 3.8, 3.6, 3.6, 3.4, 3, 3, 2.6,
 ];
 
 const mockNonTenureScores: number[] = [
   10, 10, 10, 10, 9.6, 9.6, 9.2, 9.2, 9.1, 9, 9, 8.8, 8.8, 8.6, 8.5, 8, 8, 8,
-  7.8, 7.6, 7.2, 7, 7, 6.8, 6.5, 6.5, 6.5, 6.5, 6.2, 6, 5, 6, 5.4, 5.2, 4.8,
+  7.8, 7.6, 7.2, 7, 7, 6.8, 6.5, 6.5, 6.5, 6.5, 6.2, 6, 6, 6, 5.4, 5.2, 4.8,
   4.6, 4.6, 4.2, 4, 3.8, 3.6, 3.6, 3.4, 3, 3, 2.6,
 ];
 
@@ -42,7 +43,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<string, string>) => {
   if (active && payload && payload.length) {
     return (
       <div className="flex w-max rounded-lg border border-red-400 bg-white px-2 py-0.5">
-        <p className="text-sm text-red-400">{`${payload[0].value} Professors`}</p>
+        <p className="text-sm text-red-400">{`Score: ${payload[1].value}`}</p>
       </div>
     );
   }
@@ -51,28 +52,19 @@ const CustomTooltip = ({ active, payload }: TooltipProps<string, string>) => {
 };
 
 const ScoreScatterplot: React.FC<ScoreScatterplotProps> = ({ label, data }) => {
+  const [posData, setPosData] = useState({ x: 0, y: 0 });
   return (
     <div className="px-4">
-      <div className="flex flex-col rounded-lg bg-gray-100 px-5 py-5 shadow-lg">
+      <div className="flex flex-col rounded-lg bg-gray-100 px-5 py-5">
         <p className="mb-4 text-heading-3">{label}</p>
-        <ScatterChart
-          width={330}
-          height={230}
-          data={data}
-          margin={{ top: 10, bottom: 10 }}
-        >
+        <ScatterChart width={330} height={230} data={data} margin={{ top: 10 }}>
           <XAxis
             dataKey="userId"
             tickLine={false}
             tick={false}
             axisLine={false}
           >
-            <Label
-              value="Professors"
-              dy={10}
-              dx={-12}
-              position="insideBottom"
-            />
+            <Label value="Professors" dx={-12} position="insideBottom" />
           </XAxis>
           <YAxis
             dataKey="score"
@@ -81,21 +73,31 @@ const ScoreScatterplot: React.FC<ScoreScatterplotProps> = ({ label, data }) => {
             interval={0}
             axisLine={false}
             tickLine={false}
-            width={44}
+            width={40}
           >
             <Label
-              value="Total Score"
+              value="Final Score"
               angle={-90}
               position="insideLeft"
-              dy={40}
+              dy={30}
+              dx={0}
             />
           </YAxis>
+          <ZAxis range={[20, 21]} />
           <Tooltip
             cursor={{ fill: 'transparent' }}
+            position={{ x: posData.x - 35, y: posData.y - 35 }}
             content={<CustomTooltip />}
           />
           <CartesianGrid vertical={false} />
-          <Scatter data={data} fill="#DB4D4D" />
+          <Scatter
+            data={data}
+            dataKey="score"
+            fill="#DB4D4D"
+            onMouseOver={(data) => {
+              setPosData(data);
+            }}
+          />
         </ScatterChart>
       </div>
     </div>
