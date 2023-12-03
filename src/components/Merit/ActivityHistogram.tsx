@@ -36,11 +36,39 @@ interface ActivityHistogramProps {
   data: ActivityHistogramData;
 }
 
+export const backgroundTriangleStyle: React.CSSProperties = {
+  content: ' ',
+  position: 'absolute',
+  top: '100%',
+  left: '50%',
+  transform: 'translate(-50%, 0)',
+  borderTop: '6.5px solid #DB4D4D',
+  borderRight: '6.5px solid transparent',
+  borderLeft: '6.5px solid transparent',
+  marginTop: '0px',
+  zIndex: '20',
+};
+
+export const foregroundTriangleStyle: React.CSSProperties = {
+  content: ' ',
+  position: 'absolute',
+  top: '100%',
+  left: '50%',
+  transform: 'translate(-50%, 0)',
+  borderTop: '5px solid white',
+  borderRight: '5px solid transparent',
+  borderLeft: '5px solid transparent',
+  marginTop: '0px',
+  zIndex: '20',
+};
+
 const CustomTooltip = ({ active, payload }: TooltipProps<string, string>) => {
   if (active && payload && payload.length) {
     return (
-      <div className="flex w-max rounded-lg border border-red-400 bg-white px-2 py-0.5">
+      <div className="relative flex w-max rounded-lg border border-red-400 bg-white px-2 py-0.5">
         <p className="text-sm text-red-400">{`${payload[0].value} Professors`}</p>
+        <div style={backgroundTriangleStyle} />
+        <div style={foregroundTriangleStyle} />
       </div>
     );
   }

@@ -11,6 +11,10 @@ import {
   Scatter,
   ZAxis,
 } from 'recharts';
+import {
+  backgroundTriangleStyle,
+  foregroundTriangleStyle,
+} from './ActivityHistogram';
 
 export type ScoreScatterplotData = {
   userId: User['id'];
@@ -42,8 +46,10 @@ interface ScoreScatterplotProps {
 const CustomTooltip = ({ active, payload }: TooltipProps<string, string>) => {
   if (active && payload && payload.length) {
     return (
-      <div className="flex w-max rounded-lg border border-red-400 bg-white px-2 py-0.5">
+      <div className="relative flex w-max rounded-lg border border-red-400 bg-white px-2 py-0.5">
         <p className="text-sm text-red-400">{`Score: ${payload[1].value}`}</p>
+        <div style={backgroundTriangleStyle} />
+        <div style={foregroundTriangleStyle} />
       </div>
     );
   }
