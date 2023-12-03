@@ -6,20 +6,22 @@ import NextNProgress from 'nextjs-progressbar';
 
 interface AppLayoutProps {
   children: JSX.Element;
-  hideSidebars?: boolean;
+  hideLeftSidebar?: boolean;
+  hideRightSidebar?: boolean;
   hideNavbar?: boolean;
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({
   children,
-  hideSidebars = false,
+  hideLeftSidebar = false,
+  hideRightSidebar = false,
   hideNavbar = false,
 }) => {
   return (
     <div className="flex min-h-screen w-screen flex-col">
       {!hideNavbar && <Header />}
       <div className="flex w-full flex-grow">
-        {!hideSidebars && <SideNavbar />}
+        {!hideLeftSidebar && <SideNavbar />}
         <div className="border-light-grey flex flex-1 self-stretch overflow-x-hidden border-x px-10 py-6">
           <NextNProgress
             color="#CC0000"
@@ -28,7 +30,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({
           />
           {children}
         </div>
-        {!hideSidebars && <InfoSidebar />}
+        {!hideRightSidebar && <InfoSidebar />}
       </div>
     </div>
   );

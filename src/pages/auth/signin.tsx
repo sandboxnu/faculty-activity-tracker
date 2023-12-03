@@ -62,6 +62,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const providers = await getProviders();
 
   return {
-    props: { providers: providers ?? [], hideSidebars: true },
+    props: {
+      providers: providers ?? [],
+      hideLeftSidebar: true,
+      hideRightSidebar: true,
+    },
   };
 }

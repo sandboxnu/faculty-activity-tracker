@@ -9,6 +9,11 @@ export type ActivityCategory = PrismaActivityCategory; //'TEACHING' | 'RESEARCH'
 export type ActivityWeight = SignificanceLevel; //'MAJOR' | 'SIGNIFICANT' | 'MINOR';
 export type Semester = PrismaSemester; //'FALL' | 'SPRING' | 'SUMMER' | 'OTHER';
 
+export type ActivityDistribution = {
+  userId: Activity['userId'];
+  count: number;
+}[];
+
 export type ActivityDto = Activity;
 
 export type CreateActivityDto = Omit<Activity, 'id'>;
