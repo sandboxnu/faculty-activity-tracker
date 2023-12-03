@@ -139,7 +139,7 @@ const GraphPage: React.FC<GraphPageProps> = ({
       <Head>
         <title>Graphs</title>
       </Head>
-      <div className="mt-4 flex w-full justify-between">
+      <div className="mt-2 flex w-full justify-between">
         <div className="flex w-1/2 flex-col items-center space-y-8">
           <ScoreScatterplot
             label="Tenured/Tenure Track"

@@ -91,8 +91,8 @@ const ScoreScatterplot: React.FC<ScoreScatterplotProps> = ({ label, data }) => {
           </YAxis>
           <ZAxis range={[20, 21]} />
           <Tooltip
-            cursor={{ fill: 'transparent' }}
-            position={{ x: posData.x - 35, y: posData.y - 35 }}
+            cursor={false}
+            position={{ x: posData.x - 32, y: posData.y - 35 }}
             content={<CustomTooltip />}
           />
           <CartesianGrid vertical={false} />
