@@ -3,13 +3,9 @@ import Unauthorized from '@/shared/components/Unauthorized';
 import { useSession } from 'next-auth/react';
 import ActivityHistogram, {
   ActivityHistogramData,
-  mockNonTenureHistogramData,
-  mockTenureHistogramData,
 } from '@/components/Merit/ActivityHistogram';
 import ScoreScatterplot, {
   ScoreScatterplotData,
-  mockNonTenureScatterplotData,
-  mockTenureScatterplotData,
 } from '@/components/Merit/ScoreScatterplot';
 import { getActivityCountsByUser } from '@/services/activity';
 import { getAllProfessorScores } from '@/services/professorScore';
@@ -26,8 +22,6 @@ interface GraphPageProps {
   tenureScoreScatterplotData?: ScoreScatterplotData;
   nonTenureScoreScatterplotData?: ScoreScatterplotData;
 }
-
-const USE_MOCK_DATA = process.env.VERCEL_ENV !== 'production';
 
 export const getServerSideProps: GetServerSideProps<GraphPageProps> = async (
   context,
@@ -88,18 +82,10 @@ export const getServerSideProps: GetServerSideProps<GraphPageProps> = async (
   return {
     props: {
       activityDistribution,
-      tenureActivityData: USE_MOCK_DATA
-        ? mockTenureHistogramData
-        : tenureActivityData,
-      nonTenureActivityData: USE_MOCK_DATA
-        ? mockNonTenureHistogramData
-        : nonTenureActivityData,
-      tenureScoreScatterplotData: USE_MOCK_DATA
-        ? mockTenureScatterplotData
-        : tenureScores,
-      nonTenureScoreScatterplotData: USE_MOCK_DATA
-        ? mockNonTenureScatterplotData
-        : nonTenureScores,
+      tenureActivityData,
+      nonTenureActivityData,
+      tenureScoreScatterplotData: tenureScores,
+      nonTenureScoreScatterplotData: nonTenureScores,
     },
   };
 };
