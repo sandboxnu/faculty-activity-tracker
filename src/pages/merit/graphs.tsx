@@ -27,7 +27,7 @@ interface GraphPageProps {
   nonTenureScoreScatterplotData?: ScoreScatterplotData;
 }
 
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = process.env.VERCEL_ENV !== 'production';
 
 export const getServerSideProps: GetServerSideProps<GraphPageProps> = async (
   context,
