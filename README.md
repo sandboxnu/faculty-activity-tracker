@@ -20,7 +20,7 @@ Faculty Acivity Tracker ("FAT") is a dashboard-driven app to be used by the facu
 
 | <image src="./screenshots/faculty-submit-activity.png"> | <image src="./screenshots/faculty-activities.png"> |
 | ------------------------------------------------------- | -------------------------------------------------- |
-| <image src="./screenshots/mc-scoring.png">              | coming soon!                                       |
+| <image src="./screenshots/mc-scoring.png">              | <image src="./screenshots/mc-graphs.png">          |
 
 ## Project structure
 
