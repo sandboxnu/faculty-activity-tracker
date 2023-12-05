@@ -21,12 +21,10 @@ import { getNarrativesForUser } from '@/services/narrative';
 import { seperateNarrativesByCategory } from '@/shared/utils/narrative.util';
 import TenureBadge from '@/components/ProfessorScoring/TenureBadge';
 import ErrorMessage from '@/shared/components/ErrorMessage';
-import { computeProfessorScore } from '@/services/professorScore';
 import { updateComputedProfessorScoreForUser } from '@/client/professorScore.client';
-import InfoSidebar from '@/shared/components/InfoSidebar';
-import NextNProgress from 'nextjs-progressbar';
-import Header from '@/shared/components/Header';
-import SideNavbar from '@/shared/components/SideNavbar';
+import { saveProfessorScore } from '@/store/professorScore.store';
+import { useDispatch } from 'react-redux';
+import { UpdateProfessorScoreDto } from '@/models/professorScore.model';
 
 interface ProfessorScoringPageProps {
   professorId?: number;
@@ -141,6 +139,8 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
     return <ErrorMessage message="Missing Professor ID" />;
   }
 
+  const dispatch = useDispatch();
+
   const updateActivity = (updatedActivity: UpdateActivityDto) => {
     updateActivityClient(updatedActivity).then((res) => {
       if (res === ResponseStatus.Success) {
@@ -151,7 +151,7 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
 
         updateComputedProfessorScoreForUser(professorId).then((res) => {
           if (res) {
-            console.log(res);
+            dispatch(saveProfessorScore(res as UpdateProfessorScoreDto));
           } else {
             setError('Unknown error');
           }

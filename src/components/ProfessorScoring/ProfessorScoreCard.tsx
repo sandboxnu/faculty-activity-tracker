@@ -3,12 +3,20 @@ import {
   getProfessorScoreForUser,
   updateProfessorScoreForUser,
 } from '@/client/professorScore.client';
-import { CreateProfessorScoreDto } from '@/models/professorScore.model';
+import {
+  CreateProfessorScoreDto,
+  UpdateProfessorScoreDto,
+} from '@/models/professorScore.model';
 import { ResponseStatus } from '@/client/activities.client';
 import StaticSideBarBubble from '@/shared/components/StaticSideBarBubble';
 import InputContainer from '@/shared/components/InputContainer';
 import TextInput from '@/shared/components/TextInput';
 import ProfessorScoreItem from './ProfessorScoreItem';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  saveProfessorScore,
+  selectProfessorScores,
+} from '@/store/professorScore.store';
 
 interface ProfessorScoreCardProps {
   professorId: number;
@@ -17,10 +25,11 @@ interface ProfessorScoreCardProps {
 const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
   professorId,
 }) => {
-  const [professorScore, setProfessorScore] =
-    useState<CreateProfessorScoreDto | null>(null);
+  const scores = useSelector(selectProfessorScores);
   const [finalScore, setFinalScore] = useState('');
   const [error, setError] = useState<string | null>(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getProfessorScoreForUser(professorId).then((data) => {
@@ -31,7 +40,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
       } else if (data === ResponseStatus.BadRequest) {
         setError('Bad Request');
       } else {
-        setProfessorScore(data);
+        dispatch(saveProfessorScore(data as UpdateProfessorScoreDto));
         setFinalScore(data.totalScore.toString() ?? '');
       }
     });
@@ -46,7 +55,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
     }
   }, [finalScore, professorId]);
 
-  if (!professorScore) {
+  if (!scores[professorId]) {
     return null; // Use error in some other way...
   }
 
@@ -58,15 +67,15 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
   };
 
   const professorScores = [
-    { category: 'Teaching', score: professorScore.teachingScore },
-    { category: 'Research', score: professorScore.researchScore },
-    { category: 'Service', score: professorScore.serviceScore },
+    { category: 'Teaching', score: scores[professorId].teachingScore },
+    { category: 'Research', score: scores[professorId].researchScore },
+    { category: 'Service', score: scores[professorId].serviceScore },
   ];
 
   const averageScore = (
-    (professorScore.teachingScore +
-      professorScore.researchScore +
-      professorScore.serviceScore) /
+    (scores[professorId].teachingScore! +
+      scores[professorId].researchScore! +
+      scores[professorId].serviceScore!) /
     3
   ).toFixed(1);
 
@@ -82,7 +91,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
             {professorScores.map(({ category, score }) => (
               <ProfessorScoreItem
                 category={category}
-                score={score}
+                score={score!}
                 key={category}
               />
             ))}
