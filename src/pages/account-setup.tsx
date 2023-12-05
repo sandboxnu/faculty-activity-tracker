@@ -40,7 +40,8 @@ export const getServerSideProps: GetServerSideProps<
       props: {
         name: session.user.name,
         email: session.user.email,
-        hideSidebars: true,
+        hideLeftSidebar: true,
+        hideRightSidebar: true,
       },
     };
   } else {

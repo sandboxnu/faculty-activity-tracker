@@ -10,7 +10,8 @@ import AppLayout from '@/shared/components/AppLayout';
 
 interface CustomPageProps {
   session: Session;
-  hideSidebars?: boolean;
+  hideLeftSidebar?: boolean;
+  hideRightSidebar?: boolean;
   hideNavbar?: boolean;
 }
 
@@ -18,7 +19,8 @@ function MyApp({
   Component,
   pageProps: {
     session,
-    hideSidebars = false,
+    hideLeftSidebar = false,
+    hideRightSidebar = false,
     hideNavbar = false,
     ...pageProps
   },
@@ -26,7 +28,11 @@ function MyApp({
   return (
     <Provider store={store}>
       <SessionProvider session={session}>
-        <AppLayout hideSidebars={hideSidebars} hideNavbar={hideNavbar}>
+        <AppLayout
+          hideLeftSidebar={hideLeftSidebar}
+          hideRightSidebar={hideRightSidebar}
+          hideNavbar={hideNavbar}
+        >
           <Component {...pageProps} />
         </AppLayout>
       </SessionProvider>

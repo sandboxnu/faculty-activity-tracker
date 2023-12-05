@@ -1,5 +1,6 @@
 import { Activity } from '.prisma/client';
 import {
+  ActivityDistribution,
   ActivityOrderByQuery,
   CreateActivityDto,
   UpdateActivityDto,
@@ -52,6 +53,15 @@ export const getActivitiesForUser = async (
   });
   return activities;
 };
+
+export const getActivityCountsByUser =
+  async (): Promise<ActivityDistribution> => {
+    const activityGroups = await prisma.activity.groupBy({
+      by: ['userId'],
+      _count: true,
+    });
+    return activityGroups.map((g) => ({ userId: g.userId, count: g._count }));
+  };
 
 export const createActivity = async (
   activity: CreateActivityDto,
