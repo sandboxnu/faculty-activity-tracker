@@ -48,6 +48,6 @@ export default async function handler(
       res.status(500).json({ error: (e as Error)?.message || 'Unknown error' });
     }
   } else {
-    res.status(405).send(`Method ${req.method} Not Allowed`);
+    res.status(405).json({ error: `Method ${req.method} Not Allowed` });
   }
 }

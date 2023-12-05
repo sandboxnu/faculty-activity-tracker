@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './app.store';
-import {
-  ProfessScoreDto,
-  UpdateProfessorScoreDto,
-} from '../models/professorScore.model';
-import { getProfessorScoreForUser } from '@/client/professorScore.client';
+import { UpdateProfessorScoreDto } from '../models/professorScore.model';
 
 export interface ProfessorScoreState {
   professorScores: Record<number, UpdateProfessorScoreDto>;
