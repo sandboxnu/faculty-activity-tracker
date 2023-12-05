@@ -122,6 +122,8 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
   error: initialError,
   user,
 }) => {
+  const dispatch = useDispatch();
+
   const [activities, setActivities] = useState<ActivityDto[]>(
     initialActivities || [],
   );
@@ -138,8 +140,6 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
   if (!professorId) {
     return <ErrorMessage message="Missing Professor ID" />;
   }
-
-  const dispatch = useDispatch();
 
   const updateActivity = (updatedActivity: UpdateActivityDto) => {
     updateActivityClient(updatedActivity).then((res) => {
