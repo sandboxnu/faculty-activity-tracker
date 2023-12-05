@@ -7,6 +7,7 @@ import { Session } from 'next-auth';
 import '../styles/index.css';
 import '../styles/utilities.css';
 import AppLayout from '@/shared/components/AppLayout';
+import { useRouter } from 'next/router';
 
 interface CustomPageProps {
   session: Session;
@@ -25,6 +26,18 @@ function MyApp({
     ...pageProps
   },
 }: AppProps<CustomPageProps>) {
+  const router = useRouter();
+
+  if (router.pathname === '/merit/professors/[professorId]') {
+    return (
+      <Provider store={store}>
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
+      </Provider>
+    );
+  }
+
   return (
     <Provider store={store}>
       <SessionProvider session={session}>
