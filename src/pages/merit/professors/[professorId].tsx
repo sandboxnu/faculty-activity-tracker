@@ -148,13 +148,14 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
           ...activities.filter((u) => u.id !== updatedActivity.id),
           updatedActivity as ActivityDto,
         ]);
-      } else {
-        setError('Unknown error');
-      }
-    });
-    updateComputedProfessorScoreForUser(professorId).then((res) => {
-      if (res) {
-        console.log(res);
+
+        updateComputedProfessorScoreForUser(professorId).then((res) => {
+          if (res) {
+            console.log(res);
+          } else {
+            setError('Unknown error');
+          }
+        });
       } else {
         setError('Unknown error');
       }
@@ -172,53 +173,39 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
   };
 
   return (
-    <div className="flex min-h-screen w-screen flex-col">
-      <Header />
-      <div className="flex w-full flex-grow">
-        <SideNavbar />
-        <div className="border-light-grey flex flex-1 self-stretch overflow-x-hidden border-x px-10 py-6">
-          <NextNProgress
-            color="#CC0000"
-            height={4}
-            options={{ showSpinner: false }}
+    <div className="flex w-full flex-col px-[40px]">
+      <Head>
+        <title>Professor Scoring Page</title>
+      </Head>
+      <div className="inline-flex items-center pb-[32px] pt-[16px] text-heading-1">
+        Professor {user?.firstName} {user?.lastName}
+        <div className="ml-[8px]">
+          <TenureBadge
+            isTenure={
+              !!professorInfo?.position.toLowerCase().includes('tenure')
+            }
           />
-          <div className="flex w-full flex-col px-[40px]">
-            <Head>
-              <title>Professor Scoring Page</title>
-            </Head>
-            <div className="inline-flex items-center pb-[32px] pt-[16px] text-heading-1">
-              Professor {user?.firstName} {user?.lastName}
-              <div className="ml-[8px]">
-                <TenureBadge
-                  isTenure={
-                    !!professorInfo?.position.toLowerCase().includes('tenure')
-                  }
+        </div>
+      </div>
+      {activities && activities.length > 0 && (
+        <div className="flex w-full flex-col">
+          {Object.entries(activitiesByCategory).map(
+            ([category, activities]) => (
+              <div key={category} className="flex w-full flex-col">
+                <ActivityGroup
+                  activities={activities}
+                  title={toTitleCase(category)}
+                  narrative={getNarrativeByCategory(
+                    category as NarrativeCategory,
+                  )}
+                  cookieKey={category}
+                  submit={updateActivity}
                 />
               </div>
-            </div>
-            {activities && activities.length > 0 && (
-              <div className="flex w-full flex-col">
-                {Object.entries(activitiesByCategory).map(
-                  ([category, activities]) => (
-                    <div key={category} className="flex w-full flex-col">
-                      <ActivityGroup
-                        activities={activities}
-                        title={toTitleCase(category)}
-                        narrative={getNarrativeByCategory(
-                          category as NarrativeCategory,
-                        )}
-                        cookieKey={category}
-                        submit={updateActivity}
-                      />
-                    </div>
-                  ),
-                )}
-              </div>
-            )}
-          </div>
+            ),
+          )}
         </div>
-        <InfoSidebar />
-      </div>
+      )}
     </div>
   );
 };

@@ -67,21 +67,21 @@ export const computeProfessorScore = async (
   const categories: ActivityCategory[] = ['TEACHING', 'RESEARCH', 'SERVICE'];
 
   categories.forEach((category) => {
-    const filterdActivities = filterActivitesForCategory(
+    const filteredActivities = filterActivitesForCategory(
       approvedActivities,
       category,
     );
 
     const majorActivities = filterActivitesBySigLevel(
-      filterdActivities,
+      filteredActivities,
       'MAJOR',
     ).length;
     const minorActivities = filterActivitesBySigLevel(
-      filterdActivities,
+      filteredActivities,
       'MINOR',
     ).length;
     const significantActivites = filterActivitesBySigLevel(
-      filterdActivities,
+      filteredActivities,
       'SIGNIFICANT',
     ).length;
 
