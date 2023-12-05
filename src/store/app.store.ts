@@ -3,6 +3,7 @@ import formReducer from './form.store';
 import submissionReducer from './submissions.store';
 import profileReducer from './profile.store';
 import accountSetupReducer from './accountSetup.store';
+import professorScoreReducer from './professorScore.store';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     form: formReducer,
     profile: profileReducer,
     submissions: submissionReducer,
+    professorScore: professorScoreReducer,
   },
 });
 
