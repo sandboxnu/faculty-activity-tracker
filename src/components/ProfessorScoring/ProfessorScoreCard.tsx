@@ -40,7 +40,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
       } else if (data === ResponseStatus.BadRequest) {
         setError('Bad Request');
       } else {
-        dispatch(saveProfessorScore(data as UpdateProfessorScoreDto));
+        dispatch(saveProfessorScore(data));
         setFinalScore(data.totalScore.toString() ?? '');
       }
     });
@@ -55,8 +55,8 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
     }
   }, [finalScore, professorId]);
 
-  if (!scores[professorId]) {
-    return null; // Use error in some other way...
+  if (!scores) {
+    return null;
   }
 
   const onChange = (value: string) => {
@@ -67,15 +67,13 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
   };
 
   const professorScores = [
-    { category: 'Teaching', score: scores[professorId].teachingScore },
-    { category: 'Research', score: scores[professorId].researchScore },
-    { category: 'Service', score: scores[professorId].serviceScore },
+    { category: 'Teaching', score: scores.teachingScore },
+    { category: 'Research', score: scores.researchScore },
+    { category: 'Service', score: scores.serviceScore },
   ];
 
   const averageScore = (
-    (scores[professorId].teachingScore! +
-      scores[professorId].researchScore! +
-      scores[professorId].serviceScore!) /
+    (scores.teachingScore + scores.researchScore + scores.serviceScore) /
     3
   ).toFixed(1);
 
@@ -91,7 +89,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
             {professorScores.map(({ category, score }) => (
               <ProfessorScoreItem
                 category={category}
-                score={score!}
+                score={score}
                 key={category}
               />
             ))}

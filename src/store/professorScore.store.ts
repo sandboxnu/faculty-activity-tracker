@@ -1,13 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './app.store';
-import { UpdateProfessorScoreDto } from '../models/professorScore.model';
+import {
+  CreateProfessorScoreDto,
+  UpdateProfessorScoreDto,
+} from '../models/professorScore.model';
 
 export interface ProfessorScoreState {
-  professorScores: Record<number, UpdateProfessorScoreDto>;
+  professorScore: CreateProfessorScoreDto | null;
 }
 
 const initialState: ProfessorScoreState = {
-  professorScores: {},
+  professorScore: null,
 };
 
 export const professorScoreSlice = createSlice({
@@ -16,10 +19,9 @@ export const professorScoreSlice = createSlice({
   reducers: {
     saveProfessorScore: (
       state,
-      action: PayloadAction<UpdateProfessorScoreDto>,
+      action: PayloadAction<CreateProfessorScoreDto>,
     ) => {
-      const { userId } = action.payload;
-      state.professorScores[userId] = action.payload;
+      state.professorScore = action.payload;
     },
   },
 });
@@ -27,6 +29,6 @@ export const professorScoreSlice = createSlice({
 export const { saveProfessorScore } = professorScoreSlice.actions;
 
 export const selectProfessorScores = (state: RootState) =>
-  state.professorScore.professorScores;
+  state.professorScore.professorScore;
 
 export default professorScoreSlice.reducer;
