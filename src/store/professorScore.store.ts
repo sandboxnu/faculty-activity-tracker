@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './app.store';
-import {
-  CreateProfessorScoreDto,
-  UpdateProfessorScoreDto,
-} from '../models/professorScore.model';
+import { CreateProfessorScoreDto } from '../models/professorScore.model';
 
 export interface ProfessorScoreState {
   professorScore: CreateProfessorScoreDto | null;

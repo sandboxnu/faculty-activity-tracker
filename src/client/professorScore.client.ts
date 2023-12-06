@@ -65,7 +65,7 @@ export const getProfessorScoreForUser = async (
 export const updateComputedProfessorScoreForUser = async (
   userId: number,
 ): Promise<
-  | UpdateProfessorScoreDto
+  | CreateProfessorScoreDto
   | ResponseStatus.Unauthorized
   | ResponseStatus.BadRequest
   | ResponseStatus.UnknownError

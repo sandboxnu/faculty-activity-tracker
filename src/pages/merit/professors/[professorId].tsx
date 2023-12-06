@@ -150,10 +150,14 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
         ]);
 
         updateComputedProfessorScoreForUser(professorId).then((res) => {
-          if (res) {
-            dispatch(saveProfessorScore(res as UpdateProfessorScoreDto));
+          if (res === ResponseStatus.Unauthorized) {
+            setError('Unauthorized');
+          } else if (res === ResponseStatus.BadRequest) {
+            setError('Bad Request');
+          } else if (res === ResponseStatus.UnknownError) {
+            setError('Unknown Error');
           } else {
-            setError('Unknown error');
+            dispatch(saveProfessorScore(res));
           }
         });
       } else {
