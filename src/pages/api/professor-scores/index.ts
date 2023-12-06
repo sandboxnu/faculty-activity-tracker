@@ -31,17 +31,21 @@ export default async function handler(
           }
         } else {
           res.status(422).json({ error: 'userId is required' });
+          return;
         }
 
         await handlePut(req, res);
       } else {
         res.status(405).send(`Method ${req.method} Not Allowed`);
+        return;
       }
     } else {
       res.status(401).json({ error: 'Not authorized' });
+      return;
     }
   } else {
     res.status(401).json({ error: 'Not authorized' });
+    return;
   }
 }
 
