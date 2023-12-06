@@ -1,4 +1,7 @@
-import { UpdateProfessorScoreDto } from '@/models/professorScore.model';
+import {
+  CreateProfessorScoreDto,
+  UpdateProfessorScoreDto,
+} from '@/models/professorScore.model';
 import { Activity, ProfessorScore, SignificanceLevel } from '@prisma/client';
 import prisma from 'lib/db';
 import { getActivitiesForUser } from './activity';
@@ -19,7 +22,7 @@ export const getAllProfessorScores = async (): Promise<ProfessorScore[]> => {
 
 export const upsertProfessorScore = async (
   score: UpdateProfessorScoreDto,
-): Promise<ProfessorScore> => {
+): Promise<CreateProfessorScoreDto> => {
   const userId = score.userId;
 
   const newScore = await prisma.professorScore.upsert({
