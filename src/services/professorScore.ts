@@ -63,10 +63,11 @@ export const computeProfessorScore = async (
     (activity) => activity.meritStatus === 'ACCEPTED',
   );
 
-  let teachingScore = 6;
-  let researchScore = 6;
-  let serviceScore = 6;
-
+  const categoryScores: Record<ActivityCategory, number> = {
+    TEACHING: 6,
+    RESEARCH: 6,
+    SERVICE: 6,
+  };
   const categories: ActivityCategory[] = ['TEACHING', 'RESEARCH', 'SERVICE'];
 
   categories.forEach((category) => {
@@ -94,7 +95,7 @@ export const computeProfessorScore = async (
         significantActivites > 4 &&
         minorActivities > 6
       ) {
-        teachingScore = 8;
+        categoryScores['TEACHING'] = 8;
         return;
       }
 
@@ -104,7 +105,7 @@ export const computeProfessorScore = async (
         significantActivites > 3 &&
         minorActivities > 4
       ) {
-        teachingScore = 7;
+        categoryScores['TEACHING'] = 7;
         return;
       }
     }
@@ -115,7 +116,7 @@ export const computeProfessorScore = async (
         significantActivites > 6 &&
         minorActivities > 6
       ) {
-        researchScore = 9;
+        categoryScores['RESEARCH'] = 9;
         return;
       }
 
@@ -124,7 +125,7 @@ export const computeProfessorScore = async (
         significantActivites > 4 &&
         minorActivities > 4
       ) {
-        researchScore = 8;
+        categoryScores['RESEARCH'] = 8;
         return;
       }
 
@@ -133,7 +134,7 @@ export const computeProfessorScore = async (
         significantActivites > 2 &&
         minorActivities > 2
       ) {
-        researchScore = 7;
+        categoryScores['RESEARCH'] = 7;
         return;
       }
     }
@@ -144,7 +145,7 @@ export const computeProfessorScore = async (
         significantActivites > 3 &&
         minorActivities > 6
       ) {
-        serviceScore = 9;
+        categoryScores['SERVICE'] = 9;
         return;
       }
 
@@ -154,7 +155,7 @@ export const computeProfessorScore = async (
         significantActivites <= 3 &&
         minorActivities > 4
       ) {
-        serviceScore = 8;
+        categoryScores['SERVICE'] = 8;
         return;
       }
 
@@ -164,7 +165,7 @@ export const computeProfessorScore = async (
         significantActivites <= 2 &&
         minorActivities > 2
       ) {
-        serviceScore = 7;
+        categoryScores['SERVICE'] = 7;
         return;
       }
     }
@@ -172,8 +173,8 @@ export const computeProfessorScore = async (
 
   return {
     userId: userId,
-    teachingScore: teachingScore,
-    researchScore: researchScore,
-    serviceScore: serviceScore,
+    teachingScore: categoryScores['TEACHING'],
+    researchScore: categoryScores['RESEARCH'],
+    serviceScore: categoryScores['SERVICE'],
   };
 };
