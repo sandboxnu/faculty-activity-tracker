@@ -76,99 +76,19 @@ export const computeProfessorScore = async (
       category,
     );
 
-    const majorActivities = filterActivitesBySigLevel(
-      filteredActivities,
-      'MAJOR',
-    ).length;
-    const minorActivities = filterActivitesBySigLevel(
-      filteredActivities,
-      'MINOR',
-    ).length;
-    const significantActivites = filterActivitesBySigLevel(
-      filteredActivities,
-      'SIGNIFICANT',
-    ).length;
+    const activites: Record<SignificanceLevel, number> = {
+      MAJOR: filterActivitesBySigLevel(filteredActivities, 'MAJOR').length,
+      SIGNIFICANT: filterActivitesBySigLevel(filteredActivities, 'SIGNIFICANT')
+        .length,
+      MINOR: filterActivitesBySigLevel(filteredActivities, 'MINOR').length,
+    };
 
-    if (category === 'TEACHING') {
-      if (
-        majorActivities > 2 &&
-        significantActivites > 4 &&
-        minorActivities > 6
-      ) {
-        categoryScores['TEACHING'] = 8;
-        return;
-      }
-
-      if (
-        majorActivities >= 1 &&
-        majorActivities <= 2 &&
-        significantActivites > 3 &&
-        minorActivities > 4
-      ) {
-        categoryScores['TEACHING'] = 7;
-        return;
-      }
-    }
-
-    if (category === 'RESEARCH') {
-      if (
-        majorActivities > 1 &&
-        significantActivites > 6 &&
-        minorActivities > 6
-      ) {
-        categoryScores['RESEARCH'] = 9;
-        return;
-      }
-
-      if (
-        majorActivities === 1 &&
-        significantActivites > 4 &&
-        minorActivities > 4
-      ) {
-        categoryScores['RESEARCH'] = 8;
-        return;
-      }
-
-      if (
-        majorActivities > 0 &&
-        significantActivites > 2 &&
-        minorActivities > 2
-      ) {
-        categoryScores['RESEARCH'] = 7;
-        return;
-      }
-    }
-
-    if (category === 'SERVICE') {
-      if (
-        majorActivities > 3 &&
-        significantActivites > 3 &&
-        minorActivities > 6
-      ) {
-        categoryScores['SERVICE'] = 9;
-        return;
-      }
-
-      if (
-        majorActivities > 1 &&
-        significantActivites >= 2 &&
-        significantActivites <= 3 &&
-        minorActivities > 4
-      ) {
-        categoryScores['SERVICE'] = 8;
-        return;
-      }
-
-      if (
-        majorActivities > 0 &&
-        significantActivites >= 1 &&
-        significantActivites <= 2 &&
-        minorActivities > 2
-      ) {
-        categoryScores['SERVICE'] = 7;
-        return;
-      }
-    }
+    categoryScores[category] = computeCategoryScore(
+      category,
+      activites['MAJOR'],
+      activites['SIGNIFICANT'],
+      activites['MINOR'],
+    );
   });
 
   return {
@@ -177,4 +97,70 @@ export const computeProfessorScore = async (
     researchScore: categoryScores['RESEARCH'],
     serviceScore: categoryScores['SERVICE'],
   };
+};
+
+const computeCategoryScore = (
+  category: ActivityCategory,
+  major: number,
+  significant: number,
+  minor: number,
+) => {
+  switch (category) {
+    case 'TEACHING':
+      return computeTeachingCategoryScore(major, significant, minor);
+    case 'RESEARCH':
+      return computeResearchCategoryScore(major, significant, minor);
+    case 'SERVICE':
+      return computeServiceCategoryScore(major, significant, minor);
+    default:
+      return 6; // Should never reach here
+  }
+};
+
+const computeTeachingCategoryScore = (
+  major: number,
+  significant: number,
+  minor: number,
+) => {
+  if (major > 2 && significant > 4 && minor > 6) {
+    return 8;
+  } else if (major >= 1 && major <= 2 && significant > 3 && minor > 4) {
+    return 7;
+  } else {
+    return 6;
+  }
+};
+
+const computeResearchCategoryScore = (
+  major: number,
+  significant: number,
+  minor: number,
+) => {
+  if (major > 1 && significant > 6 && minor > 6) {
+    return 9;
+  }
+
+  if (major === 1 && significant > 4 && minor > 4) {
+    return 8;
+  } else if (major > 0 && significant > 2 && minor > 2) {
+    return 7;
+  } else {
+    return 6;
+  }
+};
+
+const computeServiceCategoryScore = (
+  major: number,
+  significant: number,
+  minor: number,
+) => {
+  if (major > 3 && significant > 3 && minor > 6) {
+    return 9;
+  } else if (major > 1 && significant >= 2 && significant <= 3 && minor > 4) {
+    return 8;
+  } else if (major > 0 && significant >= 1 && significant <= 2 && minor > 2) {
+    return 7;
+  } else {
+    return 6;
+  }
 };
