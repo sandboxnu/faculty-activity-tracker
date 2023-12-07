@@ -1,7 +1,7 @@
 import { ActivityDto, UpdateActivityDto } from '@/models/activity.model';
 import { ActivityMeritStatus, SignificanceLevel } from '@prisma/client';
 import { useState, useEffect } from 'react';
-import { toTitleCase } from '@/shared/utils/misc.util';
+import { shortenText, toTitleCase } from '@/shared/utils/misc.util';
 
 interface ActivityApprovalProp {
   activity: ActivityDto;
@@ -119,7 +119,7 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
 
   return (
     <div
-      className={`card relative flex cursor-pointer flex-col items-start justify-center gap-[20px] rounded-lg bg-gray-100 px-[20px] py-[16px] 
+      className={`card relative flex min-w-[200px] cursor-pointer flex-col items-start justify-center gap-[20px] overflow-hidden rounded-lg bg-gray-100 px-[20px] py-[16px]
           ${
             expanded
               ? 'border-[1.5px] border-solid border-gray-300'
@@ -130,8 +130,12 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
     >
       <div className="relative flex w-full items-center">
         <div className="flex flex-grow items-center justify-start gap-[20px]">
-          <div className="relative mt-[-1.00px] w-fit text-heading-3">
-            {activity?.name}
+          <div
+            className={`relative mt-[-1.00px] w-fit text-heading-3 ${
+              expanded ? 'whitespace-nowrap' : ''
+            }`}
+          >
+            {expanded ? activity?.name : shortenText(activity?.name, 32)}
           </div>
           <div className="relative w-fit text-small text-gray-500">
             {activity?.semester
@@ -143,7 +147,7 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
           </div>
         </div>
         <div className="flex-grow"></div>
-        <div className="flex flex-shrink-0 items-center justify-end gap-[8px]">
+        <div className="flex flex-shrink-0 items-center justify-end gap-[8px] pl-6">
           <ApproveButton
             className={`${
               activity?.meritStatus === ActivityMeritStatus.ACCEPTED

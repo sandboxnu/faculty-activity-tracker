@@ -23,6 +23,16 @@ export const bigintStringify = <T>(object: T): string => {
   );
 };
 
+export const shortenText = (text: string, maxSize: number): string => {
+  const textLength = text.length;
+
+  if (textLength < maxSize) {
+    return text;
+  }
+
+  return text.substring(0, maxSize) + '...';
+};
+
 export const shortenDescription = (description: string): string => {
   const descriptionLength = description.length;
 
