@@ -88,11 +88,6 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
     { category: 'Service', score: scores.serviceScore },
   ];
 
-  const averageScore = (
-    (scores.teachingScore + scores.researchScore + scores.serviceScore) /
-    3
-  ).toFixed(1);
-
   const tooltipMessage =
     'A professor may be recently hired or have special circumstances, so you can adjust their score accordingly below.';
 
@@ -113,7 +108,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
           <div className="flex flex-col justify-between px-4 xl:flex-row">
             <ProfessorScoreItem
               category={'Average'}
-              score={parseFloat(averageScore)}
+              score={parseFloat(weightedScore?.toFixed(1) ?? '0')}
               className="space-y-2"
             />
             <div className="flex items-center justify-center xl:justify-start">
