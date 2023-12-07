@@ -129,15 +129,14 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
       style={{ userSelect: 'none' }}
     >
       <div className="relative flex w-full items-center">
-        <div className="flex flex-grow items-center justify-start gap-[30px]">
+        <div className="flex flex-grow items-center justify-start gap-[20px]">
           <div className="relative mt-[-1.00px] w-fit text-heading-3">
             {activity?.name}
           </div>
           <div className="relative w-fit text-small text-gray-500">
             {activity?.semester
               .map((semester) => toTitleCase(semester))
-              .join(', ')}{' '}
-            / {activity?.year.toString()}
+              .join(', ')}
           </div>
           <div className="relative w-fit text-small text-gray-500">
             {toTitleCase(activity?.significance || 'N/A')}
