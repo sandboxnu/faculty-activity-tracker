@@ -20,6 +20,24 @@ export const getAllProfessorScores = async (): Promise<ProfessorScore[]> => {
   return scores;
 };
 
+export const calculateWeightedProfScore = async (userId: number) => {
+  const score = await getProfessorScore(userId);
+
+  const weights = await prisma.professorInfo.findUnique({
+    where: { userId: userId },
+  });
+
+  if (score == null || weights == null) {
+    return 0;
+  }
+
+  const teachingScore = score.teachingScore * weights.teachingPercent;
+  const researchScore = score.researchScore * weights.researchPercent;
+  const serviceScore = score.serviceScore * weights.servicePercent;
+
+  return teachingScore + researchScore + serviceScore;
+};
+
 export const upsertProfessorScore = async (
   score: UpdateProfessorScoreDto,
 ): Promise<CreateProfessorScoreDto> => {
