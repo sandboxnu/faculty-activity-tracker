@@ -130,11 +130,7 @@ const ActivityApprovalCard: React.FC<ActivityApprovalProp> = ({
     >
       <div className="relative flex w-full items-center">
         <div className="flex flex-grow items-center justify-start gap-[20px]">
-          <div
-            className={`relative mt-[-1.00px] w-fit text-heading-3 ${
-              expanded ? 'whitespace-nowrap' : ''
-            }`}
-          >
+          <div className="relative mt-[-1.00px] w-fit whitespace-nowrap text-heading-3">
             {expanded ? activity?.name : shortenText(activity?.name, 32)}
           </div>
           <div className="relative w-fit text-small text-gray-500">
