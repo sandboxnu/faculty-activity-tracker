@@ -90,3 +90,32 @@ export const updateComputedProfessorScoreForUser = async (
     return ResponseStatus.UnknownError;
   }
 };
+
+export const getWeightedProfessorScoreForUser = async (
+  userId: number,
+): Promise<
+  | number
+  | ResponseStatus.Unauthorized
+  | ResponseStatus.BadRequest
+  | ResponseStatus.UnknownError
+> => {
+  try {
+    const response = await fetch(apiRoot + '/weighted-score/' + userId, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
+
+    if (response.ok || response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else if (response.status === 400) return ResponseStatus.BadRequest;
+    else if (response.status === 401) return ResponseStatus.Unauthorized;
+    else return ResponseStatus.UnknownError;
+  } catch (error) {
+    console.log(error);
+    return ResponseStatus.UnknownError;
+  }
+};
