@@ -21,8 +21,13 @@ import { getNarrativesForUser } from '@/services/narrative';
 import { seperateNarrativesByCategory } from '@/shared/utils/narrative.util';
 import TenureBadge from '@/components/ProfessorScoring/TenureBadge';
 import ErrorMessage from '@/shared/components/ErrorMessage';
+import { updateComputedProfessorScoreForUser } from '@/client/professorScore.client';
+import { saveProfessorScore } from '@/store/professorScore.store';
+import { useDispatch } from 'react-redux';
+import { UpdateProfessorScoreDto } from '@/models/professorScore.model';
 
 interface ProfessorScoringPageProps {
+  professorId?: number;
   activities?: ActivityDto[];
   professorInfo?: ProfessorInfoDto;
   user?: UserDto;
@@ -95,6 +100,7 @@ export const getServerSideProps: GetServerSideProps<
   if (activities) {
     return {
       props: {
+        professorId: professorId,
         activities: bigintToJSON(activities),
         professorInfo: bigintToJSON(professorInfo),
         user: bigintToJSON(user),
@@ -109,12 +115,15 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
+  professorId,
   activities: initialActivities,
   narratives: initialNarratives,
   professorInfo,
   error: initialError,
   user,
 }) => {
+  const dispatch = useDispatch();
+
   const [activities, setActivities] = useState<ActivityDto[]>(
     initialActivities || [],
   );
@@ -128,6 +137,10 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
     return <ErrorMessage message={error} />;
   }
 
+  if (!professorId) {
+    return <ErrorMessage message="Missing Professor ID" />;
+  }
+
   const updateActivity = (updatedActivity: UpdateActivityDto) => {
     updateActivityClient(updatedActivity).then((res) => {
       if (res === ResponseStatus.Success) {
@@ -135,6 +148,18 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
           ...activities.filter((u) => u.id !== updatedActivity.id),
           updatedActivity as ActivityDto,
         ]);
+
+        updateComputedProfessorScoreForUser(professorId).then((res) => {
+          if (res === ResponseStatus.Unauthorized) {
+            setError('Unauthorized');
+          } else if (res === ResponseStatus.BadRequest) {
+            setError('Bad Request');
+          } else if (res === ResponseStatus.UnknownError) {
+            setError('Unknown Error');
+          } else {
+            dispatch(saveProfessorScore(res));
+          }
+        });
       } else {
         setError('Unknown error');
       }
