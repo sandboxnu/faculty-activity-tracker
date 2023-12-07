@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   getProfessorScoreForUser,
   updateProfessorScoreForUser,
+  getWeightedProfessorScoreForUser,
 } from '@/client/professorScore.client';
 import {
   CreateProfessorScoreDto,
@@ -28,6 +29,7 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
   const scores = useSelector(selectProfessorScores);
   const [finalScore, setFinalScore] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [weightedScore, setWeightedScore] = useState<number | null>(null);
 
   const dispatch = useDispatch();
 
@@ -54,6 +56,20 @@ const ProfessorScoreCard: React.FC<ProfessorScoreCardProps> = ({
       });
     }
   }, [finalScore, professorId]);
+
+  useEffect(() => {
+    getWeightedProfessorScoreForUser(professorId).then((data) => {
+      if (data === ResponseStatus.UnknownError) {
+        setError('Unknown Error');
+      } else if (data === ResponseStatus.Unauthorized) {
+        setError('Unauthorized');
+      } else if (data === ResponseStatus.BadRequest) {
+        setError('Bad Request');
+      } else {
+        setWeightedScore(data);
+      }
+    });
+  }, []);
 
   if (!scores) {
     return null;
