@@ -101,7 +101,7 @@ export const getWeightedProfessorScoreForUser = async (
 > => {
   try {
     const response = await fetch(apiRoot + '/weighted-score/' + userId, {
-      method: 'PUT',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
