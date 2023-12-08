@@ -23,14 +23,18 @@ export const bigintStringify = <T>(object: T): string => {
   );
 };
 
-export const shortenDescription = (description: string): string => {
-  const descriptionLength = description.length;
+export const shortenText = (text: string, maxSize: number): string => {
+  const textLength = text.length;
 
-  if (descriptionLength < 97) {
-    return description;
+  if (textLength < maxSize - 2) {
+    return text;
   }
 
-  return description.substring(0, 99) + '...';
+  return text.substring(0, maxSize) + '...';
+};
+
+export const shortenDescription = (description: string): string => {
+  return shortenText(description, 99);
 };
 
 export const formatPhoneNumberWithSlashes = (number: string): string => {
