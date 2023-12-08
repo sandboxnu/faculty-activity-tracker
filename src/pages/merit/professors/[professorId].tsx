@@ -7,7 +7,7 @@ import { getSession, useSession } from 'next-auth/react';
 import { getActivitiesByQuery, getActivityById } from '@/services/activity';
 import { bigintToJSON, toTitleCase } from '@/shared/utils/misc.util';
 import { getProfessorInfoForUser } from '@/services/professorInfo';
-import { NarrativeCategory } from '@prisma/client';
+import { NarrativeCategory, ProfessorPosition } from '@prisma/client';
 import { useState } from 'react';
 import { UserDto } from '@/models/user.model';
 import {
@@ -185,9 +185,7 @@ const ProfessorScoringPage: React.FC<ProfessorScoringPageProps> = ({
         Professor {user?.firstName} {user?.lastName}
         <div className="ml-[8px]">
           <TenureBadge
-            isTenure={
-              !!professorInfo?.position.toLowerCase().includes('tenure')
-            }
+            isTenure={professorInfo?.position === ProfessorPosition.TENURE}
           />
         </div>
       </div>

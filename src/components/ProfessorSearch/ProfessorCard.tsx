@@ -4,6 +4,7 @@ import { UserDto } from '@/models/user.model';
 import CommentBubble from './CommentBubble';
 import { useRouter } from 'next/router';
 import Button from '@/shared/components/Button';
+import { ProfessorPosition } from '@prisma/client';
 
 interface ProfessorCardProps {
   professor?: UserDto;
@@ -75,7 +76,7 @@ const ProfessorCard: React.FC<ProfessorCardProps> = ({
             </div>
           </div>
           <div className="absolute left-[113px] top-[66px] w-[62px] text-center text-[12px] font-light leading-[normal] tracking-[0] text-black [font-family:'Lato-Light',Helvetica]">
-            {!!info?.position.toLowerCase().includes('tenure')
+            {info?.position === ProfessorPosition.TENURE
               ? 'Tenure'
               : 'Non-Tenure'}
           </div>
