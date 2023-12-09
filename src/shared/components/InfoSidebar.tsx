@@ -112,8 +112,10 @@ const InfoSidebar: React.FC = () => {
       {sidebarType === 'scoring' && session?.user?.merit && (
         <>
           <ScoringInfo profInfo={professorInfo} />
-          <ProfessorCommentBox professorId={professorId} />
-          <ProfessorScoreCard professorId={professorId} />
+          <div className="sticky top-4 w-full space-y-4">
+            <ProfessorCommentBox professorId={professorId} />
+            <ProfessorScoreCard professorId={professorId} />
+          </div>
         </>
       )}
     </div>
