@@ -16,6 +16,12 @@ Faculty Acivity Tracker ("FAT") is a dashboard-driven app to be used by the facu
 - [Prisma](https://www.prisma.io/) - ORM
 - [PostgreSQL](https://www.postgresql.org/) - Database
 
+## Deploy!
+
+Deploy the entire project sans database with Vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsandboxnu%2Ffaculty-activity-tracker%2F)
+
 ## Screenshots
 
 | <image src="./screenshots/faculty-submit-activity.png" width="400"> | <image src="./screenshots/faculty-activities.png" width="400"> |
